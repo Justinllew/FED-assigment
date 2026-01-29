@@ -1,0 +1,180 @@
+:root {
+  --color-bg: #ffffff;
+  --color-card-bg: #e0e0e0; /* The light grey background from your image */
+  --color-yellow: #feffc1; /* User requested Yellow */
+  --color-green: #7ce53a; /* User requested Green */
+  --color-text: #000000;
+  --color-blue-btn: #4a90e2; /* Keeping the 'See' button blue like the image, or change to Green if preferred */
+  --radius-lg: 30px;
+  --radius-md: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--color-bg);
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* --- Header Section --- */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.title-box {
+  background-color: var(--color-card-bg); /* Grey background like image */
+  padding: 20px 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1; /* Takes up available space */
+}
+
+/* Menu Hamburger Icon */
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+.bar {
+  width: 20px;
+  height: 3px;
+  background-color: black;
+  border-radius: 2px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* Schedule Button */
+.btn-schedule {
+  background-color: var(--color-card-bg);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.icon-plus {
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-blue-btn); /* Blue circle like image */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* --- Main Content Card --- */
+.main-card {
+  background-color: var(--color-card-bg); /* The big grey container */
+  padding: 40px;
+  border-radius: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+/* --- Table Card --- */
+.table-card {
+  background-color: white;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 20px;
+  font-weight: 500;
+  padding-bottom: 20px;
+  color: black;
+}
+
+td {
+  padding: 20px 0;
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+/* Specific Column Styles */
+.stall-name {
+  font-weight: 400;
+}
+
+/* --- Badges & Buttons --- */
+.grade-cell {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* Space between grade and button */
+}
+
+.grade-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.grade-a {
+  background-color: #b22222; /* Deep Red (from image) */
+}
+
+.grade-b {
+  background-color: var(--color-green); /* YOUR GREEN (#7CE53A) */
+}
+
+.btn-see {
+  background-color: var(--color-blue-btn);
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
