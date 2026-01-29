@@ -1,0 +1,118 @@
+* {
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+}
+
+/* Top bar */
+.top-bar {
+  padding: 20px 60px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+}
+
+.username {
+  font-size: 30px;
+}
+
+.menu-icon {
+  width: 35px;
+  height: 35px;
+}
+
+/* Main container */
+.order-history {
+  padding: 40px;
+}
+
+.history-card {
+  background: #f9f7e8;
+  border-radius: 40px;
+  padding: 40px;
+  max-width: 1325px;
+  margin: auto;
+}
+
+.history-card h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #787878;
+  cursor: pointer;
+}
+
+.tab.active {
+  color: #ff2a04;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Table */
+.table {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.5fr 2fr 1.5fr;
+  align-items: center;
+  padding: 25px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background: #ffffff;
+  font-size: 32px;
+}
+
+.table.header {
+  font-weight: 500;
+}
+
+.table.row {
+  font-weight: 400;
+}
+
+/* Status colors */
+.status {
+  font-weight: 500;
+}
+
+.status.on-way {
+  color: #000;
+}
+
+.status.delivered {
+  color: #5e9d4b;
+}
+
+.status.cancelled {
+  color: #ff2a04;
+}
+
+.status.making {
+  color: #787878;
+}

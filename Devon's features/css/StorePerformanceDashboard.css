@@ -1,0 +1,240 @@
+:root {
+  --primary-green: #68a357;
+  --primary-green-dim: #9dc492; /* Lighter version for chart backgrounds */
+  --bg-cream: #f9f7e8;
+  --bg-light-green: #e9f2e6; /* The "Container" background */
+  --text-dark: #1a1a1a;
+  --text-muted: #9e9e9e;
+  --white: #ffffff;
+  --border-light: #f0f0f0;
+}
+
+/* --- Reset & Base --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+/* --- Header --- */
+header {
+  background-color: var(--white);
+  padding: 15px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-icon-wrapper {
+  background-color: #f0f0f0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Main Content --- */
+main {
+  padding: 40px 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2.page-title {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* --- Dashboard Container (The Grey/Green Box) --- */
+.dashboard-container {
+  background-color: var(--bg-light-green);
+  padding: 30px;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Left column narrower than right */
+  gap: 20px;
+}
+
+/* --- Cards --- */
+.card {
+  background-color: var(--white);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* --- Diagrams Column (Left) --- */
+.diagrams-card {
+  grid-row: span 2; /* Make it tall if we used grid rows, but flex inside works too */
+  justify-content: space-around;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.chart-row:last-child {
+  margin-bottom: 0;
+}
+
+/* --- SVG Donut Charts --- */
+.donut-chart {
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+
+.donut-chart svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Start from top */
+}
+
+.donut-bg {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-width: 8; /* Thicker ring as per image */
+}
+
+.donut-fill {
+  fill: none;
+  stroke: var(--primary-green); /* Theme Green */
+  stroke-width: 8;
+  stroke-linecap: round;
+  /* Dasharray calculated: 2 * PI * r (r=32 approx) => ~200 circumference */
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200; /* Start empty */
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+/* Specific percentages (Circumference ~200) */
+/* 22% of 200 = 44 filled -> offset = 156 */
+.fill-22 {
+  stroke-dashoffset: 156;
+  opacity: 0.6;
+}
+
+/* 20% of 200 = 40 filled -> offset = 160 */
+.fill-20 {
+  stroke-dashoffset: 160;
+  opacity: 0.6;
+}
+
+/* 79% of 200 = 158 filled -> offset = 42 */
+.fill-79 {
+  stroke-dashoffset: 42;
+  opacity: 0.6;
+}
+
+/* Inner text centering */
+.chart-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+/* --- Placeholder Lines (Skeleton Text) --- */
+.lines-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.line {
+  height: 6px;
+  background-color: var(--text-dark);
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Darker lines for the diagram legend */
+.diagram-line {
+  background-color: #333;
+}
+
+/* Lighter lines for text content */
+.text-line {
+  background-color: #e0e0e0;
+  height: 8px;
+}
+
+/* --- Right Column --- */
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feedback-card,
+.realtime-card {
+  flex: 1;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+  .header-right span {
+    display: none; /* Hide name on mobile */
+  }
+}

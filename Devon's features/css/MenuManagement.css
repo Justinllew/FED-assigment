@@ -1,0 +1,231 @@
+:root {
+  --primary-green: #68a357;
+  --bg-cream: #f9f7e8;
+  --bg-light-green: #e9f2e6; /* Container background */
+  --text-dark: #1a1a1a;
+  --text-muted: #9e9e9e;
+  --white: #ffffff;
+  --border-light: #e0e0e0;
+  --badge-bg: #dbead5; /* Light green for "Available" badge */
+}
+
+/* --- Reset & Base --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--white); /* Wireframe shows white outer bg */
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+/* --- Header --- */
+header {
+  background-color: var(--white);
+  padding: 15px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+}
+
+.cart-btn {
+  background-color: #f0f0f0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Main Content Area --- */
+main {
+  padding: 20px 5%;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- The "Grey" Container (Now Light Green) --- */
+.menu-container {
+  background-color: var(--bg-light-green);
+  width: 100%;
+  max-width: 900px; /* Constrain width like image */
+  border-radius: 30px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+/* --- Categories Row --- */
+.categories-row {
+  display: flex;
+  justify-content: space-between; /* Spread evenly */
+  margin-bottom: 30px;
+  padding: 0 20px;
+  overflow-x: auto; /* Scroll on mobile */
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.cat-circle {
+  width: 70px;
+  height: 70px;
+  background-color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.category-item:hover .cat-circle {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  background-color: var(--primary-green);
+  color: var(--white);
+}
+
+.cat-circle svg {
+  width: 32px;
+  height: 32px;
+  stroke-width: 1.5;
+}
+
+.cat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* --- Menu List Card --- */
+.menu-list-card {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 40px;
+  min-height: 600px; /* Tall card */
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+/* --- Item Left (Skeleton Lines) --- */
+.item-info {
+  flex: 1;
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-line {
+  height: 4px;
+  background-color: var(--text-dark); /* Dark lines as per image */
+  border-radius: 2px;
+  width: 100%;
+}
+
+.skeleton-line.short {
+  width: 60%;
+  background-color: #999; /* Slightly lighter for subtitle */
+}
+
+/* --- Item Right (Action & Price) --- */
+.item-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.status-badge {
+  background-color: var(
+    --bg-light-green
+  ); /* Using light green instead of grey */
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.status-badge:hover {
+  border-color: var(--primary-green);
+}
+
+.price {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .menu-container {
+    padding: 20px;
+  }
+  .menu-list-card {
+    padding: 20px;
+  }
+  .header-right span {
+    display: none;
+  }
+}
