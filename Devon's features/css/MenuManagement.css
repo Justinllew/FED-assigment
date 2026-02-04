@@ -15,6 +15,8 @@
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
 body {
@@ -55,16 +57,6 @@ header {
   font-weight: 500;
 }
 
-.icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-dark);
-}
-
 .cart-btn {
   background-color: #f0f0f0;
   width: 40px;
@@ -100,7 +92,6 @@ main {
   padding: 0 20px;
   overflow-x: auto; /* Scroll on mobile */
 }
-
 .category-item {
   display: flex;
   flex-direction: column;
@@ -108,9 +99,11 @@ main {
   gap: 10px;
   cursor: pointer;
   min-width: 80px;
+  height: 110px;
+  padding-top: 5px;
 }
 
-.cat-circle {
+.circle {
   width: 70px;
   height: 70px;
   background-color: var(--white);
@@ -123,24 +116,17 @@ main {
     transform 0.2s,
     box-shadow 0.2s;
 }
+.text-label {
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: none;
+}
 
-.category-item:hover .cat-circle {
-  transform: translateY(-3px);
+.category-item:hover .circle {
+  transform: translateY(-4px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
   background-color: var(--primary-green);
   color: var(--white);
-}
-
-.cat-circle svg {
-  width: 32px;
-  height: 32px;
-  stroke-width: 1.5;
-}
-
-.cat-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-dark);
 }
 
 /* --- Menu List Card --- */
@@ -228,4 +214,49 @@ main {
   .header-right span {
     display: none;
   }
+}
+
+/* current footer */
+.base-footer {
+  background-color: var(--bg-light-green);
+  width: 100%;
+  height: 270px;
+  margin-bottom: 0;
+  padding: 70px 0;
+  box-sizing: border-box;
+}
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+}
+.footer-container ul {
+  list-style: none;
+}
+.footer-container li {
+  margin: 10px 0px;
+}
+.footer-container li a {
+  text-decoration: none;
+  font-size: 16px;
+}
+.footer-col {
+  width: 16.67%;
+  padding: 0 15px;
+}
+
+.signature {
+  height: 67px;
+  background: #faf8f5;
+  margin: 0;
+  padding: 23px 10px;
+  display: flex;
+  justify-content: right;
+}
+.signature p {
+  color: #1a1a1a;
 }
