@@ -64,6 +64,10 @@ header {
   align-items: center;
   justify-content: center;
 }
+.icon-btn :hover {
+  transform: translateY(-3px);
+  box-shadow: #1a1a1a;
+}
 
 .cart-icon-wrapper {
   background-color: #f0f0f0;
