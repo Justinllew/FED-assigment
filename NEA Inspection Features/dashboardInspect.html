@@ -2,69 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Regulatory Compliance Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="dashboardInpect.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
   </head>
+
   <body>
-    <div class="container">
-      <header class="top-bar">
-        <div class="title-box">
-          <div class="menu-icon">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-          </div>
-          <h1>Regulatory Compliance DashBoard</h1>
-        </div>
+    <!-- Header -->
+    <header>
+      <span>Regulatory Compliance DashBoard</span>
+      <button>Schedule Inspection</button>
+    </header>
 
-        <button class="btn-schedule">
-          <div class="icon-plus">+</div>
-          <span>Schedule Inspection</span>
-        </button>
-      </header>
+    <!-- Main Content -->
+    <main>
+      <h2>Pending Inspection</h2>
 
-      <main class="main-card">
-        <h2>Pending Inspection</h2>
+      <table>
+        <tr>
+          <th>Stall Name</th>
+          <th>Date</th>
+          <th>Hygiene<br />Score</th>
+          <th>Current<br />Hygiene Grade</th>
+        </tr>
 
-        <div class="table-card">
-          <table>
-            <thead>
-              <tr>
-                <th>Stall Name</th>
-                <th>Date</th>
-                <th>Hygiene<br />Score</th>
-                <th>Current<br />Hygiene Grade</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="stall-name">Clementi Fish Soup</td>
-                <td>14/5/2026</td>
-                <td>100</td>
-                <td class="grade-cell">
-                  <span class="grade-circle grade-a">A</span>
-                  <button class="btn-see">See</button>
-                </td>
-              </tr>
+        <tr>
+          <td>Clementi Fish Soup</td>
+          <td>14/5/2026</td>
+          <td>100</td>
+          <td>
+            <span class="grade">A</span>
+            <button>See</button>
+          </td>
+        </tr>
 
-              <tr>
-                <td class="stall-name">Clementi Chicken Rice</td>
-                <td>14/5/2026</td>
-                <td>75</td>
-                <td class="grade-cell">
-                  <span class="grade-circle grade-b">B</span>
-                  <button class="btn-see">See</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </main>
-    </div>
+        <tr>
+          <td>Clementi Chicken Rice</td>
+          <td>14/5/2026</td>
+          <td>75</td>
+          <td>
+            <span class="grade">B</span>
+            <button>See</button>
+          </td>
+        </tr>
+      </table>
+    </main>
   </body>
 </html>
