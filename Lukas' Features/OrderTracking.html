@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Tracking Dashboard</title>
+    <!-- Tailwind CSS for utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="OrderTracking.css" />
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-4 lg:p-8">
+    <!-- Main Dashboard Container -->
+    <div
+      class="w-full max-w-[1400px] bg-[#F9F7E8] rounded-[40px] shadow-2xl overflow-hidden relative animate-slide-up min-h-[900px] flex flex-col"
+    >
+      <!-- Header / Top Bar -->
+      <div
+        class="w-full h-24 flex justify-end items-center px-10 py-6 space-x-4"
+      >
+        <div
+          class="flex items-center gap-3 bg-white/50 px-4 py-2 rounded-full border border-gray-200 cursor-pointer hover:bg-white transition-colors"
+        >
+          <div class="w-10 h-10 rounded-full bg-gray-300 overflow-hidden">
+            <img
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+              alt="User"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <span class="text-xl font-medium text-gray-800">Vendor Name</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="flex-1 px-8 pb-8 lg:px-16 flex flex-col gap-8">
+        <!-- Transaction Header Card -->
+        <div
+          class="w-full bg-[#C7E5B5] rounded-[20px] border border-black p-8 flex items-center gap-6 shadow-sm relative overflow-hidden group"
+        >
+          <div
+            class="absolute -right-10 -top-10 w-64 h-64 bg-white/20 rounded-full blur-3xl group-hover:bg-white/30 transition-all duration-700"
+          ></div>
+
+          <div
+            class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-md z-10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8 text-[#5E9D4B]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+          </div>
+          <div class="z-10">
+            <h1 class="text-4xl font-bold text-black tracking-tight">
+              Transaction
+            </h1>
+            <div class="flex items-center gap-2 mt-1">
+              <span
+                class="text-sm font-semibold text-[#284B1E] bg-[#5E9D4B]/20 px-2 py-0.5 rounded"
+                >LIVE</span
+              >
+              <span class="text-black/60 text-sm">System Active</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Details -->
+        <div class="space-y-2">
+          <div class="flex items-baseline gap-4">
+            <h2 class="text-3xl font-extrabold text-black">
+              Order ID: <span class="text-[#5E9D4B]">TX12XX34XX</span>
+            </h2>
+            <div
+              class="flex items-center gap-2 bg-green-100 px-3 py-1 rounded-full"
+            >
+              <div
+                class="w-2.5 h-2.5 bg-[#5E9D4B] rounded-full status-dot"
+              ></div>
+              <span class="text-sm font-medium text-[#284B1E]"
+                >With courier en route</span
+              >
+            </div>
+          </div>
+          <p class="text-gray-600 text-lg max-w-2xl">
+            Lets boost your sales with powerful insights and efficient
+            strategies today. Track your package in real-time.
+          </p>
+        </div>
+
+        <!-- Main Tracking Interface -->
+        <div
+          class="bg-white rounded-[20px] border border-black p-8 flex-1 flex flex-col shadow-lg relative"
+        >
+          <!-- Progress Steps Container -->
+          <div class="relative mb-12">
+            <div
+              class="hidden lg:block absolute top-[37px] left-[10%] right-[10%] h-1 bg-gray-200 -z-0 rounded-full"
+            ></div>
+
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10"
+              id="steps-container"
+            >
+              <!-- Steps injected by JS -->
+            </div>
+          </div>
+
+          <!-- Detailed Information View -->
+          <div
+            class="flex-1 border border-[#6F6F6F] rounded-lg p-8 bg-gray-50/50 relative overflow-hidden transition-all duration-500"
+            id="detail-view"
+          >
+            <!-- Dynamic Header -->
+            <div
+              class="flex justify-between items-start mb-8 border-b border-gray-200 pb-4"
+            >
+              <div>
+                <h3 class="text-2xl font-bold text-gray-800" id="detail-title">
+                  Select a Stage
+                </h3>
+                <p class="text-gray-500" id="detail-subtitle">
+                  Click on a step above to view details
+                </p>
+              </div>
+              <div class="text-right">
+                <div
+                  class="text-sm text-gray-400 uppercase tracking-wider font-semibold"
+                >
+                  Last Updated
+                </div>
+                <div
+                  class="text-lg font-mono text-gray-700"
+                  id="detail-timestamp"
+                >
+                  --:--:--
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 h-full">
+              <!-- Left: Contextual Data -->
+              <div class="space-y-6" id="detail-content-left">
+                <!-- Injected via JS -->
+              </div>
+
+              <!-- Right: Visual/Map Representation -->
+              <div
+                class="relative h-64 lg:h-auto bg-white rounded-xl border border-gray-200 shadow-inner overflow-hidden group"
+                id="detail-visual-container"
+              >
+                <!-- Visual content injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Shipping Addresses -->
+          <div
+            class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-gray-200 pt-8"
+          >
+            <div class="relative pl-6 border-l-4 border-[#5E9D4B]">
+              <h4 class="text-lg font-semibold text-gray-900 mb-2">
+                Shipping Address (Seller)
+              </h4>
+              <p class="text-gray-600 leading-relaxed">
+                <span class="font-bold text-black block text-lg"
+                  >James Tan</span
+                >
+                1 Clementi Road<br />
+                Block 100 Level 5<br />
+                Singapore, 123123<br />
+                Singapore
+              </p>
+            </div>
+            <!-- Buyer -->
+            <div class="relative pl-6 border-l-4 border-blue-400">
+              <h4 class="text-lg font-semibold text-gray-900 mb-2">
+                Shipping Address (Buyer)
+              </h4>
+              <p class="text-gray-600 leading-relaxed">
+                <span class="font-bold text-black block text-lg"
+                  >Terry Lee</span
+                >
+                15 Crowhurst Drive<br />
+                (Serangoon Gardens)<br />
+                Singapore, 550100<br />
+                Singapore
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="OrderTracking.js"></script>
+  </body>
+</html>
