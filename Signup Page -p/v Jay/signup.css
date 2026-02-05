@@ -1,0 +1,206 @@
+/* --- RESET & VARIABLES --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --bg-cream: #fdfbf0;
+  --text-black: #111111;
+  --white: #ffffff;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden; /* Prevents scrolling on full screen */
+}
+
+.split-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+/* --- LEFT PANEL (IMAGE) --- */
+.left-panel-image {
+  flex: 1;
+  /* REPLACE THE URL BELOW WITH YOUR OWN IMAGE FILE */
+  background-image: url("https://expatliving.sg/cox-maxwellfc-6-binary-34079-1472024154-jpg/");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* Pushes text to bottom */
+  padding: 60px;
+}
+
+/* Dark overlay to make text readable */
+.left-panel-image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.overlay-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  max-width: 500px;
+}
+
+.asterisk {
+  font-size: 6rem;
+  line-height: 0.5;
+  font-weight: 300;
+  margin-bottom: 20px;
+  margin-left: -10px; /* Slight optical adjustment */
+}
+
+.overlay-content h1 {
+  font-size: 3.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.image-caption {
+  font-size: 1rem;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+/* --- RIGHT PANEL (FORM) --- */
+.right-panel-form {
+  flex: 1;
+  background-color: var(--bg-cream);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.app-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-black);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-black);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+#signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- FORM INPUTS --- */
+.input-field {
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--white);
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); /* Very subtle shadow */
+}
+
+.input-field::placeholder {
+  color: #aaa;
+  font-weight: 500;
+}
+
+/* Custom Select Dropdown Styling */
+.input-group {
+  position: relative;
+}
+
+.select-field {
+  appearance: none; /* Removes default browser arrow */
+  -webkit-appearance: none;
+  cursor: pointer;
+  color: #555; /* Default text color */
+}
+
+.select-field:invalid {
+  color: #aaa; /* Matches placeholder color if nothing selected */
+}
+
+.chevron-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  pointer-events: none; /* Allows click to pass through to the select */
+  fill: #aaa;
+}
+
+/* --- BUTTON --- */
+.btn-black {
+  width: 100%;
+  padding: 16px;
+  background-color: black;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.2s;
+}
+
+.btn-black:hover {
+  background-color: #333;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 900px) {
+  .split-container {
+    flex-direction: column;
+  }
+
+  body {
+    overflow: auto;
+  }
+
+  .left-panel-image {
+    min-height: 300px;
+    padding: 40px;
+  }
+
+  .right-panel-form {
+    padding: 40px 20px;
+  }
+
+  .overlay-content h1 {
+    font-size: 2.5rem;
+  }
+}

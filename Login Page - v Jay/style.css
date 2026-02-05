@@ -1,0 +1,163 @@
+/* --- RESET & VARIABLES --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-cream: #fdfbf0; /* The light cream background */
+  --bg-light-green: #e9f3e5; /* The light green background */
+  --btn-green: #8dbf84; /* The button color */
+  --text-black: #111111;
+  --text-grey: #666666;
+  --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-black);
+  height: 100vh;
+}
+
+/* --- SPLIT LAYOUT --- */
+.split-container {
+  display: flex;
+  height: 100%;
+}
+
+.left-panel,
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+}
+
+.left-panel {
+  background-color: var(--bg-light-green);
+  align-items: flex-start; /* Align text to the left */
+}
+
+.right-panel {
+  background-color: var(--bg-cream);
+  align-items: center; /* Center content horizontally */
+}
+
+/* --- TYPOGRAPHY --- */
+h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  color: var(--text-grey);
+}
+
+.tagline {
+  color: var(--text-grey);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.emoji {
+  font-size: 3rem;
+}
+
+/* --- BUTTONS --- */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.btn-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background-color: var(--btn-green);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-radius: 50px; /* Makes them pill-shaped */
+  cursor: pointer;
+  text-decoration: none; /* For links styled as buttons */
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.btn-large:hover {
+  background-color: #7aa872; /* Slightly darker on hover */
+}
+
+.btn-icon {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+
+/* --- FORM ELEMENTS --- */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 350px;
+}
+
+.input-field {
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.input-field::placeholder {
+  color: #aaa;
+}
+
+/* --- LINKS --- */
+.signup-link {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: var(--text-grey);
+}
+
+.signup-link a {
+  color: var(--text-black);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+  .split-container {
+    flex-direction: column;
+  }
+  .left-panel,
+  .right-panel {
+    padding: 40px 20px;
+    align-items: center; /* Center everything on mobile */
+    text-align: center;
+  }
+  .left-panel {
+    flex: 0 0 auto; /* Let the left panel take its natural height */
+  }
+}
