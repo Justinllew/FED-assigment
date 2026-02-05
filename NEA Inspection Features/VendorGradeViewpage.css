@@ -1,0 +1,139 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: white;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+}
+
+.top-bar .left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 20px;
+}
+
+.top-bar .right {
+  font-size: 18px;
+}
+
+.app-name {
+  font-weight: 500;
+}
+
+/* ===== PAGE TITLE ===== */
+.page-title {
+  display: inline-block;
+  margin: 40px;
+  padding: 16px 40px;
+  background-color: #feffc1;
+  border-radius: 25px;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+/* ===== BIG GRADE SECTION (UPDATED ONLY HERE) ===== */
+.grade-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 65vh;
+}
+
+.grade-card {
+  width: 88%;
+  max-width: 1100px;
+  height: 480px;
+
+  background-color: white;
+  border-radius: 90px;
+
+  /* Thick border like your photo */
+  border: 40px solid #b02a1a;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.grade-circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+}
+
+.grade-label {
+  font-size: 22px;
+  margin-bottom: 10px;
+  align-self: flex-start;
+  margin-left: 55px;
+}
+
+.grade-letter {
+  font-size: 130px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.award-date {
+  margin-top: 36px;
+  font-size: 20px;
+}
+
+/* Grade colours */
+.grade-a {
+  background-color: #b02a1a;
+}
+
+.grade-b {
+  background-color: #7ce53a;
+}
+
+/* ===== PAST GRADES ===== */
+.past-grades {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.past-title {
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.grade-pills {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.pill {
+  padding: 10px 22px;
+  border-radius: 20px;
+  border: none;
+  background-color: #e0e0e0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pill.active {
+  background-color: #7ce53a;
+}
