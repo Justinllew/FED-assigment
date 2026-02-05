@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Inject Experimental Styles for Animations
-  // We inject this via JS so you can keep your CSS file clean during testing
+  // This allows us to add animation styles dynamically without editing your main CSS file yet.
   const style = document.createElement("style");
   style.innerHTML = `
         /* Ripple Effect Styles */
@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
             transform: scale(0);
             animation: ripple 600ms linear;
             background-color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
         }
 
         @keyframes ripple {
@@ -49,17 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // A. Create Ripple Effect
       createRipple(e, this);
 
-      // B. Determine Role
-      // We use textContent to get "Vendor" or "Patron" ignoring the SVG
+      // B. Determine Role (Vendor or Patron)
       const role = this.textContent.trim();
       console.log(`Role Selected: ${role}`);
 
-      // C. Trigger Transition & Redirect Simulation
+      // C. Trigger Transition & "Redirect"
       handleSelection(role);
     });
   });
 
-  // Helper: Ripple Effect Logic
+  // --- Helper Function: Ripple Effect ---
   function createRipple(event, button) {
     const circle = document.createElement("span");
     const diameter = Math.max(button.clientWidth, button.clientHeight);
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     circle.style.top = `${event.clientY - rect.top - radius}px`;
     circle.classList.add("ripple");
 
-    // Remove the ripple element after animation finishes to prevent DOM clutter
+    // Remove the ripple element after animation finishes
     const ripple = button.getElementsByClassName("ripple")[0];
     if (ripple) {
       ripple.remove();
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     button.appendChild(circle);
   }
 
-  // Helper: Handle Page Transition
+  // --- Helper Function: Handle Transition & Storage ---
   function handleSelection(role) {
     // Disable buttons to prevent double clicking
     buttons.forEach((b) => (b.style.pointerEvents = "none"));
@@ -90,23 +90,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // Staggered fade out effect
     container.classList.add("fade-out");
 
+    // Fade out the left panel slightly later for a cool visual effect
     setTimeout(() => {
-      brandBlock.classList.add("fade-out-fast");
+      if (brandBlock) brandBlock.classList.add("fade-out-fast");
     }, 200);
 
-    // Simulate Navigation after animation
+    // Simulate Navigation after animation completes
     setTimeout(() => {
-      // logic to save role for the next page
+      // Save the selected role to LocalStorage so the next page knows who logged in
       localStorage.setItem("currentUserRole", role);
 
-      // Redirect based on role
-      if (role === "Vendor") {
-        // window.location.href = 'vendor-dashboard.html';
-        alert("Redirecting to Vendor Dashboard...");
-      } else {
-        // window.location.href = 'patron-home.html';
-        alert("Redirecting to Patron Home...");
-      }
+      // For now, we alert the user. In a real app, you would uncomment the redirect lines.
+      alert(`Redirecting to ${role} Dashboard...`);
+
+      // Example Redirect Logic:
+      // if (role === 'Vendor') {
+      //    window.location.href = 'vendor-dashboard.html';
+      // } else {
+      //    window.location.href = 'patron-home.html';
+      // }
     }, 800);
   }
 });
