@@ -2,43 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Schedule An Inspection</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schedule Inspection</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="AddInspection.css" />
   </head>
-
   <body>
-    <!-- Page Title -->
-    <header>
-      <span>Schedule An Inspection</span>
+    <header class="top-bar">
+        ☰ <span class="app-name">Regulatory Compliance Dashboard</span>
+      </nav>
     </header>
 
-    <!-- Form Section -->
-    <main>
-      <div class="form-container">
-        <form>
-          <div class="form-row">
-            <label>Hawker Centre:</label>
-            <select>
-              <option>Select</option>
-              <option>Clementi Hawker Centre</option>
-              <option>Jurong East Hawker Centre</option>
+
+    <main class="page-wrapper">
+      <h1 class="page-title">Schedule Inspection</h1>
+
+      <section class="form-container" aria-labelledby="schedule-form">
+        <form class="inspection-form" id="schedule-form">
+          <div class="form-group">
+            <label for="centre">Hawker Centre</label>
+            <select id="centre">
+              <option value="">Select hawker centre</option>
+              <option>Clementi 448 Market</option>
+              <option>Chinatown Complex</option>
+              <option>Tiong Bahru Market</option>
             </select>
           </div>
 
-          <div class="form-row">
-            <label>Hawker Stall Name:</label>
-            <input type="text" />
+          <div class="form-group">
+            <label for="stall">Stall Name</label>
+            <input id="stall" type="text" placeholder="Enter stall name" />
           </div>
 
-          <div class="form-row">
-            <label>Date:</label>
-            <input type="date" />
+          <div class="form-group">
+            <label for="date">Inspection Date</label>
+            <input id="date" type="date" />
           </div>
 
-          <button type="submit">Confirm</button>
+          <div class="form-group">
+            <label for="inspector">Inspector</label>
+            <input id="inspector" type="text" placeholder="Inspector name" />
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Additional Notes</label>
+            <textarea id="notes" placeholder="Optional comments"></textarea>
+          </div>
+
+          <button class="submit-btn" type="submit">Schedule Inspection</button>
         </form>
-      </div>
+      </section>
     </main>
   </body>
 </html>

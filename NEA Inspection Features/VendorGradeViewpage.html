@@ -2,44 +2,69 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Public Hygiene Grade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grade View</title>
     <link rel="stylesheet" href="VendorGradeViewpage.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header class="top-bar">
-      <div class="left">
-        ☰
-        <span class="app-name">App name</span>
-      </div>
-      <div class="right">👤 Vendor Name ▾</div>
+      ☰ <span class="app-name">Regulatory Compliance Dashboard</span>
     </header>
 
-    <main>
-      <h1 class="page-title">Public Hygiene Grade</h1>
+    <main class="page-wrapper">
+      <h1 class="page-title">Grade Overview</h1>
+      <div class="grade-box current-grade">
+        <div class="grade-circle">
+          <span class="grade-label">Grade</span>
+          <span class="grade-letter" id="currentGrade">A</span>
+        </div>
+      </div>
 
-      <!-- BIG GRADE DISPLAY (ONLY THIS WAS VISUALLY CHANGED) -->
-      <section class="grade-section">
-        <div class="grade-card">
-          <div class="grade-circle grade-a" id="gradeCircle">
-            <span class="grade-label">Grade:</span>
-            <span class="grade-letter" id="gradeLetter">A</span>
+      <div class="grade-box previous-grades">
+        <h2>Past Inspection Results</h2>
+        <div class="prev-grade-list">
+          <div class="prev-grade">2023: B</div>
+          <div class="prev-grade">2022: A</div>
+          <div class="prev-grade">2021: C</div>
+        </div>
+      </div>
+
+      <div class="grade-box grade-legend">
+        <h2>Grading Legend</h2>
+        <div class="legend-list">
+          <div class="legend-item">
+            <span
+              class="legend-circle"
+              style="background-color: #be0808"
+            ></span>
+            Excellent
           </div>
-
-          <p class="award-date" id="awardDate">Awarded on: 5/5/2026</p>
+          <div class="legend-item">
+            <span
+              class="legend-circle"
+              style="background-color: #18ec58"
+            ></span>
+            Good
+          </div>
+          <div class="legend-item">
+            <span
+              class="legend-circle"
+              style="background-color: #a16a17"
+            ></span>
+            Average
+          </div>
         </div>
-      </section>
+      </div>
 
-      <!-- PAST GRADES -->
-      <section class="past-grades">
-        <p class="past-title">Past Hygiene Grades</p>
-
-        <div class="grade-pills">
-          <button class="pill active">2026</button>
-          <button class="pill">2025</button>
-          <button class="pill">2024</button>
-          <button class="pill">2023</button>
-        </div>
-      </section>
+      <!-- Comments Box -->
+      <div class="grade-box comments-box">
+        <h2>Additional Comments / Concerns</h2>
+        <p>No major issues found. Stall maintained good hygiene practices.</p>
+      </div>
     </main>
   </body>
 </html>

@@ -2,46 +2,59 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Inspection Result and Comments</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Inspection</title>
     <link rel="stylesheet" href="InspectionForm.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
   </head>
-
   <body>
-    <!-- Page Title -->
-    <header>
-      <span>Inspection Result and Comments</span>
-    </header>
+    <!-- ===== HEADER ===== -->
+    <div class="top-bar">
+      ☰ <span class="app-name">Regulatory Compliance Dashboard</span>
+    </div>
 
-    <!-- Form Section -->
-    <main>
-      <div class="outer-card">
-        <div class="inner-card">
-          <form>
-            <div class="form-row">
-              <label>Hygiene Score (0–100)</label>
-              <input type="number" placeholder="Score" />
+    <div class="page-wrapper">
+      <!-- ===== PAGE TITLE ===== -->
+      <div class="page-title">Inspection Results and Comments</div>
+
+      <!-- ===== FORM CONTAINER ===== -->
+      <div class="form-container">
+        <form class="inspection-form">
+          <!-- Hawker Stall Name -->
+          <div class="form-group">
+            <label for="stallName">Hawker Stall Name</label>
+            <input type="text" id="stallName" placeholder="Enter stall name" />
+          </div>
+
+          <!-- Date -->
+          <div class="form-group">
+            <label for="inspectionDate">Date</label>
+            <input type="date" id="inspectionDate" />
+          </div>
+
+          <!-- Hygiene Score -->
+          <div class="form-group">
+            <label>Hygiene Score</label>
+            <div class="score-control">
+              <button type="button" class="score-btn" id="decrease">↓</button>
+              <span class="score-value" id="scoreValue">5</span>
+              <button type="button" class="score-btn" id="increase">↑</button>
             </div>
+          </div>
 
-            <div class="form-row">
-              <label>Hawker Stall Name :</label>
-              <input type="text" placeholder="Name" />
-            </div>
+          <!-- Comments -->
+          <div class="form-group">
+            <label for="comments">Comments</label>
+            <textarea id="comments" placeholder="Enter comments"></textarea>
+          </div>
 
-            <div class="form-row">
-              <label>Date :</label>
-              <input type="date" />
-            </div>
-
-            <div class="form-row">
-              <label>Comments :</label>
-              <textarea placeholder="Add comments"></textarea>
-            </div>
-
-            <button type="submit">Submit</button>
-          </form>
-        </div>
+          <!-- Submit Button -->
+          <button type="submit" class="submit-btn">Submit Inspection</button>
+        </form>
       </div>
-    </main>
+    </div>
   </body>
 </html>
