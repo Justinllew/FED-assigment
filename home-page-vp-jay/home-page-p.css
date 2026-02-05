@@ -1,0 +1,284 @@
+/* --- Reset & Variables --- */
+:root {
+  --bg-cream: #fdfcf4;
+  --primary-green: #6c9a56;
+  --placeholder-green: #e8f0e6;
+  --text-dark: #1a1a1a;
+  --text-grey: #666;
+  --white: #ffffff;
+  --border-radius-lg: 16px;
+  --border-radius-pill: 50px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  position: relative;
+}
+
+/* --- Header --- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: var(--white);
+  position: relative;
+  z-index: 20;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* New CSS for the Heart Icon Link */
+.icon-link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.icon-btn {
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-dark); /* Ensure it stays black */
+}
+
+/* Updated Cart Btn to support Anchor tag */
+.cart-btn {
+  background-color: var(--primary-green);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  cursor: pointer;
+  text-decoration: none; /* Removes underline from link */
+}
+
+/* --- Dropdown Menu --- */
+.dropdown-menu {
+  position: absolute;
+  top: 70px;
+  right: 40px;
+  background-color: var(--placeholder-green);
+  width: 250px;
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  z-index: 30;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+}
+
+.dropdown-menu li {
+  margin-bottom: 15px;
+}
+
+.dropdown-menu a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.dropdown-menu hr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 10px 0 20px 0;
+}
+
+/* --- Overlay --- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  display: none;
+  z-index: 10;
+}
+
+.active {
+  display: block !important;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* --- Main Layout --- */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  margin-bottom: 60px;
+}
+
+.hero-content {
+  flex: 1;
+  padding-top: 40px;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 0.9rem;
+  margin-bottom: 40px;
+}
+
+/* --- Order Card --- */
+.order-card {
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  display: inline-block;
+  width: 100%;
+  max-width: 500px;
+}
+
+.delivery-toggle {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.toggle-btn {
+  border: none;
+  background: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #aaa;
+}
+
+.toggle-btn.active {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px 120px 15px 45px;
+  background-color: var(--primary-green);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  color: white;
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  font-size: 20px;
+  color: white;
+  pointer-events: none;
+}
+
+.search-btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* --- Placeholders --- */
+.hero-image-placeholder {
+  background-image: url("https://images.lifestyleasia.com/wp-content/uploads/sites/6/2020/02/03154109/hawker-food-hero-image-image-credit-visit-singapore.jpg?tr=w-1200,h-900");
+  flex: 1;
+  background-color: var(--placeholder-green);
+  height: 400px;
+  background-size: cover; /* Added to make image look better */
+  background-position: center;
+  border-radius: var(
+    --border-radius-lg
+  ); /* Rounded corners look better with img */
+}
+
+.cards-section {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.card-placeholder {
+  flex: 1;
+  height: 200px;
+  background-color: var(--placeholder-green);
+  border-radius: var(--border-radius-lg);
+}

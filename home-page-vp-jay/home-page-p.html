@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Delivery App</title>
+    <link rel="stylesheet" href="home-page-p.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  </head>
+  <body>
+    <div class="overlay" id="overlay"></div>
+
+    <header>
+      <div class="logo-section">
+        <i class="ph ph-storefront" style="font-size: 24px"></i>
+        <span class="logo-text">FreshEats</span>
+      </div>
+
+      <div class="user-actions">
+        <div class="user-menu-trigger" id="userMenuBtn">
+          <i class="ph ph-user"></i>
+          <span>User's Name</span>
+          <i class="ph ph-caret-down"></i>
+        </div>
+
+        <a href="favorites.html" class="icon-link">
+          <i class="ph ph-heart icon-btn"></i>
+        </a>
+
+        <a href="cart.html" class="cart-btn">
+          <i class="ph ph-shopping-bag"></i>
+        </a>
+      </div>
+
+      <div class="dropdown-menu" id="dropdownMenu">
+        <ul>
+          <li>
+            <a href="order-history.html"
+              ><i class="ph ph-notepad"></i> Order history</a
+            >
+          </li>
+          <li>
+            <a href="profile.html"><i class="ph ph-user"></i> Profile</a>
+          </li>
+          <li>
+            <a href="rewards.html"><i class="ph ph-trophy"></i> Rewards</a>
+          </li>
+        </ul>
+        <hr />
+        <ul>
+          <li>
+            <a href="login.html" class="logout"
+              ><i class="ph ph-sign-out"></i> Log out</a
+            >
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1>Slogan</h1>
+          <p class="tagline">
+            tagline tagline tagline tagline tagline tagline tagline tagline
+          </p>
+
+          <div class="order-card">
+            <div class="delivery-toggle">
+              <button class="toggle-btn active" id="deliveryBtn">
+                <i class="ph ph-moped"></i> Delivery
+              </button>
+              <button class="toggle-btn" id="pickupBtn">Pick up</button>
+            </div>
+
+            <div class="input-group">
+              <i class="ph ph-map-pin input-icon"></i>
+              <input
+                type="text"
+                id="locationInput"
+                placeholder="Enter your address"
+              />
+              <button class="search-btn">
+                <i class="ph ph-magnifying-glass"></i> Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-image-placeholder"></div>
+      </section>
+
+      <section class="cards-section">
+        <div class="card-placeholder"></div>
+        <div class="card-placeholder"></div>
+        <div class="card-placeholder"></div>
+      </section>
+    </main>
+
+    <script src="home-page-p.js"></script>
+  </body>
+</html>
