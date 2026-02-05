@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loyalty Programme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6;
+      }
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+      }
+
+      .nav-item.active {
+        color: #d97706; /* amber-600 */
+      }
+
+      .nav-item:hover {
+        background-color: #f3f4f6;
+      }
+
+      /* Smooth transitions */
+      .page-transition {
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card-shadow {
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.3s ease-out,
+          opacity 0.3s ease-out;
+        opacity: 0;
+      }
+
+      .faq-answer.open {
+        max-height: 200px;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800 h-screen flex overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside
+      class="w-64 bg-white border-r border-gray-200 flex-col hidden md:flex z-20"
+    >
+      <div class="h-16 flex items-center px-6 border-b border-gray-100">
+        <i class="fa-solid fa-utensils text-amber-600 text-xl mr-3"></i>
+        <span class="font-bold text-xl tracking-tight">App name</span>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+        <button
+          onclick="switchTab('home')"
+          id="nav-home"
+          class="nav-item active w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-gray-700"
+        >
+          <i class="fa-solid fa-house w-5 text-center"></i>
+          <span>Home</span>
+        </button>
+        <button
+          onclick="switchTab('history')"
+          id="nav-history"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-gray-600"
+        >
+          <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i>
+          <span>EatPoints History</span>
+        </button>
+        <button
+          onclick="switchTab('redeem')"
+          id="nav-redeem"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-gray-600"
+        >
+          <i class="fa-solid fa-gift w-5 text-center"></i>
+          <span>Redeem Rewards</span>
+        </button>
+        <button
+          onclick="switchTab('card')"
+          id="nav-card"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-gray-600"
+        >
+          <i class="fa-regular fa-credit-card w-5 text-center"></i>
+          <span>My Card</span>
+        </button>
+        <button
+          onclick="switchTab('faq')"
+          id="nav-faq"
+          class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-gray-600"
+        >
+          <i class="fa-regular fa-circle-question w-5 text-center"></i>
+          <span>FAQ</span>
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-gray-100">
+        <div class="flex items-center space-x-3 px-4 py-2">
+          <img
+            src="https://ui-avatars.com/api/?name=Guest+User&background=random"
+            alt="User"
+            class="w-8 h-8 rounded-full"
+          />
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900 truncate">Guest User</p>
+            <p class="text-xs text-gray-500 truncate">Gold Member</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+      <!-- Mobile Header -->
+      <header
+        class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 z-10 md:hidden"
+      >
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-utensils text-amber-600 text-lg"></i>
+          <span class="font-bold text-lg">App name</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <i class="fa-regular fa-heart text-gray-600 text-lg"></i>
+          <i class="fa-solid fa-bag-shopping text-gray-600 text-lg"></i>
+        </div>
+      </header>
+
+      <!-- Desktop Header -->
+      <header
+        class="h-20 bg-white/50 backdrop-blur-md border-b border-gray-200/60 flex items-center justify-between px-8 hidden md:flex sticky top-0 z-10"
+      >
+        <h2 id="page-title" class="text-2xl font-bold text-gray-800">Home</h2>
+        <div class="flex items-center space-x-6">
+          <div
+            class="flex items-center space-x-2 cursor-pointer hover:bg-white px-3 py-2 rounded-lg transition"
+          >
+            <i class="fa-regular fa-user text-gray-600"></i>
+            <span class="font-medium text-gray-700">Guest's Name</span>
+            <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+          </div>
+          <div class="w-px h-6 bg-gray-300"></div>
+          <i
+            class="fa-regular fa-heart text-gray-600 text-xl cursor-pointer hover:text-amber-600 transition"
+          ></i>
+          <div class="relative cursor-pointer group">
+            <i
+              class="fa-solid fa-bag-shopping text-gray-600 text-xl group-hover:text-amber-600 transition"
+            ></i>
+            <span
+              class="absolute -top-1 -right-1 bg-amber-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+              >2</span
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div
+        id="content-area"
+        class="flex-1 overflow-y-auto p-4 md:p-8 bg-[#FDFCF7]"
+      >
+        <!-- VIEW 1: HOME / LOYALTY DASHBOARD -->
+        <div id="view-home" class="page-transition max-w-6xl mx-auto space-y-6">
+          <!-- Top Section -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left: Profile Card -->
+            <div
+              class="lg:col-span-4 bg-white rounded-3xl p-8 shadow-sm flex flex-col items-center justify-center text-center card-shadow"
+            >
+              <div
+                class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400"
+              >
+                <i class="fa-solid fa-user text-4xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900">Guest Name</h3>
+              <p class="text-amber-600 font-semibold mb-6">Gold Member</p>
+
+              <div
+                class="bg-gray-50 rounded-2xl px-6 py-4 w-full flex items-center justify-center space-x-3"
+              >
+                <div
+                  class="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center text-amber-600"
+                >
+                  <i class="fa-solid fa-coins"></i>
+                </div>
+                <div class="text-left">
+                  <p
+                    class="text-xs text-gray-500 uppercase tracking-wider font-semibold"
+                  >
+                    Balance
+                  </p>
+                  <p class="text-2xl font-bold text-gray-900">200.73</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Quick Actions -->
+            <div class="lg:col-span-8 flex flex-col gap-6">
+              <div
+                class="bg-white rounded-3xl p-8 shadow-sm card-shadow flex-1 flex flex-col justify-center cursor-pointer hover:shadow-md transition"
+                onclick="switchTab('history')"
+              >
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                      EatPoints History
+                    </h3>
+                    <p class="text-gray-500">
+                      View your latest EatPoints earnings and redemptions.
+                    </p>
+                  </div>
+                  <div
+                    class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400"
+                  >
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-3xl p-8 shadow-sm card-shadow flex-1 flex flex-col justify-center cursor-pointer hover:shadow-md transition"
+                onclick="switchTab('card')"
+              >
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                      View Cards
+                    </h3>
+                    <p class="text-gray-500">
+                      Check your linked payment methods and recent transactions.
+                    </p>
+                  </div>
+                  <div
+                    class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400"
+                  >
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex gap-4">
+                <button
+                  onclick="switchTab('faq')"
+                  class="flex-1 bg-white rounded-2xl py-4 shadow-sm text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
+                >
+                  FAQ
+                </button>
+                <button
+                  onclick="switchTab('redeem')"
+                  class="flex-1 bg-amber-500 text-white rounded-2xl py-4 shadow-md shadow-amber-200 text-sm font-semibold hover:bg-amber-600 transition"
+                >
+                  View Benefits
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 2: REDEEM (Screenshot 2 Replica) -->
+        <div id="view-redeem" class="page-transition max-w-6xl mx-auto hidden">
+          <!-- User Snippet (Mobile style context) -->
+          <div
+            class="bg-white rounded-2xl p-4 flex items-center justify-between mb-6 shadow-sm max-w-md"
+          >
+            <div class="flex items-center space-x-3">
+              <div class="text-left">
+                <p class="text-xs text-gray-500">Guest Name</p>
+                <p class="text-xs font-bold text-amber-600">Gold Member</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-coins text-amber-500"></i>
+              <span class="font-bold text-gray-900">200.73</span>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold mb-4 text-gray-800">Redeem Rewards</h3>
+
+          <!-- Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Item 1 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <!-- Placeholder for food image -->
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-burger text-4xl opacity-20"></i>
+                </div>
+                <div
+                  class="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-sm"
+                >
+                  Hot
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase"
+                    >restaurant</span
+                  >
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 123
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  Free Burger
+                </h4>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-mug-hot text-4xl opacity-20"></i>
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase">cafe</span>
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 50
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  Latte Voucher
+                </h4>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-ice-cream text-4xl opacity-20"></i>
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase"
+                    >dessert</span
+                  >
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 80
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  Ice Cream Scoop
+                </h4>
+              </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-pizza-slice text-4xl opacity-20"></i>
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase"
+                    >pizzeria</span
+                  >
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 150
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  Margherita Slice
+                </h4>
+              </div>
+            </div>
+            <!-- Item 5 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-wine-glass text-4xl opacity-20"></i>
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase">bar</span>
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 200
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  House Wine
+                </h4>
+              </div>
+            </div>
+            <!-- Item 6 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-bread-slice text-4xl opacity-20"></i>
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase"
+                    >bakery</span
+                  >
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 45
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  Croissant
+                </h4>
+              </div>
+            </div>
+            <!-- Item 7 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-bowl-rice text-4xl opacity-20"></i>
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase">asian</span>
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 180
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  Ramen Bowl
+                </h4>
+              </div>
+            </div>
+            <!-- Item 8 -->
+            <div
+              class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group"
+            >
+              <div class="aspect-square bg-gray-200 relative">
+                <div
+                  class="absolute inset-0 flex items-center justify-center text-gray-400"
+                >
+                  <i class="fa-solid fa-cookie text-4xl opacity-20"></i>
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] text-gray-500 uppercase">snack</span>
+                  <div
+                    class="flex items-center text-[10px] text-amber-600 font-bold bg-amber-50 px-1.5 py-0.5 rounded"
+                  >
+                    <i class="fa-solid fa-ticket mr-1"></i> 30
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-gray-900 text-sm group-hover:text-amber-600 transition"
+                >
+                  Choco Cookie
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 3: CARD & TRANSACTIONS -->
+        <div id="view-card" class="page-transition max-w-4xl mx-auto hidden">
+          <div class="bg-white rounded-3xl shadow-lg overflow-hidden mb-8">
+            <!-- Card Visual -->
+            <div
+              class="bg-gradient-to-br from-gray-800 to-black p-8 text-white relative overflow-hidden"
+            >
+              <!-- Abstract Circles -->
+              <div
+                class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-5"
+              ></div>
+              <div
+                class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 rounded-full bg-white opacity-5"
+              ></div>
+
+              <div class="relative z-10">
+                <div class="flex justify-between items-start mb-12">
+                  <div class="text-2xl font-bold italic">VISA</div>
+                  <i class="fa-solid fa-wifi rotate-90 text-xl opacity-80"></i>
+                </div>
+
+                <div class="mb-8">
+                  <div
+                    class="flex space-x-4 text-2xl font-mono tracking-widest mb-2"
+                  >
+                    <span>••••</span>
+                    <span>••••</span>
+                    <span>••••</span>
+                    <span>4289</span>
+                  </div>
+                  <div class="flex justify-between items-end">
+                    <div>
+                      <div class="text-xs text-gray-400 uppercase mb-1">
+                        Card Holder
+                      </div>
+                      <div class="font-medium tracking-wide">GUEST USER</div>
+                    </div>
+                    <div>
+                      <div class="text-xs text-gray-400 uppercase mb-1">
+                        Expires
+                      </div>
+                      <div class="font-medium tracking-wide">12/26</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Actions -->
+            <div
+              class="p-6 bg-gray-50 border-b border-gray-100 flex justify-between items-center"
+            >
+              <div>
+                <h3 class="font-bold text-gray-900">Main Card</h3>
+                <p class="text-sm text-gray-500">Visa ending in 4289</p>
+              </div>
+              <div class="flex space-x-3">
+                <button
+                  class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+                >
+                  Edit
+                </button>
+                <button
+                  class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions -->
+          <h3 class="text-lg font-bold text-gray-800 mb-4">
+            Recent Transactions
+          </h3>
+          <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
+            <div class="divide-y divide-gray-100">
+              <!-- Item 1 -->
+              <div
+                class="p-4 flex items-center justify-between hover:bg-gray-50 transition"
+              >
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600"
+                  >
+                    <i class="fa-solid fa-utensils"></i>
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900">
+                      Gourmet Burger Kitchen
+                    </p>
+                    <p class="text-xs text-gray-500">Today, 12:42 PM</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-bold text-gray-900">-$24.50</p>
+                  <p class="text-xs text-green-600 font-medium">+24 pts</p>
+                </div>
+              </div>
+              <!-- Item 2 -->
+              <div
+                class="p-4 flex items-center justify-between hover:bg-gray-50 transition"
+              >
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600"
+                  >
+                    <i class="fa-solid fa-film"></i>
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900">Cinema World</p>
+                    <p class="text-xs text-gray-500">Yesterday, 8:15 PM</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-bold text-gray-900">-$15.00</p>
+                  <p class="text-xs text-green-600 font-medium">+15 pts</p>
+                </div>
+              </div>
+              <!-- Item 3 -->
+              <div
+                class="p-4 flex items-center justify-between hover:bg-gray-50 transition"
+              >
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600"
+                  >
+                    <i class="fa-solid fa-martini-glass"></i>
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900">The Blue Bar</p>
+                    <p class="text-xs text-gray-500">Feb 3, 10:30 PM</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-bold text-gray-900">-$45.20</p>
+                  <p class="text-xs text-green-600 font-medium">+45 pts</p>
+                </div>
+              </div>
+              <!-- Item 4 -->
+              <div
+                class="p-4 flex items-center justify-between hover:bg-gray-50 transition"
+              >
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600"
+                  >
+                    <i class="fa-solid fa-basket-shopping"></i>
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900">SuperMart Grocery</p>
+                    <p class="text-xs text-gray-500">Feb 2, 4:00 PM</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p class="font-bold text-gray-900">-$112.80</p>
+                  <p class="text-xs text-green-600 font-medium">+112 pts</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 text-center">
+              <button
+                class="text-sm text-amber-600 font-medium hover:underline"
+              >
+                View All Transactions
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 4: FAQ -->
+        <div id="view-faq" class="page-transition max-w-3xl mx-auto hidden">
+          <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+              How can we help?
+            </h2>
+            <p class="text-gray-500">
+              Find answers to frequently asked questions about our loyalty
+              programme.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+              <button
+                onclick="toggleFaq(this)"
+                class="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+              >
+                <span class="font-bold text-gray-800"
+                  >How do I earn EatPoints?</span
+                >
+                <i
+                  class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"
+                ></i>
+              </button>
+              <div class="faq-answer px-6 pb-6 text-gray-600 leading-relaxed">
+                You earn EatPoints every time you make a purchase at
+                participating restaurants using your linked card or app.
+                Typically, you earn 1 point for every $1 spent. Keep an eye out
+                for double point events!
+              </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+              <button
+                onclick="toggleFaq(this)"
+                class="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+              >
+                <span class="font-bold text-gray-800"
+                  >Where can I redeem my points?</span
+                >
+                <i
+                  class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"
+                ></i>
+              </button>
+              <div class="faq-answer px-6 pb-6 text-gray-600 leading-relaxed">
+                You can redeem your points directly through the "Redeem Rewards"
+                section of the app. Rewards include discounts, free items, and
+                exclusive access to events at our partner locations.
+              </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+              <button
+                onclick="toggleFaq(this)"
+                class="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+              >
+                <span class="font-bold text-gray-800"
+                  >Do my points expire?</span
+                >
+                <i
+                  class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"
+                ></i>
+              </button>
+              <div class="faq-answer px-6 pb-6 text-gray-600 leading-relaxed">
+                EatPoints are valid for 12 months from the date they were
+                earned. We will send you a reminder email 30 days before any
+                points are due to expire.
+              </div>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+              <button
+                onclick="toggleFaq(this)"
+                class="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+              >
+                <span class="font-bold text-gray-800"
+                  >How do I add a new payment card?</span
+                >
+                <i
+                  class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"
+                ></i>
+              </button>
+              <div class="faq-answer px-6 pb-6 text-gray-600 leading-relaxed">
+                Navigate to the "My Card" section and click the "Add Card"
+                button. You can securely scan your card using your camera or
+                enter the details manually.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 5: HISTORY -->
+        <div id="view-history" class="page-transition max-w-4xl mx-auto hidden">
+          <h3 class="text-lg font-bold text-gray-800 mb-4">Points History</h3>
+          <div class="bg-white rounded-3xl shadow-sm p-6">
+            <div class="space-y-6">
+              <!-- History Item -->
+              <div class="flex items-start space-x-4">
+                <div class="min-w-[4rem] text-center pt-1">
+                  <div class="text-xs font-bold text-gray-400 uppercase">
+                    FEB
+                  </div>
+                  <div class="text-xl font-bold text-gray-900">05</div>
+                </div>
+                <div class="flex-1 pb-6 border-b border-gray-100">
+                  <div class="flex justify-between mb-1">
+                    <span class="font-bold text-gray-900">Points Earned</span>
+                    <span class="font-bold text-green-600">+24.00</span>
+                  </div>
+                  <p class="text-sm text-gray-500">
+                    Purchase at Gourmet Burger Kitchen
+                  </p>
+                </div>
+              </div>
+              <!-- History Item -->
+              <div class="flex items-start space-x-4">
+                <div class="min-w-[4rem] text-center pt-1">
+                  <div class="text-xs font-bold text-gray-400 uppercase">
+                    FEB
+                  </div>
+                  <div class="text-xl font-bold text-gray-900">04</div>
+                </div>
+                <div class="flex-1 pb-6 border-b border-gray-100">
+                  <div class="flex justify-between mb-1">
+                    <span class="font-bold text-gray-900">Points Earned</span>
+                    <span class="font-bold text-green-600">+15.00</span>
+                  </div>
+                  <p class="text-sm text-gray-500">Purchase at Cinema World</p>
+                </div>
+              </div>
+              <!-- History Item -->
+              <div class="flex items-start space-x-4">
+                <div class="min-w-[4rem] text-center pt-1">
+                  <div class="text-xs font-bold text-gray-400 uppercase">
+                    FEB
+                  </div>
+                  <div class="text-xl font-bold text-gray-900">01</div>
+                </div>
+                <div class="flex-1">
+                  <div class="flex justify-between mb-1">
+                    <span class="font-bold text-gray-900">Redemption</span>
+                    <span class="font-bold text-red-500">-50.00</span>
+                  </div>
+                  <p class="text-sm text-gray-500">
+                    Redeemed for Latte Voucher
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Nav (Visible only on small screens) -->
+    <div
+      class="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex justify-around p-3 z-30 pb-safe"
+    >
+      <button
+        onclick="switchTab('home')"
+        class="flex flex-col items-center text-gray-400 nav-mobile-item active-mobile text-amber-600"
+      >
+        <i class="fa-solid fa-house text-lg mb-1"></i>
+        <span class="text-[10px]">Home</span>
+      </button>
+      <button
+        onclick="switchTab('redeem')"
+        class="flex flex-col items-center text-gray-400 nav-mobile-item"
+      >
+        <i class="fa-solid fa-gift text-lg mb-1"></i>
+        <span class="text-[10px]">Rewards</span>
+      </button>
+      <button
+        onclick="switchTab('card')"
+        class="flex flex-col items-center text-gray-400 nav-mobile-item"
+      >
+        <i class="fa-regular fa-credit-card text-lg mb-1"></i>
+        <span class="text-[10px]">Card</span>
+      </button>
+      <button
+        onclick="switchTab('faq')"
+        class="flex flex-col items-center text-gray-400 nav-mobile-item"
+      >
+        <i class="fa-regular fa-circle-question text-lg mb-1"></i>
+        <span class="text-[10px]">FAQ</span>
+      </button>
+    </div>
+
+    <script>
+      // State Management
+      function switchTab(tabId) {
+        // Hide all views
+        const views = ["home", "history", "redeem", "card", "faq"];
+        views.forEach((v) => {
+          document.getElementById(`view-${v}`).classList.add("hidden");
+        });
+
+        // Show selected view
+        document.getElementById(`view-${tabId}`).classList.remove("hidden");
+
+        // Update Sidebar Nav
+        const navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach((item) => {
+          item.classList.remove("active", "text-gray-900", "bg-gray-50");
+          item.classList.add("text-gray-600");
+        });
+
+        const activeNav = document.getElementById(`nav-${tabId}`);
+        if (activeNav) {
+          activeNav.classList.add("active", "bg-gray-50");
+          activeNav.classList.remove("text-gray-600");
+        }
+
+        // Update Mobile Nav
+        const mobileItems = document.querySelectorAll(".nav-mobile-item");
+        mobileItems.forEach((item) => {
+          item.classList.remove("text-amber-600");
+          item.classList.add("text-gray-400");
+        });
+        // Find the button that called this (rough approximation for mobile visual sync)
+        // In a real app we'd bind IDs better, but this works for the demo
+        // Just resetting colors here, specific active logic handled by click handler visually via css classes if we wanted,
+        // but let's just rely on the fact that the user clicked the button which triggered this.
+
+        // Update Title
+        const titles = {
+          home: "Home",
+          history: "History",
+          redeem: "Redeem Rewards",
+          card: "My Card",
+          faq: "Help Center",
+        };
+        document.getElementById("page-title").innerText = titles[tabId];
+      }
+
+      // FAQ Toggle Logic
+      function toggleFaq(button) {
+        const answer = button.nextElementSibling;
+        const icon = button.querySelector(".fa-chevron-down");
+
+        // Close others
+        document.querySelectorAll(".faq-answer").forEach((a) => {
+          if (a !== answer) {
+            a.classList.remove("open");
+            a.previousElementSibling.querySelector(
+              ".fa-chevron-down",
+            ).style.transform = "rotate(0deg)";
+          }
+        });
+
+        // Toggle current
+        answer.classList.toggle("open");
+        if (answer.classList.contains("open")) {
+          icon.style.transform = "rotate(180deg)";
+        } else {
+          icon.style.transform = "rotate(0deg)";
+        }
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        switchTab("home");
+      });
+    </script>
+  </body>
+</html>
