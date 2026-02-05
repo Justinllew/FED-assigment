@@ -3,49 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <title>Regulatory Compliance Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="dashboardInpect.css" />
   </head>
-
   <body>
-    <!-- Header -->
-    <header>
-      <span>Regulatory Compliance DashBoard</span>
-      <button>Schedule Inspection</button>
+    <header class="top-bar">
+        ☰ <span class="app-name">Regulatory Compliance Dashboard</span>
+      </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-      <h2>Pending Inspection</h2>
+    <main class="dashboard-wrapper">
+      <!-- Top action pill -->
+      <section class="action-bar">
+        <button class="add-btn">+</button>
+        <span>Schedule Inspection</span>
+      </section>
 
-      <table>
-        <tr>
-          <th>Stall Name</th>
-          <th>Date</th>
-          <th>Hygiene<br />Score</th>
-          <th>Current<br />Hygiene Grade</th>
-        </tr>
+      <!-- Dashboard title -->
+      <h1 class="page-title">Pending Inspections</h1>
 
-        <tr>
-          <td>Clementi Fish Soup</td>
-          <td>14/5/2026</td>
-          <td>100</td>
-          <td>
-            <span class="grade">A</span>
-            <button>See</button>
-          </td>
-        </tr>
+      <!-- Inspection list -->
+      <section class="inspection-list">
+        <!-- Header row -->
+        <div class="inspection-row header">
+          <span>Hawker Centre</span>
+          <span>Stall Name</span>
+          <span>Inspection Date</span>
+          <span></span>
+        </div>
 
-        <tr>
-          <td>Clementi Chicken Rice</td>
-          <td>14/5/2026</td>
-          <td>75</td>
-          <td>
-            <span class="grade">B</span>
-            <button>See</button>
-          </td>
-        </tr>
-      </table>
+        <!-- Data rows -->
+        <div class="inspection-row">
+          <span>Clementi 448 Market</span>
+          <span>Ah Seng Chicken Rice</span>
+          <span>14 / 05 / 2026</span>
+          <button class="inspect-btn">Inspect</button>
+        </div>
+
+        <div class="inspection-row">
+          <span>Chinatown Complex</span>
+          <span>Old Town Fish Soup</span>
+          <span>16 / 05 / 2026</span>
+          <button class="inspect-btn">Inspect</button>
+        </div>
+      </section>
     </main>
   </body>
 </html>

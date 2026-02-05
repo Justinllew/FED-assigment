@@ -4,199 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Orders | Customer</title>
-    <style>
-      :root {
-        --primary-green: #68a357;
-        --bg-cream: #f9f7e8;
-        --bg-light-green: #e9f2e6;
-        --text-dark: #1a1a1a;
-        --white: #ffffff;
-        --gray-line: #ddd;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      }
-      body {
-        background-color: var(--bg-cream);
-        color: var(--text-dark);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      header {
-        background-color: var(--white);
-        padding: 15px 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      }
-      .header-left {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 600;
-        font-size: 1.2rem;
-      }
-      .header-right {
-        display: flex;
-        align-items: center;
-        gap: 25px;
-      }
-      .user-menu {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        font-size: 0.95rem;
-      }
-
-      main {
-        padding: 40px 5%;
-        max-width: 1000px;
-        margin: 0 auto;
-        flex: 1;
-        width: 100%;
-      }
-      h2.page-title {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 30px;
-      }
-
-      /* Toggle Switch */
-      .view-toggle {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 30px;
-      }
-      .toggle-btn {
-        padding: 10px 24px;
-        border-radius: 30px;
-        border: 2px solid transparent;
-        font-weight: 600;
-        cursor: pointer;
-        background: transparent;
-        color: var(--text-dark);
-        transition: all 0.2s;
-      }
-      .toggle-btn.active {
-        background-color: var(--primary-green);
-        color: white;
-        box-shadow: 0 4px 10px rgba(104, 163, 87, 0.3);
-      }
-
-      .dashboard-container {
-        background-color: var(--bg-light-green);
-        padding: 40px;
-        border-radius: 20px;
-        min-height: 600px;
-      }
-
-      /* Customer Order Card */
-      .track-card {
-        background: white;
-        border-radius: 16px;
-        padding: 30px;
-        margin-bottom: 30px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-      }
-
-      .track-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #f5f5f5;
-      }
-      .store-name {
-        font-size: 1.4rem;
-        font-weight: 700;
-      }
-      .order-meta {
-        color: #888;
-        font-size: 0.9rem;
-      }
-
-      /* Stepper (No Donut Chart) */
-      .stepper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 40px 0;
-        position: relative;
-      }
-      .stepper::before {
-        content: "";
-        position: absolute;
-        top: 15px;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: var(--gray-line);
-        z-index: 0;
-      }
-      .step {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        background: white;
-        padding: 0 10px;
-      }
-      .step-circle {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #eee;
-        color: #aaa;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px auto;
-        font-weight: bold;
-        border: 3px solid white;
-      }
-      .step-label {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #aaa;
-      }
-
-      /* Active Step Styling */
-      .step.active .step-circle {
-        background: var(--primary-green);
-        color: white;
-        box-shadow: 0 0 0 4px rgba(104, 163, 87, 0.2);
-      }
-      .step.active .step-label {
-        color: var(--primary-green);
-      }
-      .step.completed .step-circle {
-        background: var(--primary-green);
-        color: white;
-      }
-
-      /* Receipt Area */
-      .receipt-total {
-        border-top: 1px dashed #ccc;
-        margin-top: 10px;
-        display: flex;
-        justify-content: space-between;
-        font-weight: 700;
-        font-size: 1.1rem;
-        padding-top: 15px;
-      }
-
-      .hidden {
-        display: none;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/OrderHistory( c- lukas).css" />
   </head>
   <body>
     <header>
@@ -224,10 +32,18 @@
       <h2 class="page-title">My Orders</h2>
 
       <div class="view-toggle">
-        <button class="toggle-btn active" onclick="toggleView('active', this)">
+        <button
+          id="btn-active"
+          class="toggle-btn active"
+          onclick="toggleView('active')"
+        >
           Active Orders
         </button>
-        <button class="toggle-btn" onclick="toggleView('history', this)">
+        <button
+          id="btn-history"
+          class="toggle-btn"
+          onclick="toggleView('history')"
+        >
           Order History
         </button>
       </div>
@@ -240,18 +56,8 @@
                 <div class="store-name">McDonalds</div>
                 <div class="order-meta">Order #0001 • Arriving in 25 mins</div>
               </div>
-              <div style="text-align: right">
-                <span
-                  style="
-                    background: #e3f2fd;
-                    color: #1565c0;
-                    padding: 6px 12px;
-                    border-radius: 20px;
-                    font-weight: 600;
-                    font-size: 0.9rem;
-                  "
-                  >On The Way</span
-                >
+              <div class="status-badge-container">
+                <span class="status-badge">On The Way</span>
               </div>
             </div>
 
@@ -290,75 +96,28 @@
 
         <div id="history-list" class="hidden">
           <div class="track-card">
-            <div
-              class="track-header"
-              style="border: none; margin: 0; padding: 0"
-            >
+            <div class="track-header history-header">
               <div>
-                <div class="store-name" style="color: #666">
-                  KFC (Yesterday)
-                </div>
+                <div class="store-name muted">KFC (Yesterday)</div>
                 <div class="order-meta">Order #0002 • Delivered</div>
               </div>
-              <button
-                style="
-                  padding: 8px 16px;
-                  border: 1px solid #ccc;
-                  background: white;
-                  border-radius: 8px;
-                  cursor: pointer;
-                "
-              >
-                Reorder
-              </button>
+              <button class="btn-action">Reorder</button>
             </div>
           </div>
 
           <div class="track-card">
-            <div
-              class="track-header"
-              style="border: none; margin: 0; padding: 0"
-            >
+            <div class="track-header history-header">
               <div>
-                <div class="store-name" style="color: #666">
-                  Burger King (Jan 24)
-                </div>
+                <div class="store-name muted">Burger King (Jan 24)</div>
                 <div class="order-meta">Order #0009 • Cancelled</div>
               </div>
-              <button
-                style="
-                  padding: 8px 16px;
-                  border: 1px solid #ccc;
-                  background: white;
-                  border-radius: 8px;
-                  cursor: pointer;
-                "
-              >
-                View
-              </button>
+              <button class="btn-action">View</button>
             </div>
           </div>
         </div>
       </div>
     </main>
 
-    <script>
-      function toggleView(viewName, btn) {
-        // Toggle Buttons
-        document
-          .querySelectorAll(".toggle-btn")
-          .forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        // Toggle Content
-        if (viewName === "active") {
-          document.getElementById("active-list").classList.remove("hidden");
-          document.getElementById("history-list").classList.add("hidden");
-        } else {
-          document.getElementById("active-list").classList.add("hidden");
-          document.getElementById("history-list").classList.remove("hidden");
-        }
-      }
-    </script>
+    <script src="../js/OrderHistory(c -lukas).js"></script>
   </body>
 </html>
