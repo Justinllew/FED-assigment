@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
       pickupBtn.classList.remove("active");
 
       // Optional: Change placeholder text
-      document.querySelector("input").placeholder = "Enter your address";
+      const input = document.querySelector(".address-input-wrapper input");
+      if (input) input.placeholder = "Enter your address";
     } else {
       pickupBtn.classList.add("active");
       pickupBtn.classList.remove("inactive");
@@ -19,37 +20,60 @@ document.addEventListener("DOMContentLoaded", () => {
       deliveryBtn.classList.remove("active");
 
       // Optional: Change placeholder text
-      document.querySelector("input").placeholder = "Enter zip code or city";
+      const input = document.querySelector(".address-input-wrapper input");
+      if (input) input.placeholder = "Enter zip code or city";
     }
   }
 
-  deliveryBtn.addEventListener("click", () => toggleMode("delivery"));
-  pickupBtn.addEventListener("click", () => toggleMode("pickup"));
+  if (deliveryBtn && pickupBtn) {
+    deliveryBtn.addEventListener("click", () => toggleMode("delivery"));
+    pickupBtn.addEventListener("click", () => toggleMode("pickup"));
+  }
 
   // --- FEATURE 2: Order Button Redirect ---
   const orderBtn = document.querySelector(".order-btn");
   const addressInput = document.querySelector(".address-input-wrapper input");
 
-  orderBtn.addEventListener("click", () => {
-    const address = addressInput.value.trim();
+  if (orderBtn && addressInput) {
+    orderBtn.addEventListener("click", () => {
+      const address = addressInput.value.trim();
 
-    if (address === "") {
-      alert("Please enter an address first!");
-      return; // Stop here if empty
-    }
+      if (address === "") {
+        alert("Please enter an address first!");
+        return;
+      }
 
-    // Logic to link to another page (Simulated)
-    console.log(`Ordering for address: ${address}`);
-
-    // UNCOMMENT the line below to actually go to a new page:
-    // window.location.href = `results.html?location=${encodeURIComponent(address)}`;
-    alert(`Redirecting to search results for: ${address}`);
-  });
+      console.log(`Ordering for address: ${address}`);
+      // window.location.href = `results.html?location=${encodeURIComponent(address)}`;
+      alert(`Redirecting to search results for: ${address}`);
+    });
+  }
 
   // --- FEATURE 3: Bag/Cart Click ---
   const bagBtn = document.querySelector(".bag-btn");
-  bagBtn.addEventListener("click", () => {
-    // Navigate to cart page
-    window.location.href = "cart.html";
-  });
+  if (bagBtn) {
+    bagBtn.addEventListener("click", () => {
+      // Navigate to cart page
+      window.location.href = "cart.html";
+    });
+  }
+
+  // --- FEATURE 4: User Dropdown Toggle (MOVED OUTSIDE) ---
+  const userMenuBtn = document.getElementById("userMenuBtn");
+  const userDropdown = document.getElementById("userDropdown");
+
+  if (userMenuBtn && userDropdown) {
+    // Toggle menu on click
+    userMenuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      userDropdown.classList.toggle("show");
+    });
+
+    // Close menu when clicking ANYWHERE else on the page
+    document.addEventListener("click", (e) => {
+      if (!userDropdown.contains(e.target) && !userMenuBtn.contains(e.target)) {
+        userDropdown.classList.remove("show");
+      }
+    });
+  }
 });
