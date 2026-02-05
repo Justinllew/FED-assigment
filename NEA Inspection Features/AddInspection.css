@@ -1,0 +1,76 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: white;
+}
+
+/* --- Header --- */
+header {
+  padding: 40px;
+}
+
+header span {
+  background-color: #feffc1;
+  padding: 20px 40px;
+  border-radius: 25px;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+/* --- Main Layout --- */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Grey Outer Card */
+.form-container {
+  background-color: #e0e0e0;
+  border-radius: 40px;
+  padding: 40px;
+}
+
+/* White Inner Card */
+form {
+  background-color: white;
+  border-radius: 30px;
+  padding: 40px 60px;
+}
+
+/* Form Rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  margin-bottom: 30px;
+  font-size: 18px;
+}
+
+/* Inputs */
+input,
+select {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+/* Confirm Button */
+button {
+  display: block;
+  margin: 40px auto 0;
+  background-color: #7ce53a;
+  color: white;
+  border: none;
+  padding: 14px 50px;
+  border-radius: 30px;
+  font-size: 18px;
+  cursor: pointer;
+}
