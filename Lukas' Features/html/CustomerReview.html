@@ -4,518 +4,1109 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vendor Review Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,800;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body
-    class="h-screen w-screen flex items-center justify-center bg-gray-200 overflow-hidden"
-  >
-    <div
-      class="w-[1400px] h-[900px] bg-[#F9F7E8] rounded-[40px] shadow-2xl relative flex flex-col border border-gray-300 overflow-hidden"
-    >
-      <div class="h-24 px-10 flex items-center justify-end shrink-0 z-50">
-        <div class="flex items-center gap-4">
-          <div
-            class="flex items-center gap-3 bg-white/60 backdrop-blur-md px-5 py-2 rounded-full border border-gray-200 cursor-pointer hover:bg-white transition-all shadow-sm group"
-          >
-            <div
-              class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border border-gray-300"
-            >
-              <img
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vendor"
-                class="w-full h-full object-cover"
-              />
-            </div>
-            <span
-              class="text-lg font-bold italic text-gray-800 group-hover:text-purple-600 transition-colors"
-              >Vendor Name</span
-            >
-            <i class="ri-arrow-down-s-line text-xl text-gray-500"></i>
-          </div>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-          <button
-            id="menu-trigger"
-            class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 hover:rotate-90 transition-all shadow-lg"
-          >
-            <i class="ri-menu-4-line text-2xl"></i>
+      :root {
+        --primary-bg: #f9f7e8;
+        --white: #ffffff;
+        --black: #000000;
+        --gray-light: #b9b9b9;
+        --gray-medium: #756c6c;
+        --cyan: #62edf7;
+        --purple: #2a00ff;
+        --purple-light: rgba(194, 181, 255, 0.42);
+        --yellow: #ffe600;
+        --gray-star: #d9d9d9;
+        --green: #4bb04d;
+        --green-bg: rgba(0, 255, 89, 0.2);
+        --orange: #ff7300;
+        --orange-bg: rgba(255, 200, 0, 0.2);
+        --pink: #ff0073;
+        --pink-bg: rgba(255, 0, 115, 0.2);
+        --purple-text: #8c00ff;
+        --purple-bg: rgba(166, 0, 255, 0.2);
+        --blue: #004dff;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+        min-height: 100vh;
+        padding: 20px;
+        overflow-x: hidden;
+      }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+      }
+
+      /* Main Container */
+      .app-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: var(--primary-bg);
+        border-radius: 40px;
+        min-height: 90vh;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Top Navigation */
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background: var(--white);
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .page-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--black);
+      }
+
+      .add-review-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid var(--black);
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .add-review-btn:hover {
+        background: var(--black);
+        color: var(--white);
+        transform: rotate(90deg);
+      }
+
+      .nav-right {
+        position: relative;
+      }
+
+      .vendor-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+      }
+
+      .vendor-dropdown:hover {
+        background: #f5f5f5;
+      }
+
+      .vendor-avatar-small {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--cyan);
+        overflow: hidden;
+      }
+
+      .vendor-avatar-small img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .vendor-name-nav {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--black);
+      }
+
+      .dropdown-arrow {
+        transition: transform 0.3s ease;
+      }
+
+      .dropdown-arrow.active {
+        transform: rotate(180deg);
+      }
+
+      /* Dropdown Menu */
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background: #e8e8e8;
+        border-radius: 20px;
+        padding: 15px;
+        min-width: 280px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .dropdown-menu.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 20px;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 5px;
+      }
+
+      .dropdown-item:hover {
+        background: var(--white);
+        transform: translateX(5px);
+      }
+
+      .dropdown-item i {
+        font-size: 20px;
+        width: 30px;
+        text-align: center;
+      }
+
+      .dropdown-item span {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--black);
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background: #ccc;
+        margin: 10px 0;
+      }
+
+      /* Main Content Area */
+      .main-content {
+        display: flex;
+        height: calc(90vh - 80px);
+        overflow: hidden;
+      }
+
+      /* Left Sidebar */
+      .left-sidebar {
+        width: 400px;
+        background: var(--white);
+        border-right: 1px solid #e5e5e5;
+        overflow-y: auto;
+        padding: 30px;
+      }
+
+      /* Profile Card */
+      .profile-card {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .profile-image-wrapper {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 20px;
+        cursor: pointer;
+      }
+
+      .profile-bg {
+        position: absolute;
+        inset: 0;
+        background: var(--cyan);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .profile-image {
+        position: absolute;
+        inset: 5px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--white);
+      }
+
+      .profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .vendor-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--gray-light);
+        margin-bottom: 10px;
+      }
+
+      .rating-big {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 5px;
+      }
+
+      .rating-number {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--black);
+      }
+
+      .stars-row {
+        display: flex;
+        gap: 3px;
+      }
+
+      .star {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .star:hover {
+        transform: scale(1.2);
+      }
+
+      .star.filled {
+        color: var(--yellow);
+      }
+
+      .star.empty {
+        color: var(--gray-star);
+      }
+
+      .reviews-text {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--gray-light);
+      }
+
+      /* Rating Bars */
+      .rating-bars {
+        margin-bottom: 30px;
+      }
+
+      .rating-bar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 10px;
+        transition: all 0.3s;
+      }
+
+      .rating-bar-row:hover {
+        background: #f5f5f5;
+      }
+
+      .rating-label {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid var(--black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .rating-bar-row:hover .rating-label {
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .mini-star {
+        width: 20px;
+        height: 20px;
+        color: var(--yellow);
+      }
+
+      .progress-container {
+        flex: 1;
+        height: 20px;
+        background: var(--purple-light);
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--purple);
+        border-radius: 10px;
+        width: 0;
+        transition: width 1s ease;
+      }
+
+      .percentage-label {
+        width: 45px;
+        text-align: right;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--gray-light);
+      }
+
+      /* What Customers Like */
+      .likes-section h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--black);
+      }
+
+      .like-tag {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 12px;
+        transition: all 0.3s;
+      }
+
+      .like-tag:hover {
+        background: #f5f5f5;
+        transform: translateX(10px);
+      }
+
+      .like-number {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid var(--blue);
+        color: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        background: var(--white);
+      }
+
+      .like-text {
+        flex: 1;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .like-count {
+        padding: 6px 15px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .like-count.purple {
+        background: var(--purple-bg);
+        color: var(--purple-text);
+      }
+
+      .like-count.green {
+        background: var(--green-bg);
+        color: var(--green);
+      }
+
+      .like-count.orange {
+        background: var(--orange-bg);
+        color: var(--orange);
+      }
+
+      .like-count.pink {
+        background: var(--pink-bg);
+        color: var(--pink);
+      }
+
+      /* Right Content Area */
+      .right-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 30px;
+      }
+
+      /* View Toggle */
+      .view-toggle {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .toggle-btn {
+        padding: 12px 30px;
+        border-radius: 25px;
+        border: 2px solid var(--black);
+        background: transparent;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.3s;
+      }
+
+      .toggle-btn.active {
+        background: var(--black);
+        color: var(--white);
+      }
+
+      .toggle-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Reviews List */
+      .reviews-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .review-card {
+        background: var(--white);
+        border: 1px solid var(--black);
+        border-radius: 20px;
+        padding: 25px;
+        transition: all 0.3s;
+        animation: slideIn 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .review-card:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transform: translateY(-5px);
+      }
+
+      .review-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .reviewer-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #e5e5e5;
+      }
+
+      .reviewer-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .reviewer-info h4 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 3px;
+      }
+
+      .reviewer-info .date {
+        font-size: 14px;
+        color: var(--gray-light);
+      }
+
+      .review-rating {
+        margin-left: auto;
+        display: flex;
+        gap: 3px;
+      }
+
+      .review-rating .star {
+        width: 20px;
+        height: 20px;
+      }
+
+      .review-content {
+        padding-left: 60px;
+      }
+
+      .review-line {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 10px;
+        color: var(--gray-medium);
+      }
+
+      .review-line::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--gray-medium);
+        border-radius: 50%;
+        margin-top: 8px;
+        flex-shrink: 0;
+      }
+
+      /* Review Form (New from image) */
+      .review-form-container {
+        background: var(--white);
+        border: 1px solid var(--black);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        display: none;
+      }
+
+      .review-form-container.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--black);
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px 20px;
+        border: 2px solid #e5e5e5;
+        border-radius: 12px;
+        font-size: 16px;
+        font-family: "Inter", sans-serif;
+        transition: all 0.3s;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--purple);
+        box-shadow: 0 0 0 3px rgba(42, 0, 255, 0.1);
+      }
+
+      .star-rating-input {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .star-rating-input .star {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        color: var(--gray-star);
+        transition: all 0.2s;
+      }
+
+      .star-rating-input .star:hover,
+      .star-rating-input .star.active {
+        color: var(--yellow);
+        transform: scale(1.2);
+      }
+
+      .textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: var(--purple);
+        color: var(--white);
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .submit-btn:hover {
+        background: #1a00cc;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(42, 0, 255, 0.3);
+      }
+
+      /* Responsive */
+      @media (max-width: 1200px) {
+        .main-content {
+          flex-direction: column;
+        }
+
+        .left-sidebar {
+          width: 100%;
+          max-height: 400px;
+        }
+      }
+
+      /* Loading Animation */
+      .loading-skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+
+      @keyframes loading {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Top Navigation -->
+      <nav class="top-nav">
+        <div class="nav-left">
+          <h1 class="page-title">Customer Review</h1>
+          <button class="add-review-btn" onclick="toggleReviewForm()">
+            <i class="fas fa-plus"></i>
           </button>
         </div>
-      </div>
 
-      <div
-        class="flex-1 px-12 pb-12 grid grid-cols-12 gap-10 overflow-hidden relative z-10"
-      >
-        <div class="col-span-4 h-full flex flex-col">
-          <div class="flex justify-between items-center mb-4 pl-2">
-            <h1 class="text-3xl font-extrabold italic text-gray-900">
-              Customer Review
-            </h1>
-            <button
-              id="add-review-btn"
-              class="w-10 h-10 rounded-full border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-all text-xl font-bold group"
-            >
-              <i
-                class="ri-add-line group-hover:rotate-90 transition-transform"
-              ></i>
+        <div class="nav-right">
+          <div class="vendor-dropdown" onclick="toggleDropdown()">
+            <div class="vendor-avatar-small">
+              <img
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vendor"
+                alt="Vendor"
+              />
+            </div>
+            <span class="vendor-name-nav">Vendor Name</span>
+            <i
+              class="fas fa-chevron-down dropdown-arrow"
+              id="dropdownArrow"
+            ></i>
+          </div>
+
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-item">
+              <i class="fas fa-shopping-bag"></i>
+              <span>Order History</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="fas fa-tags"></i>
+              <span>Offers</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="fas fa-box"></i>
+              <span>Products</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="fas fa-award"></i>
+              <span>Loyalty</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="fas fa-clipboard-list"></i>
+              <span>Review</span>
+            </div>
+            <div class="dropdown-item">
+              <i class="fas fa-chart-bar"></i>
+              <span>More</span>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" style="color: #dc3545">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Log out</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Left Sidebar -->
+        <aside class="left-sidebar">
+          <!-- Profile Card -->
+          <div class="profile-card">
+            <div class="profile-image-wrapper">
+              <div class="profile-bg"></div>
+              <div class="profile-image">
+                <img
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+                  alt="Vendor"
+                />
+              </div>
+            </div>
+
+            <h2 class="vendor-title">Vendor reviews</h2>
+
+            <div class="rating-big">
+              <span class="rating-number">4.70</span>
+              <div class="stars-row" id="headerStars"></div>
+            </div>
+
+            <p class="reviews-text">120 reviews</p>
+          </div>
+
+          <!-- Rating Bars -->
+          <div class="rating-bars" id="ratingBars"></div>
+
+          <!-- What Customers Like -->
+          <div class="likes-section">
+            <h3>What Customers Like</h3>
+            <div id="likesContainer"></div>
+          </div>
+        </aside>
+
+        <!-- Right Content -->
+        <main class="right-content">
+          <!-- Review Form -->
+          <div class="review-form-container" id="reviewForm">
+            <h2 style="margin-bottom: 25px; font-size: 24px">Write a Review</h2>
+            <form onsubmit="submitReview(event)">
+              <div class="form-group">
+                <label class="form-label">Name:</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Stall Name:</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Enter stall name"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Rating:</label>
+                <div class="star-rating-input" id="starRatingInput">
+                  <i class="fas fa-star star" data-rating="1"></i>
+                  <i class="fas fa-star star" data-rating="2"></i>
+                  <i class="fas fa-star star" data-rating="3"></i>
+                  <i class="fas fa-star star" data-rating="4"></i>
+                  <i class="fas fa-star star" data-rating="5"></i>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">What did you like?:</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="e.g., Delicious, Great Value"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Your Review:</label>
+                <textarea
+                  class="form-input textarea"
+                  placeholder="Write your detailed review here..."
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Submit Review
+              </button>
+            </form>
+          </div>
+
+          <!-- View Toggle -->
+          <div class="view-toggle">
+            <button class="toggle-btn active" onclick="switchView('reviews')">
+              Reviews
+            </button>
+            <button class="toggle-btn" onclick="switchView('analytics')">
+              Analytics
             </button>
           </div>
 
-          <div
-            class="bg-white border border-gray-200 rounded-[30px] p-8 shadow-sm flex-1 relative overflow-hidden flex flex-col justify-between"
-          >
-            <div
-              class="absolute top-[-50px] left-1/2 -translate-x-1/2 w-40 h-40 bg-cyan-200 rounded-full blur-3xl opacity-50 pointer-events-none"
-            ></div>
-
-            <div class="relative z-10 flex flex-col items-center">
-              <div
-                class="w-20 h-20 rounded-full bg-cyan-50 p-1 mb-2 shadow-inner"
-              >
-                <img
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
-                  class="w-full h-full rounded-full"
-                />
-              </div>
-              <div class="text-5xl font-black italic text-gray-900 mb-1">
-                4.70
-              </div>
-              <div class="flex gap-1 text-yellow-400 text-lg">
-                <i class="ri-star-fill"></i><i class="ri-star-fill"></i
-                ><i class="ri-star-fill"></i><i class="ri-star-fill"></i
-                ><i class="ri-star-half-fill"></i>
-              </div>
-              <span class="text-gray-400 font-bold italic text-xs mt-1"
-                >120 reviews</span
-              >
-            </div>
-
-            <div class="w-full space-y-3 my-4">
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
-                >
-                  5
-                </div>
-                <i class="ri-star-fill text-yellow-400"></i>
-                <div
-                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
-                >
-                  <div
-                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[77%]"
-                  ></div>
-                </div>
-                <span
-                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
-                  >77%</span
-                >
-              </div>
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
-                >
-                  4
-                </div>
-                <i class="ri-star-fill text-yellow-400"></i>
-                <div
-                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
-                >
-                  <div
-                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[82%]"
-                  ></div>
-                </div>
-                <span
-                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
-                  >82%</span
-                >
-              </div>
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
-                >
-                  3
-                </div>
-                <i class="ri-star-fill text-yellow-400"></i>
-                <div
-                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
-                >
-                  <div
-                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[60%]"
-                  ></div>
-                </div>
-                <span
-                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
-                  >60%</span
-                >
-              </div>
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
-                >
-                  2
-                </div>
-                <i class="ri-star-fill text-yellow-400"></i>
-                <div
-                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
-                >
-                  <div
-                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[20%]"
-                  ></div>
-                </div>
-                <span
-                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
-                  >20%</span
-                >
-              </div>
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
-                >
-                  1
-                </div>
-                <i class="ri-star-fill text-yellow-400"></i>
-                <div
-                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
-                >
-                  <div
-                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[5%]"
-                  ></div>
-                </div>
-                <span
-                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
-                  >5%</span
-                >
-              </div>
-            </div>
-
-            <div>
-              <h3 class="font-bold text-gray-900 italic mb-3 text-sm">
-                What Customers Like
-              </h3>
-              <div class="space-y-2">
-                <div
-                  class="flex items-center gap-3 p-1 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                >
-                  <div
-                    class="w-7 h-7 rounded-full border border-[#004DFF] text-[#004DFF] flex items-center justify-center text-xs font-bold"
-                  >
-                    1
-                  </div>
-                  <span class="text-md font-bold italic text-gray-900 flex-1"
-                    >Delicious</span
-                  >
-                  <div
-                    class="px-2 py-0.5 rounded bg-purple-100 text-purple-600 text-[10px] font-bold italic"
-                  >
-                    72 Chosen
-                  </div>
-                </div>
-                <div
-                  class="flex items-center gap-3 p-1 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                >
-                  <div
-                    class="w-7 h-7 rounded-full border border-[#004DFF] text-[#004DFF] flex items-center justify-center text-xs font-bold"
-                  >
-                    2
-                  </div>
-                  <span class="text-md font-bold italic text-gray-900 flex-1"
-                    >Great Value</span
-                  >
-                  <div
-                    class="px-2 py-0.5 rounded bg-green-100 text-green-600 text-[10px] font-bold italic"
-                  >
-                    54 Chosen
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-span-8 relative h-full pt-14">
-          <div
-            id="view-list"
-            class="absolute inset-0 overflow-y-auto custom-scrollbar pr-6 pb-20 space-y-6 transition-transform duration-500 ease-in-out view-active"
-          >
-            <div
-              class="bg-white rounded-[20px] border border-black p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
-            >
-              <div class="flex items-center gap-4 mb-4">
-                <div
-                  class="w-12 h-12 rounded-full border border-gray-200 bg-gray-50 p-1"
-                >
-                  <img
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Tom"
-                    class="w-full h-full rounded-full"
-                  />
-                </div>
-                <div>
-                  <h4 class="text-gray-900 font-bold italic">Tom Harrison</h4>
-                  <span class="text-gray-400 text-xs font-bold italic"
-                    >12 Jan 2023</span
-                  >
-                </div>
-              </div>
-              <div class="pl-16 space-y-2">
-                <div
-                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
-                >
-                  Absolutely loved the food! The pasta was cooked to perfection.
-                </div>
-                <div
-                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
-                >
-                  Will definitely order again. Highly recommended.
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-white rounded-[20px] border border-black p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
-            >
-              <div class="flex items-center gap-4 mb-4">
-                <div
-                  class="w-12 h-12 rounded-full border border-gray-200 bg-gray-50 p-1"
-                >
-                  <img
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=James"
-                    class="w-full h-full rounded-full"
-                  />
-                </div>
-                <div>
-                  <h4 class="text-gray-900 font-bold italic">James Tan</h4>
-                  <span class="text-gray-400 text-xs font-bold italic"
-                    >02 Feb 2023</span
-                  >
-                </div>
-              </div>
-              <div class="pl-16 space-y-2">
-                <div
-                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
-                >
-                  Good quality ingredients, you can taste the freshness.
-                </div>
-                <div
-                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
-                >
-                  Portion size is generous for the price.
-                </div>
-                <div
-                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
-                >
-                  Packaging was eco-friendly which is a big plus.
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-white rounded-[20px] border border-black p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
-            >
-              <div class="flex items-center gap-4 mb-4">
-                <div
-                  class="w-12 h-12 rounded-full border border-gray-200 bg-gray-50 p-1"
-                >
-                  <img
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Richard"
-                    class="w-full h-full rounded-full"
-                  />
-                </div>
-                <div>
-                  <h4 class="text-gray-900 font-bold italic">Richard Ng</h4>
-                  <span class="text-gray-400 text-xs font-bold italic"
-                    >05 Mar 2023</span
-                  >
-                </div>
-              </div>
-              <div class="pl-16 space-y-2">
-                <div
-                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
-                >
-                  Decent meal, but the sauce was a bit too salty for my taste.
-                </div>
-                <div
-                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
-                >
-                  Customer service was helpful.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            id="view-form"
-            class="absolute inset-0 bg-white rounded-[20px] border border-black p-10 flex flex-col z-20 shadow-xl transition-transform duration-500 ease-in-out translate-x-[110%]"
-          >
-            <div class="flex justify-between items-start mb-6">
-              <h2 class="text-3xl font-bold italic text-gray-900">
-                Write a Review
-              </h2>
-              <button
-                id="close-form-btn"
-                class="text-gray-400 hover:text-red-500 transition-colors"
-              >
-                <i class="ri-close-circle-fill text-4xl"></i>
-              </button>
-            </div>
-
-            <div class="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
-              <div class="grid grid-cols-2 gap-6">
-                <div class="space-y-2">
-                  <label class="font-bold italic text-gray-800">Name:</label>
-                  <input
-                    type="text"
-                    id="input-name"
-                    class="w-full h-12 bg-gray-100 rounded-xl px-4 italic outline-none border border-transparent focus:border-black focus:bg-white transition-all"
-                    placeholder="Your Name"
-                  />
-                </div>
-                <div class="space-y-2">
-                  <label class="font-bold italic text-gray-800"
-                    >Stall Name:</label
-                  >
-                  <input
-                    type="text"
-                    id="input-stall"
-                    class="w-full h-12 bg-gray-100 rounded-xl px-4 italic outline-none border border-transparent focus:border-black focus:bg-white transition-all"
-                    value="Chicken Rice Stall #01"
-                  />
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label class="font-bold italic text-gray-800">Rating:</label>
-                <div
-                  class="flex gap-2 text-4xl text-gray-200 cursor-pointer"
-                  id="stars-container"
-                >
-                  <i
-                    class="ri-star-fill hover:text-yellow-300 transition-colors"
-                    data-value="1"
-                  ></i>
-                  <i
-                    class="ri-star-fill hover:text-yellow-300 transition-colors"
-                    data-value="2"
-                  ></i>
-                  <i
-                    class="ri-star-fill hover:text-yellow-300 transition-colors"
-                    data-value="3"
-                  ></i>
-                  <i
-                    class="ri-star-fill hover:text-yellow-300 transition-colors"
-                    data-value="4"
-                  ></i>
-                  <i
-                    class="ri-star-fill hover:text-yellow-300 transition-colors"
-                    data-value="5"
-                  ></i>
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label class="font-bold italic text-gray-800">Tags:</label>
-                <div class="flex gap-3" id="tags-container">
-                  <button
-                    class="tag-btn px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-400 font-bold italic hover:border-black hover:text-black transition-all"
-                    data-tag="Delicious"
-                  >
-                    Delicious
-                  </button>
-                  <button
-                    class="tag-btn px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-400 font-bold italic hover:border-black hover:text-black transition-all"
-                    data-tag="Great Value"
-                  >
-                    Great Value
-                  </button>
-                  <button
-                    class="tag-btn px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-400 font-bold italic hover:border-black hover:text-black transition-all"
-                    data-tag="Punctual"
-                  >
-                    Punctual
-                  </button>
-                </div>
-              </div>
-
-              <div
-                class="flex-1 min-h-[200px] border border-black rounded-[20px] overflow-hidden relative shadow-inner"
-              >
-                <textarea
-                  id="input-text"
-                  class="w-full h-full resize-none outline-none p-6 text-xl leading-[40px] italic text-gray-800 font-medium bg-transparent lined-paper"
-                  placeholder="Share your experience..."
-                ></textarea>
-              </div>
-            </div>
-
-            <div class="pt-6 flex justify-end">
-              <button
-                id="submit-btn"
-                class="bg-[#2A00FF] text-white px-12 py-3 rounded-2xl font-black italic text-xl shadow-lg hover:scale-105 hover:shadow-xl transition-all"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        id="sidebar-menu"
-        class="absolute top-0 right-0 h-full w-[400px] bg-white/90 backdrop-blur-xl z-50 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out border-l border-white/50 flex flex-col p-12"
-      >
-        <button
-          id="close-menu-btn"
-          class="absolute top-8 right-8 text-black hover:rotate-90 transition-transform"
-        >
-          <i class="ri-close-line text-4xl"></i>
-        </button>
-
-        <div class="mt-20 space-y-8">
-          <div
-            class="flex items-center gap-6 text-gray-400 hover:text-black hover:translate-x-2 transition-all cursor-pointer group"
-          >
-            <i class="ri-file-list-3-fill text-3xl"></i>
-            <span class="text-3xl font-black italic">Order History</span>
-          </div>
-          <div
-            class="flex items-center gap-6 text-gray-400 hover:text-black hover:translate-x-2 transition-all cursor-pointer group"
-          >
-            <i class="ri-percent-line text-3xl"></i>
-            <span class="text-3xl font-black italic">Offers</span>
-          </div>
-          <div
-            class="flex items-center gap-6 text-black translate-x-2 cursor-pointer group"
-          >
-            <i class="ri-edit-box-fill text-3xl"></i>
-            <span class="text-3xl font-black italic">Review</span>
-          </div>
-        </div>
-
-        <div class="mt-auto border-t border-gray-300 pt-8">
-          <div
-            class="flex items-center gap-6 text-gray-400 hover:text-red-600 cursor-pointer transition-colors"
-          >
-            <i class="ri-logout-box-r-line text-2xl"></i>
-            <span class="text-2xl font-black italic">Log Out</span>
-          </div>
-        </div>
-      </div>
-
-      <div
-        id="success-toast"
-        class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-8 py-3 rounded-full shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-50"
-      >
-        <i class="ri-checkbox-circle-fill text-green-400 text-xl"></i>
-        <span class="font-bold italic">Review Submitted Successfully!</span>
+          <!-- Reviews List -->
+          <div class="reviews-list" id="reviewsList"></div>
+        </main>
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+      // Data
+      const ratings = [
+        { stars: 5, percentage: 77 },
+        { stars: 4, percentage: 82 },
+        { stars: 3, percentage: 70 },
+        { stars: 2, percentage: 38 },
+        { stars: 1, percentage: 10 },
+      ];
+
+      const likes = [
+        { id: 1, text: "Delicious", count: 72, type: "purple" },
+        { id: 2, text: "Great Value", count: 54, type: "green" },
+        { id: 3, text: "Too Busy", count: 26, type: "orange" },
+        { id: 4, text: "Punctual", count: 14, type: "pink" },
+      ];
+
+      const reviews = [
+        {
+          id: 1,
+          name: "Tom Harrison",
+          date: "12 Jan 2022",
+          avatar: "Tom",
+          rating: 5,
+          lines: [
+            "Absolutely loved the food! The pasta was cooked to perfection.",
+            "Will definitely order again. Highly recommended.",
+            "Delivery was super fast too.",
+          ],
+        },
+        {
+          id: 2,
+          name: "James Tan",
+          date: "2 Jan 2022",
+          avatar: "James",
+          rating: 4,
+          lines: [
+            "Good quality ingredients, you can taste the freshness.",
+            "Portion size is generous for the price.",
+            "Packaging was eco-friendly which is a big plus.",
+          ],
+        },
+        {
+          id: 3,
+          name: "Richard Ng",
+          date: "5 Jan 2022",
+          avatar: "Richard",
+          rating: 3,
+          lines: [
+            "Decent meal, but the sauce was a bit too salty for my taste.",
+            "Customer service was helpful when I called to ask about ingredients.",
+            "Might try something else next time.",
+          ],
+        },
+        {
+          id: 4,
+          name: "Sarah Lim",
+          date: "8 Jan 2022",
+          avatar: "Sarah",
+          rating: 5,
+          lines: [
+            "Best hawker food I've had in months!",
+            "The queue was long but totally worth it.",
+            "Great value for money.",
+          ],
+        },
+      ];
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        renderHeaderStars();
+        renderRatingBars();
+        renderLikes();
+        renderReviews();
+        initStarRating();
+      });
+
+      // Render Header Stars
+      function renderHeaderStars() {
+        const container = document.getElementById("headerStars");
+        for (let i = 0; i < 5; i++) {
+          const star = document.createElement("i");
+          star.className = `fas fa-star star ${i < 4 ? "filled" : "empty"}`;
+          container.appendChild(star);
+        }
+      }
+
+      // Render Rating Bars
+      function renderRatingBars() {
+        const container = document.getElementById("ratingBars");
+        ratings.forEach((item, index) => {
+          const row = document.createElement("div");
+          row.className = "rating-bar-row";
+          row.innerHTML = `
+                    <div class="rating-label">${item.stars}</div>
+                    <i class="fas fa-star mini-star"></i>
+<div class="progress-container">
+    <div class="progress-fill" style="width: ${item.percentage}%"></div>
+</div>
+<span class="percentage-label">${item.percentage}%</span>
+`;
+          container.appendChild(row);
+        });
+      }
+
+      // Render Likes
+      function renderLikes() {
+        const container = document.getElementById("likesContainer");
+        likes.forEach((like) => {
+          const div = document.createElement("div");
+          div.className = "like-tag";
+          div.innerHTML = `
+        <div class="like-number">${like.id}</div>
+        <div class="like-text">${like.text}</div>
+        <div class="like-count ${like.type}">${like.count}</div>
+    `;
+          container.appendChild(div);
+        });
+      }
+
+      // Render Reviews
+      function renderReviews() {
+        const container = document.getElementById("reviewsList");
+        container.innerHTML = "";
+        reviews.forEach((review) => {
+          const card = document.createElement("div");
+          card.className = "review-card";
+          card.innerHTML = `
+        <div class="review-header">
+            <div class="reviewer-avatar">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${review.avatar}" />
+            </div>
+            <div class="reviewer-info">
+                <h4>${review.name}</h4>
+                <div class="date">${review.date}</div>
+            </div>
+            <div class="review-rating">
+                ${'<i class="fas fa-star star filled"></i>'.repeat(review.rating)}
+                ${'<i class="fas fa-star star empty"></i>'.repeat(5 - review.rating)}
+            </div>
+        </div>
+        <div class="review-content">
+            ${review.lines.map((line) => `<div class="review-line">${line}</div>`).join("")}
+        </div>
+    `;
+          container.appendChild(card);
+        });
+      }
+
+      // Dropdown
+      function toggleDropdown() {
+        document.getElementById("dropdownMenu").classList.toggle("active");
+        document.getElementById("dropdownArrow").classList.toggle("active");
+      }
+
+      // Review Form Toggle
+      function toggleReviewForm() {
+        document.getElementById("reviewForm").classList.toggle("active");
+      }
+
+      // View Toggle (placeholder for analytics)
+      function switchView(view) {
+        document
+          .querySelectorAll(".toggle-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        if (view === "analytics") {
+          alert("Analytics view coming soon 🚀");
+        }
+      }
+
+      // Star Rating Input
+      let selectedRating = 0;
+
+      function initStarRating() {
+        const stars = document.querySelectorAll("#starRatingInput .star");
+        stars.forEach((star) => {
+          star.addEventListener("click", () => {
+            selectedRating = star.dataset.rating;
+            stars.forEach((s) => s.classList.remove("active"));
+            for (let i = 0; i < selectedRating; i++) {
+              stars[i].classList.add("active");
+            }
+          });
+        });
+      }
+
+      // Submit Review
+      function submitReview(e) {
+        e.preventDefault();
+        alert("Review submitted! ⭐ Thanks for the feedback.");
+        document.getElementById("reviewForm").classList.remove("active");
+      }
+    </script>
   </body>
 </html>
