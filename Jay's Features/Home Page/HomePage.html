@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshEats</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <svg
+          class="icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 3h18v18H3zM9 9h6M9 15h6" />
+        </svg>
+        <span>App name</span>
+      </div>
+
+      <div class="nav-actions">
+        <div class="user-dropdown">
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>User's Name</span>
+          <svg
+            class="icon chevron"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+        </div>
+
+        <button class="icon-btn">
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+            ></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn cart-btn">
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="hero-section">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 class="slogan">Slogan</h1>
+          <p class="tagline">
+            tagline tagline tagline tagline tagline tagline tagline
+          </p>
+
+          <div class="order-card">
+            <div class="toggle-container">
+              <button class="toggle-btn active">
+                <svg
+                  class="icon-sm"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="18.5" cy="17.5" r="3.5"></circle>
+                  <circle cx="5.5" cy="17.5" r="3.5"></circle>
+                  <path d="M15 6h-7l-3 11.5M9 17.5v-11"></path>
+                </svg>
+                Delivery
+              </button>
+              <button class="toggle-btn">Pick up</button>
+            </div>
+
+            <div class="input-row">
+              <div class="input-wrapper">
+                <svg
+                  class="icon-input"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+                  ></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <input type="text" placeholder="Enter your address" />
+              </div>
+              <button class="search-btn">
+                <svg
+                  class="icon-sm"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                Order
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-image-box"></div>
+      </div>
+    </main>
+
+    <section class="info-cards">
+      <div class="card"></div>
+      <div class="card"></div>
+      <div class="card"></div>
+    </section>
+  </body>
+</html>
