@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Review Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,800;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    class="h-screen w-screen flex items-center justify-center bg-gray-200 overflow-hidden"
+  >
+    <div
+      class="w-[1400px] h-[900px] bg-[#F9F7E8] rounded-[40px] shadow-2xl relative flex flex-col border border-gray-300 overflow-hidden"
+    >
+      <div class="h-24 px-10 flex items-center justify-end shrink-0 z-50">
+        <div class="flex items-center gap-4">
+          <div
+            class="flex items-center gap-3 bg-white/60 backdrop-blur-md px-5 py-2 rounded-full border border-gray-200 cursor-pointer hover:bg-white transition-all shadow-sm group"
+          >
+            <div
+              class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border border-gray-300"
+            >
+              <img
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vendor"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <span
+              class="text-lg font-bold italic text-gray-800 group-hover:text-purple-600 transition-colors"
+              >Vendor Name</span
+            >
+            <i class="ri-arrow-down-s-line text-xl text-gray-500"></i>
+          </div>
+
+          <button
+            id="menu-trigger"
+            class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 hover:rotate-90 transition-all shadow-lg"
+          >
+            <i class="ri-menu-4-line text-2xl"></i>
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="flex-1 px-12 pb-12 grid grid-cols-12 gap-10 overflow-hidden relative z-10"
+      >
+        <div class="col-span-4 h-full flex flex-col">
+          <div class="flex justify-between items-center mb-4 pl-2">
+            <h1 class="text-3xl font-extrabold italic text-gray-900">
+              Customer Review
+            </h1>
+            <button
+              id="add-review-btn"
+              class="w-10 h-10 rounded-full border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-all text-xl font-bold group"
+            >
+              <i
+                class="ri-add-line group-hover:rotate-90 transition-transform"
+              ></i>
+            </button>
+          </div>
+
+          <div
+            class="bg-white border border-gray-200 rounded-[30px] p-8 shadow-sm flex-1 relative overflow-hidden flex flex-col justify-between"
+          >
+            <div
+              class="absolute top-[-50px] left-1/2 -translate-x-1/2 w-40 h-40 bg-cyan-200 rounded-full blur-3xl opacity-50 pointer-events-none"
+            ></div>
+
+            <div class="relative z-10 flex flex-col items-center">
+              <div
+                class="w-20 h-20 rounded-full bg-cyan-50 p-1 mb-2 shadow-inner"
+              >
+                <img
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+                  class="w-full h-full rounded-full"
+                />
+              </div>
+              <div class="text-5xl font-black italic text-gray-900 mb-1">
+                4.70
+              </div>
+              <div class="flex gap-1 text-yellow-400 text-lg">
+                <i class="ri-star-fill"></i><i class="ri-star-fill"></i
+                ><i class="ri-star-fill"></i><i class="ri-star-fill"></i
+                ><i class="ri-star-half-fill"></i>
+              </div>
+              <span class="text-gray-400 font-bold italic text-xs mt-1"
+                >120 reviews</span
+              >
+            </div>
+
+            <div class="w-full space-y-3 my-4">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
+                >
+                  5
+                </div>
+                <i class="ri-star-fill text-yellow-400"></i>
+                <div
+                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
+                >
+                  <div
+                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[77%]"
+                  ></div>
+                </div>
+                <span
+                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
+                  >77%</span
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
+                >
+                  4
+                </div>
+                <i class="ri-star-fill text-yellow-400"></i>
+                <div
+                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
+                >
+                  <div
+                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[82%]"
+                  ></div>
+                </div>
+                <span
+                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
+                  >82%</span
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
+                >
+                  3
+                </div>
+                <i class="ri-star-fill text-yellow-400"></i>
+                <div
+                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
+                >
+                  <div
+                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[60%]"
+                  ></div>
+                </div>
+                <span
+                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
+                  >60%</span
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
+                >
+                  2
+                </div>
+                <i class="ri-star-fill text-yellow-400"></i>
+                <div
+                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
+                >
+                  <div
+                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[20%]"
+                  ></div>
+                </div>
+                <span
+                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
+                  >20%</span
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full border border-gray-900 flex items-center justify-center text-xs font-bold italic"
+                >
+                  1
+                </div>
+                <i class="ri-star-fill text-yellow-400"></i>
+                <div
+                  class="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative"
+                >
+                  <div
+                    class="absolute top-0 left-0 h-full bg-[#2A00FF] w-[5%]"
+                  ></div>
+                </div>
+                <span
+                  class="text-gray-400 font-bold italic text-xs w-8 text-right"
+                  >5%</span
+                >
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-gray-900 italic mb-3 text-sm">
+                What Customers Like
+              </h3>
+              <div class="space-y-2">
+                <div
+                  class="flex items-center gap-3 p-1 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+                >
+                  <div
+                    class="w-7 h-7 rounded-full border border-[#004DFF] text-[#004DFF] flex items-center justify-center text-xs font-bold"
+                  >
+                    1
+                  </div>
+                  <span class="text-md font-bold italic text-gray-900 flex-1"
+                    >Delicious</span
+                  >
+                  <div
+                    class="px-2 py-0.5 rounded bg-purple-100 text-purple-600 text-[10px] font-bold italic"
+                  >
+                    72 Chosen
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-3 p-1 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
+                >
+                  <div
+                    class="w-7 h-7 rounded-full border border-[#004DFF] text-[#004DFF] flex items-center justify-center text-xs font-bold"
+                  >
+                    2
+                  </div>
+                  <span class="text-md font-bold italic text-gray-900 flex-1"
+                    >Great Value</span
+                  >
+                  <div
+                    class="px-2 py-0.5 rounded bg-green-100 text-green-600 text-[10px] font-bold italic"
+                  >
+                    54 Chosen
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-8 relative h-full pt-14">
+          <div
+            id="view-list"
+            class="absolute inset-0 overflow-y-auto custom-scrollbar pr-6 pb-20 space-y-6 transition-transform duration-500 ease-in-out view-active"
+          >
+            <div
+              class="bg-white rounded-[20px] border border-black p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
+            >
+              <div class="flex items-center gap-4 mb-4">
+                <div
+                  class="w-12 h-12 rounded-full border border-gray-200 bg-gray-50 p-1"
+                >
+                  <img
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Tom"
+                    class="w-full h-full rounded-full"
+                  />
+                </div>
+                <div>
+                  <h4 class="text-gray-900 font-bold italic">Tom Harrison</h4>
+                  <span class="text-gray-400 text-xs font-bold italic"
+                    >12 Jan 2023</span
+                  >
+                </div>
+              </div>
+              <div class="pl-16 space-y-2">
+                <div
+                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
+                >
+                  Absolutely loved the food! The pasta was cooked to perfection.
+                </div>
+                <div
+                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
+                >
+                  Will definitely order again. Highly recommended.
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white rounded-[20px] border border-black p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
+            >
+              <div class="flex items-center gap-4 mb-4">
+                <div
+                  class="w-12 h-12 rounded-full border border-gray-200 bg-gray-50 p-1"
+                >
+                  <img
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=James"
+                    class="w-full h-full rounded-full"
+                  />
+                </div>
+                <div>
+                  <h4 class="text-gray-900 font-bold italic">James Tan</h4>
+                  <span class="text-gray-400 text-xs font-bold italic"
+                    >02 Feb 2023</span
+                  >
+                </div>
+              </div>
+              <div class="pl-16 space-y-2">
+                <div
+                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
+                >
+                  Good quality ingredients, you can taste the freshness.
+                </div>
+                <div
+                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
+                >
+                  Portion size is generous for the price.
+                </div>
+                <div
+                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
+                >
+                  Packaging was eco-friendly which is a big plus.
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white rounded-[20px] border border-black p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
+            >
+              <div class="flex items-center gap-4 mb-4">
+                <div
+                  class="w-12 h-12 rounded-full border border-gray-200 bg-gray-50 p-1"
+                >
+                  <img
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Richard"
+                    class="w-full h-full rounded-full"
+                  />
+                </div>
+                <div>
+                  <h4 class="text-gray-900 font-bold italic">Richard Ng</h4>
+                  <span class="text-gray-400 text-xs font-bold italic"
+                    >05 Mar 2023</span
+                  >
+                </div>
+              </div>
+              <div class="pl-16 space-y-2">
+                <div
+                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
+                >
+                  Decent meal, but the sauce was a bit too salty for my taste.
+                </div>
+                <div
+                  class="border-b border-gray-300 pb-1 italic font-medium text-gray-600"
+                >
+                  Customer service was helpful.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="view-form"
+            class="absolute inset-0 bg-white rounded-[20px] border border-black p-10 flex flex-col z-20 shadow-xl transition-transform duration-500 ease-in-out translate-x-[110%]"
+          >
+            <div class="flex justify-between items-start mb-6">
+              <h2 class="text-3xl font-bold italic text-gray-900">
+                Write a Review
+              </h2>
+              <button
+                id="close-form-btn"
+                class="text-gray-400 hover:text-red-500 transition-colors"
+              >
+                <i class="ri-close-circle-fill text-4xl"></i>
+              </button>
+            </div>
+
+            <div class="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
+              <div class="grid grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label class="font-bold italic text-gray-800">Name:</label>
+                  <input
+                    type="text"
+                    id="input-name"
+                    class="w-full h-12 bg-gray-100 rounded-xl px-4 italic outline-none border border-transparent focus:border-black focus:bg-white transition-all"
+                    placeholder="Your Name"
+                  />
+                </div>
+                <div class="space-y-2">
+                  <label class="font-bold italic text-gray-800"
+                    >Stall Name:</label
+                  >
+                  <input
+                    type="text"
+                    id="input-stall"
+                    class="w-full h-12 bg-gray-100 rounded-xl px-4 italic outline-none border border-transparent focus:border-black focus:bg-white transition-all"
+                    value="Chicken Rice Stall #01"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="font-bold italic text-gray-800">Rating:</label>
+                <div
+                  class="flex gap-2 text-4xl text-gray-200 cursor-pointer"
+                  id="stars-container"
+                >
+                  <i
+                    class="ri-star-fill hover:text-yellow-300 transition-colors"
+                    data-value="1"
+                  ></i>
+                  <i
+                    class="ri-star-fill hover:text-yellow-300 transition-colors"
+                    data-value="2"
+                  ></i>
+                  <i
+                    class="ri-star-fill hover:text-yellow-300 transition-colors"
+                    data-value="3"
+                  ></i>
+                  <i
+                    class="ri-star-fill hover:text-yellow-300 transition-colors"
+                    data-value="4"
+                  ></i>
+                  <i
+                    class="ri-star-fill hover:text-yellow-300 transition-colors"
+                    data-value="5"
+                  ></i>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="font-bold italic text-gray-800">Tags:</label>
+                <div class="flex gap-3" id="tags-container">
+                  <button
+                    class="tag-btn px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-400 font-bold italic hover:border-black hover:text-black transition-all"
+                    data-tag="Delicious"
+                  >
+                    Delicious
+                  </button>
+                  <button
+                    class="tag-btn px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-400 font-bold italic hover:border-black hover:text-black transition-all"
+                    data-tag="Great Value"
+                  >
+                    Great Value
+                  </button>
+                  <button
+                    class="tag-btn px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-400 font-bold italic hover:border-black hover:text-black transition-all"
+                    data-tag="Punctual"
+                  >
+                    Punctual
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="flex-1 min-h-[200px] border border-black rounded-[20px] overflow-hidden relative shadow-inner"
+              >
+                <textarea
+                  id="input-text"
+                  class="w-full h-full resize-none outline-none p-6 text-xl leading-[40px] italic text-gray-800 font-medium bg-transparent lined-paper"
+                  placeholder="Share your experience..."
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="pt-6 flex justify-end">
+              <button
+                id="submit-btn"
+                class="bg-[#2A00FF] text-white px-12 py-3 rounded-2xl font-black italic text-xl shadow-lg hover:scale-105 hover:shadow-xl transition-all"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="sidebar-menu"
+        class="absolute top-0 right-0 h-full w-[400px] bg-white/90 backdrop-blur-xl z-50 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out border-l border-white/50 flex flex-col p-12"
+      >
+        <button
+          id="close-menu-btn"
+          class="absolute top-8 right-8 text-black hover:rotate-90 transition-transform"
+        >
+          <i class="ri-close-line text-4xl"></i>
+        </button>
+
+        <div class="mt-20 space-y-8">
+          <div
+            class="flex items-center gap-6 text-gray-400 hover:text-black hover:translate-x-2 transition-all cursor-pointer group"
+          >
+            <i class="ri-file-list-3-fill text-3xl"></i>
+            <span class="text-3xl font-black italic">Order History</span>
+          </div>
+          <div
+            class="flex items-center gap-6 text-gray-400 hover:text-black hover:translate-x-2 transition-all cursor-pointer group"
+          >
+            <i class="ri-percent-line text-3xl"></i>
+            <span class="text-3xl font-black italic">Offers</span>
+          </div>
+          <div
+            class="flex items-center gap-6 text-black translate-x-2 cursor-pointer group"
+          >
+            <i class="ri-edit-box-fill text-3xl"></i>
+            <span class="text-3xl font-black italic">Review</span>
+          </div>
+        </div>
+
+        <div class="mt-auto border-t border-gray-300 pt-8">
+          <div
+            class="flex items-center gap-6 text-gray-400 hover:text-red-600 cursor-pointer transition-colors"
+          >
+            <i class="ri-logout-box-r-line text-2xl"></i>
+            <span class="text-2xl font-black italic">Log Out</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="success-toast"
+        class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-8 py-3 rounded-full shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-50"
+      >
+        <i class="ri-checkbox-circle-fill text-green-400 text-xl"></i>
+        <span class="font-bold italic">Review Submitted Successfully!</span>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
