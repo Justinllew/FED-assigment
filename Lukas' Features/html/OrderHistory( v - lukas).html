@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Kitchen Display</title>
+    <style>
+      :root {
+        --primary-green: #68a357;
+        --primary-green-dim: #9dc492;
+        --bg-cream: #f9f7e8;
+        --bg-light-green: #e9f2e6;
+        --text-dark: #1a1a1a;
+        --text-muted: #666;
+        --white: #ffffff;
+        --orange-action: #e67e22;
+        --red-cancel: #e74c3c;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      body {
+        background-color: var(--bg-cream);
+        color: var(--text-dark);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header (From your reference) */
+      header {
+        background-color: var(--white);
+        padding: 15px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        font-size: 1.2rem;
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+      }
+      .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+      }
+
+      /* Main Layout */
+      main {
+        padding: 40px 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+        flex: 1;
+        width: 100%;
+      }
+
+      .dashboard-header {
+        margin-bottom: 30px;
+      }
+      h2.page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 20px;
+      }
+
+      /* Interactive Tabs */
+      .tabs-container {
+        display: flex;
+        gap: 30px;
+        border-bottom: 2px solid #e0e0e0;
+        margin-bottom: 30px;
+      }
+      .tab-btn {
+        background: none;
+        border: none;
+        padding: 0 0 15px 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        position: relative;
+        transition: color 0.3s;
+      }
+      .tab-btn.active {
+        color: var(--primary-green);
+      }
+      .tab-btn.active::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--primary-green);
+      }
+      .tab-count {
+        background: var(--text-dark);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        margin-left: 8px;
+        vertical-align: middle;
+      }
+      .tab-btn.active .tab-count {
+        background: var(--primary-green);
+      }
+
+      /* The Green Container */
+      .orders-board {
+        background-color: var(--bg-light-green);
+        padding: 40px;
+        border-radius: 20px;
+        min-height: 600px;
+      }
+
+      /* Order Cards */
+      .order-card {
+        background: var(--white);
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: var(--shadow);
+        transition: transform 0.2s;
+        border: 1px solid transparent;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .order-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Card Top Row */
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 15px;
+      }
+      .order-id {
+        font-family: monospace;
+        font-size: 1.1rem;
+        color: var(--text-muted);
+      }
+      .customer-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+      .order-timer {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--orange-action);
+        background: #fff3e0;
+        padding: 5px 12px;
+        border-radius: 20px;
+      }
+
+      /* Card Content */
+      .card-body {
+        display: flex;
+        gap: 40px;
+      }
+      .item-list {
+        flex: 2;
+      }
+      .item-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 1rem;
+      }
+      .item-qty {
+        font-weight: 700;
+        color: var(--primary-green);
+        margin-right: 10px;
+      }
+      .item-mods {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-style: italic;
+        margin-left: 25px;
+        display: block;
+      }
+
+      .payment-info {
+        flex: 1;
+        text-align: right;
+        border-left: 1px solid #f0f0f0;
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .total-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+      .payment-method {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 5px;
+        margin-top: 5px;
+      }
+
+      /* Action Buttons */
+      .card-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+      }
+      .btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: filter 0.2s;
+        font-size: 1rem;
+      }
+      .btn:hover {
+        filter: brightness(90%);
+      }
+
+      .btn-primary {
+        background-color: var(--orange-action);
+        color: white;
+      }
+      .btn-secondary {
+        background-color: white;
+        border: 2px solid #e0e0e0;
+        color: var(--text-dark);
+      }
+      .btn-success {
+        background-color: var(--primary-green);
+        color: white;
+      }
+
+      /* Hidden State for Filtering */
+      .hidden {
+        display: none !important;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--bg-light-green);
+        padding: 40px 0;
+        margin-top: auto;
+        text-align: center;
+        color: var(--text-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-left">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+        <span>Vendor Portal</span>
+      </div>
+      <div class="header-right">
+        <div class="user-menu">
+          <div
+            style="
+              width: 32px;
+              height: 32px;
+              background: var(--primary-green);
+              border-radius: 50%;
+              color: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: bold;
+            "
+          >
+            M
+          </div>
+          <span>McDonalds Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="dashboard-header">
+        <h2 class="page-title">Kitchen Display System</h2>
+
+        <div class="tabs-container">
+          <button class="tab-btn active" onclick="switchTab('new')">
+            New Orders <span class="tab-count" id="count-new">2</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab('cooking')">
+            Cooking <span class="tab-count" id="count-cooking">1</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab('completed')">
+            Completed <span class="tab-count" id="count-completed">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="orders-board">
+        <div class="order-card" id="order-001" data-status="new">
+          <div class="card-header">
+            <div>
+              <div class="order-id">#0001</div>
+              <div class="customer-name">Julia Ann</div>
+            </div>
+            <div class="order-timer">Placed 2m ago</div>
+          </div>
+          <div class="card-body">
+            <div class="item-list">
+              <div class="item-row">
+                <div><span class="item-qty">1x</span> Big Mac Meal</div>
+              </div>
+              <span class="item-mods">- No Pickles, No Onions</span>
+              <span class="item-mods">- Large Coke</span>
+              <span class="item-mods">- Large Fries</span>
+              <div class="item-row" style="margin-top: 10px">
+                <div><span class="item-qty">2x</span> McWings (Add-on)</div>
+              </div>
+            </div>
+            <div class="payment-info">
+              <div class="total-price">$12.50</div>
+              <div class="payment-method">Paid via Card 💳</div>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-secondary">Print Ticket</button>
+            <button
+              class="btn btn-primary"
+              onclick="moveOrder('order-001', 'cooking')"
+            >
+              Start Cooking
+            </button>
+          </div>
+        </div>
+
+        <div class="order-card" id="order-002" data-status="new">
+          <div class="card-header">
+            <div>
+              <div class="order-id">#0002</div>
+              <div class="customer-name">Mike Ross</div>
+            </div>
+            <div class="order-timer">Placed 5m ago</div>
+          </div>
+          <div class="card-body">
+            <div class="item-list">
+              <div class="item-row">
+                <div><span class="item-qty">2x</span> Filet-O-Fish</div>
+              </div>
+              <div class="item-row">
+                <div><span class="item-qty">1x</span> Vanilla Cone</div>
+              </div>
+            </div>
+            <div class="payment-info">
+              <div class="total-price">$8.20</div>
+              <div class="payment-method">Cash on Delivery 💵</div>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-secondary">Print Ticket</button>
+            <button
+              class="btn btn-primary"
+              onclick="moveOrder('order-002', 'cooking')"
+            >
+              Start Cooking
+            </button>
+          </div>
+        </div>
+
+        <div class="order-card hidden" id="order-005" data-status="cooking">
+          <div class="card-header">
+            <div>
+              <div class="order-id">#0005</div>
+              <div class="customer-name">Sarah J.</div>
+            </div>
+            <div
+              class="order-timer"
+              style="background: #e3f2fd; color: #1565c0"
+            >
+              Cooking for 8m
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="item-list">
+              <div class="item-row">
+                <div><span class="item-qty">1x</span> 20pc McNuggets</div>
+              </div>
+              <span class="item-mods">- Sweet & Sour Sauce</span>
+            </div>
+            <div class="payment-info">
+              <div class="total-price">$10.00</div>
+              <div class="payment-method">Paid via Card 💳</div>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-secondary">Reprint</button>
+            <button
+              class="btn btn-success"
+              onclick="moveOrder('order-005', 'completed')"
+            >
+              Mark Completed
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="base-footer">
+      <div class="signature">
+        <p>© 2026 Vendor Portal. Designed for efficiency.</p>
+      </div>
+    </footer>
+
+    <script>
+      let currentTab = "new";
+
+      function switchTab(tabName) {
+        currentTab = tabName;
+
+        // Update Tabs UI
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.currentTarget.classList.add("active");
+
+        // Filter Cards
+        const cards = document.querySelectorAll(".order-card");
+        cards.forEach((card) => {
+          if (card.dataset.status === tabName) {
+            card.classList.remove("hidden");
+          } else {
+            card.classList.add("hidden");
+          }
+        });
+      }
+
+      function moveOrder(orderId, newStatus) {
+        const card = document.getElementById(orderId);
+        card.dataset.status = newStatus;
+
+        // Update Button Logic dynamically
+        const actionBtn =
+          card.querySelector(".btn-primary") ||
+          card.querySelector(".btn-success");
+
+        if (newStatus === "cooking") {
+          actionBtn.className = "btn btn-success";
+          actionBtn.innerText = "Mark Completed";
+          actionBtn.onclick = function () {
+            moveOrder(orderId, "completed");
+          };
+          // Update Timer Badge style
+          const badge = card.querySelector(".order-timer");
+          badge.style.background = "#e3f2fd";
+          badge.style.color = "#1565c0";
+          badge.innerText = "Cooking...";
+        } else if (newStatus === "completed") {
+          // If moving to completed, we usually hide the action button or change to "Archive"
+          actionBtn.style.display = "none";
+          const badge = card.querySelector(".order-timer");
+          badge.style.background = "#e8f5e9";
+          badge.style.color = "#2e7d32";
+          badge.innerText = "Ready for Pickup";
+        }
+
+        // Refresh View to hide the card from current tab
+        switchTab(currentTab);
+        updateCounts();
+      }
+
+      function updateCounts() {
+        const statuses = ["new", "cooking", "completed"];
+        statuses.forEach((status) => {
+          const count = document.querySelectorAll(
+            `.order-card[data-status="${status}"]`,
+          ).length;
+          document.getElementById(`count-${status}`).innerText = count;
+        });
+      }
+    </script>
+  </body>
+</html>
