@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: white;
+}
+
+/* --- Header --- */
+header {
+  padding: 40px;
+}
+
+header span {
+  background-color: #e0e0e0;
+  padding: 20px 40px;
+  border-radius: 25px;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+/* --- Main Layout --- */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* Yellow Outer Card */
+.outer-card {
+  background-color: #feffc1;
+  border-radius: 45px;
+  padding: 40px;
+}
+
+/* White Inner Card */
+.inner-card {
+  background-color: white;
+  border-radius: 35px;
+  padding: 50px 80px;
+}
+
+/* Form Rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  align-items: center;
+  margin-bottom: 30px;
+  font-size: 18px;
+}
+
+/* Inputs */
+input,
+textarea {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 25px;
+  font-size: 16px;
+}
+
+textarea {
+  resize: none;
+  height: 90px;
+}
+
+/* Submit Button */
+button {
+  display: block;
+  margin: 50px auto 0;
+  background-color: #7ce53a;
+  color: white;
+  border: none;
+  padding: 16px 70px;
+  border-radius: 35px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover polish */
+button:hover {
+  transform: translateY(-2px);
+}
