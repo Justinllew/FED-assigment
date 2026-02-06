@@ -104,7 +104,7 @@
             </li>
 
             <li class="nav-item active">
-              <a href="/MenuManagement - V.html">
+              <a href="/Devon's features/HTML/MenuManagement - V.html">
                 <svg
                   width="20"
                   height="20"
@@ -149,6 +149,26 @@
             </li>
 
             <li class="nav-item">
+              <a href="../../Lukas' Features/html/CustomerReview.html">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  ></polygon>
+                </svg>
+                <span>Reviews</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a href="../../NEA Inspection Features/dashboardInspect.html">
                 <svg
                   width="20"
@@ -173,9 +193,9 @@
 
         <div class="sidebar-footer">
           <div class="user-profile-mini">
-            <div class="circle" id="sidebar-avatar">D</div>
+            <div class="circle" id="sidebar-avatar">L</div>
             <div class="user-info">
-              <h4 id="sidebar-name">Devon Lane</h4>
+              <h4 id="sidebar-name">Lukas</h4>
               <p>Store Manager</p>
             </div>
           </div>
@@ -198,7 +218,7 @@
                 border: none;
               "
               aria-label="Add New Item"
-              onclick="openAddModal()"
+              onclick="openAddModal(this)"
             >
               <svg
                 width="20"
@@ -266,38 +286,10 @@
                     <span class="status-dot" id="statusDot"></span>
                     <span id="statusText">Closed</span>
                   </div>
-                  <label class="switch">
-                    <input
-                      type="checkbox"
-                      id="masterStatusToggle"
-                      onchange="handleManualToggle(this)"
-                    />
-                    <span class="slider round"></span>
-                  </label>
                 </div>
-
-                <button
-                  class="btn-schedule"
-                  onclick="openScheduleModal()"
-                  title="Set Automatic Hours"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <span>Auto</span>
-                </button>
               </div>
             </div>
           </section>
-
           <section
             class="menu-list-card"
             aria-label="Menu Items List"
@@ -389,61 +381,6 @@
               Save Changes
             </button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="scheduleModal" class="modal-overlay">
-      <div class="modal-content" style="max-width: 400px">
-        <div class="modal-header">
-          <h3>Store Hours</h3>
-          <button class="close-btn" onclick="closeScheduleModal()">
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <div
-            class="form-group flex-row-center"
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            "
-          >
-            <label style="margin: 0">Enable Automatic Schedule</label>
-            <label class="switch">
-              <input type="checkbox" id="autoScheduleToggle" />
-              <span class="slider round"></span>
-            </label>
-          </div>
-
-          <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee" />
-
-          <div class="time-settings" id="timeSettings">
-            <div class="form-group">
-              <label for="openTimeInput">Opening Time</label>
-              <input type="time" id="openTimeInput" value="09:00" />
-            </div>
-            <div class="form-group">
-              <label for="closeTimeInput">Closing Time</label>
-              <input type="time" id="closeTimeInput" value="21:00" />
-            </div>
-          </div>
-
-          <p
-            class="hint-text"
-            style="font-size: 0.85rem; color: #666; margin-top: 10px"
-          >
-            Your store will automatically open and close at these times.
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn-cancel" onclick="closeScheduleModal()">
-            Cancel
-          </button>
-          <button class="btn-save" onclick="saveSchedule()">
-            Save Schedule
-          </button>
         </div>
       </div>
     </div>

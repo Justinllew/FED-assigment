@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - Payment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #fdfcf7;
+      }
+
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+      }
+
+      .radio-card {
+        transition: all 0.2s ease;
+      }
+
+      .radio-card.active {
+        border-color: #d97706;
+        background-color: #fffbeb;
+      }
+
+      .toggle-checkbox:checked {
+        right: 0;
+        border-color: #d97706;
+      }
+      .toggle-checkbox:checked + .toggle-label {
+        background-color: #d97706;
+      }
+
+      .slide-up {
+        animation: slideUp 0.3s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .shake {
+        animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      }
+
+      @keyframes shake {
+        10%,
+        90% {
+          transform: translate3d(-1px, 0, 0);
+        }
+        20%,
+        80% {
+          transform: translate3d(2px, 0, 0);
+        }
+        30%,
+        50%,
+        70% {
+          transform: translate3d(-4px, 0, 0);
+        }
+        40%,
+        60% {
+          transform: translate3d(4px, 0, 0);
+        }
+      }
+
+      .loading-spinner {
+        border: 3px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 3px solid #d97706;
+        width: 24px;
+        height: 24px;
+        -webkit-animation: spin 1s linear infinite; /* Safari */
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body class="text-gray-800 min-h-screen pb-32">
+    <!-- Header -->
+    <header
+      class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200"
+    >
+      <div
+        class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between"
+      >
+        <button
+          onclick="history.back()"
+          class="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition"
+        >
+          <i class="fa-solid fa-arrow-left text-gray-600"></i>
+        </button>
+        <h1 class="text-lg font-bold text-gray-900">Checkout</h1>
+        <div class="w-10"></div>
+        <!-- Spacer for centering -->
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 py-6 space-y-6">
+      <!-- Order Items -->
+      <section class="bg-white rounded-2xl p-6 shadow-sm">
+        <h2 class="text-lg font-bold mb-4 flex items-center">
+          <i class="fa-solid fa-bag-shopping text-amber-600 mr-2"></i> Order
+          Summary
+        </h2>
+        <div id="order-items" class="space-y-4">
+          <!-- Items injected by JS -->
+        </div>
+      </section>
+
+      <!-- Delivery Mode Toggle -->
+      <section class="bg-white rounded-2xl p-6 shadow-sm">
+        <h2 class="text-lg font-bold mb-4">Delivery Method</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div
+            id="mode-delivery"
+            class="radio-card active border-2 border-gray-200 rounded-xl p-4 cursor-pointer text-center"
+            onclick="setMode('delivery')"
+          >
+            <i class="fa-solid fa-truck text-2xl mb-2 text-gray-400"></i>
+            <div class="font-bold text-gray-900">Delivery</div>
+            <div class="text-xs text-gray-500 mt-1">+30% fee</div>
+          </div>
+          <div
+            id="mode-pickup"
+            class="radio-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer text-center"
+            onclick="setMode('pickup')"
+          >
+            <i class="fa-solid fa-store text-2xl mb-2 text-gray-400"></i>
+            <div class="font-bold text-gray-900">Self Pickup</div>
+            <div class="text-xs text-gray-500 mt-1">No extra fee</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Address Section (Conditional) -->
+      <section
+        id="address-section"
+        class="bg-white rounded-2xl p-6 shadow-sm slide-up"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-bold">Delivery Address</h2>
+          <span
+            class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium"
+            >Required</span
+          >
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Street Address</label
+            >
+            <input
+              type="text"
+              id="addr-street"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+              placeholder="123 Main Street"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >City</label
+              >
+              <input
+                type="text"
+                id="addr-city"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                placeholder="City"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Postal Code</label
+              >
+              <input
+                type="text"
+                id="addr-postal"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                placeholder="12345"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Phone Number</label
+            >
+            <input
+              type="tel"
+              id="addr-phone"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+              placeholder="+1 (555) 000-0000"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Offers Section -->
+      <section class="bg-white rounded-2xl p-6 shadow-sm">
+        <h2 class="text-lg font-bold mb-4">Available Offers</h2>
+        <div class="space-y-3">
+          <div
+            id="offer-item"
+            class="border border-amber-200 bg-amber-50 rounded-xl p-4 flex items-center justify-between cursor-pointer"
+            onclick="toggleOffer()"
+          >
+            <div class="flex items-center space-x-3">
+              <div
+                class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600"
+              >
+                <i class="fa-solid fa-tag"></i>
+              </div>
+              <div>
+                <div class="font-bold text-gray-900">First Order Discount</div>
+                <div class="text-sm text-amber-700">Save $5.00</div>
+              </div>
+            </div>
+            <div
+              id="offer-checkbox"
+              class="w-6 h-6 rounded-full border-2 border-amber-600 bg-amber-600 flex items-center justify-center text-white text-xs"
+            >
+              <i class="fa-solid fa-check"></i>
+            </div>
+          </div>
+
+          <div
+            id="no-offers"
+            class="hidden border border-gray-200 rounded-xl p-4 text-center text-gray-500"
+          >
+            No applicable offers for this order
+          </div>
+        </div>
+      </section>
+
+      <!-- EatPoints Redemption -->
+      <section
+        class="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-6 shadow-sm border border-amber-100"
+      >
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900">EatPoints</h2>
+            <p class="text-sm text-gray-600">1 point = $0.01 discount</p>
+          </div>
+          <div class="text-right">
+            <div class="text-sm text-gray-600">Available</div>
+            <div class="font-bold text-amber-600 text-lg" id="available-points">
+              200.73
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 border border-amber-200">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm font-medium text-gray-700"
+              >Use points for discount</span
+            >
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                id="points-toggle"
+                class="sr-only peer"
+                onchange="togglePoints()"
+              />
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"
+              ></div>
+            </label>
+          </div>
+
+          <div id="points-input-section" class="hidden slide-up">
+            <div class="flex items-center space-x-2">
+              <input
+                type="number"
+                id="points-input"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 outline-none"
+                placeholder="Enter points"
+                max="200"
+                oninput="validatePoints()"
+              />
+              <button
+                onclick="applyMaxPoints()"
+                class="text-xs font-bold text-amber-600 hover:text-amber-700 px-2"
+              >
+                MAX
+              </button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">
+              Discount: $<span id="points-discount-display">0.00</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payment Method -->
+      <section class="bg-white rounded-2xl p-6 shadow-sm">
+        <h2 class="text-lg font-bold mb-4">Payment Method</h2>
+        <div
+          class="border-2 border-amber-600 bg-amber-50 rounded-xl p-4 flex items-center justify-between"
+        >
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-6 bg-gray-800 rounded flex items-center justify-center text-white text-xs font-bold"
+            >
+              VISA
+            </div>
+            <div>
+              <div class="font-bold text-gray-900">•••• 4289</div>
+              <div class="text-xs text-gray-500">Expires 12/26</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-check-circle text-amber-600 text-xl"></i>
+        </div>
+      </section>
+
+      <!-- Bill Summary -->
+      <section class="bg-gray-900 text-white rounded-2xl p-6 shadow-lg">
+        <h2 class="text-lg font-bold mb-4 text-gray-100">Bill Details</h2>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between text-gray-300">
+            <span>Subtotal</span>
+            <span id="bill-subtotal">$0.00</span>
+          </div>
+          <div class="flex justify-between text-gray-300">
+            <span>Platform Fee (5%)</span>
+            <span id="bill-platform">$0.00</span>
+          </div>
+          <div
+            id="bill-delivery-row"
+            class="flex justify-between text-gray-300"
+          >
+            <span>Delivery Fee (30%)</span>
+            <span id="bill-delivery">$0.00</span>
+          </div>
+          <div
+            id="bill-offer-row"
+            class="flex justify-between text-green-400 hidden"
+          >
+            <span>Offer Discount</span>
+            <span id="bill-offer">-$0.00</span>
+          </div>
+          <div
+            id="bill-points-row"
+            class="flex justify-between text-amber-400 hidden"
+          >
+            <span>Points Discount</span>
+            <span id="bill-points">-$0.00</span>
+          </div>
+          <div class="border-t border-gray-700 pt-3 mt-3">
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold">Total Amount</span>
+              <span class="text-2xl font-bold text-amber-400" id="bill-total"
+                >$0.00</span
+              >
+            </div>
+          </div>
+          <div
+            class="bg-gray-800 rounded-lg p-3 mt-4 flex items-center justify-between"
+          >
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-coins text-amber-500"></i>
+              <span class="text-xs text-gray-300">You'll earn</span>
+            </div>
+            <span class="font-bold text-amber-400" id="points-earning"
+              >+0 pts</span
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Sticky Footer -->
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-30"
+    >
+      <div class="max-w-3xl mx-auto flex items-center justify-between">
+        <div>
+          <div class="text-xs text-gray-500">Total to Pay</div>
+          <div class="text-2xl font-bold text-gray-900" id="footer-total">
+            $0.00
+          </div>
+        </div>
+        <button
+          onclick="processPayment()"
+          id="pay-button"
+          class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-amber-200 transition transform active:scale-95 flex items-center space-x-2"
+        >
+          <span>Place Order</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div
+      id="payment-modal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-white rounded-3xl p-8 max-w-sm w-full text-center slide-up"
+      >
+        <div id="payment-loading">
+          <div class="loading-spinner mx-auto mb-4"></div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">
+            Processing Payment
+          </h3>
+          <p class="text-gray-500">
+            Please wait while we secure your transaction...
+          </p>
+        </div>
+
+        <div id="payment-success" class="hidden">
+          <div
+            class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600 text-4xl"
+          >
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">Order Placed!</h3>
+          <p class="text-gray-600 mb-6">
+            Your order has been confirmed. You earned
+            <span
+              id="earned-points-success"
+              class="font-bold text-amber-600"
+            ></span>
+            points!
+          </p>
+          <button
+            onclick="closeModal()"
+            class="w-full bg-gray-900 text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition"
+          >
+            Continue
+          </button>
+        </div>
+
+        <div id="payment-failed" class="hidden">
+          <div
+            class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600 text-4xl"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">Payment Failed</h3>
+          <p class="text-gray-600 mb-6" id="fail-reason">
+            Something went wrong. Please try again.
+          </p>
+          <button
+            onclick="retryPayment()"
+            class="w-full bg-amber-600 text-white py-4 rounded-xl font-bold hover:bg-amber-700 transition"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // State
+      const state = {
+        items: [
+          { id: 1, name: "Truffle Burger", price: 18.5, qty: 2 },
+          { id: 2, name: "Sweet Potato Fries", price: 6.0, qty: 1 },
+          { id: 3, name: "Vanilla Shake", price: 5.5, qty: 1 },
+        ],
+        mode: "delivery", // 'delivery' or 'pickup'
+        availablePoints: 200.73,
+        usedPoints: 0,
+        offerActive: true,
+        offerDiscount: 5.0,
+        processing: false,
+      };
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        renderItems();
+        calculateTotals();
+      });
+
+      function renderItems() {
+        const container = document.getElementById("order-items");
+        container.innerHTML = state.items
+          .map(
+            (item) => `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                            <i class="fa-solid fa-burger"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-900">${item.name}</div>
+                            <div class="text-sm text-gray-500">Qty: ${item.qty}</div>
+                        </div>
+                    </div>
+                    <div class="font-bold text-gray-900">$${(item.price * item.qty).toFixed(2)}</div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function setMode(mode) {
+        state.mode = mode;
+
+        // Update UI
+        document
+          .getElementById("mode-delivery")
+          .classList.toggle("active", mode === "delivery");
+        document
+          .getElementById("mode-pickup")
+          .classList.toggle("active", mode === "pickup");
+
+        document
+          .getElementById("mode-delivery")
+          .querySelector("i")
+          .classList.toggle("text-amber-600", mode === "delivery");
+        document
+          .getElementById("mode-pickup")
+          .querySelector("i")
+          .classList.toggle("text-amber-600", mode === "pickup");
+
+        // Show/hide address
+        const addrSection = document.getElementById("address-section");
+        if (mode === "delivery") {
+          addrSection.style.display = "block";
+          addrSection.classList.add("slide-up");
+        } else {
+          addrSection.style.display = "none";
+        }
+
+        calculateTotals();
+      }
+
+      function toggleOffer() {
+        state.offerActive = !state.offerActive;
+        const checkbox = document.getElementById("offer-checkbox");
+
+        if (state.offerActive) {
+          checkbox.classList.remove("bg-white", "border-gray-300");
+          checkbox.classList.add(
+            "bg-amber-600",
+            "border-amber-600",
+            "text-white",
+          );
+          checkbox.innerHTML = '<i class="fa-solid fa-check"></i>';
+        } else {
+          checkbox.classList.add("bg-white", "border-gray-300");
+          checkbox.classList.remove(
+            "bg-amber-600",
+            "border-amber-600",
+            "text-white",
+          );
+          checkbox.innerHTML = "";
+        }
+
+        calculateTotals();
+      }
+
+      function togglePoints() {
+        const checkbox = document.getElementById("points-toggle");
+        const inputSection = document.getElementById("points-input-section");
+
+        if (checkbox.checked) {
+          inputSection.classList.remove("hidden");
+          document.getElementById("points-input").focus();
+        } else {
+          inputSection.classList.add("hidden");
+          state.usedPoints = 0;
+          document.getElementById("points-input").value = "";
+          document.getElementById("points-discount-display").textContent =
+            "0.00";
+          calculateTotals();
+        }
+      }
+
+      function validatePoints() {
+        const input = document.getElementById("points-input");
+        let val = parseFloat(input.value) || 0;
+
+        // Max validation
+        if (val > state.availablePoints) {
+          val = state.availablePoints;
+          input.value = val;
+        }
+
+        // Max based on order total (can't discount more than total)
+        const currentTotal = calculateRawTotal();
+        const maxAllowed = Math.min(state.availablePoints, currentTotal * 100); // 1 point = 1 cent
+
+        if (val > maxAllowed) {
+          val = Math.floor(maxAllowed);
+          input.value = val;
+        }
+
+        state.usedPoints = val;
+        document.getElementById("points-discount-display").textContent = (
+          val / 100
+        ).toFixed(2);
+        calculateTotals();
+      }
+
+      function applyMaxPoints() {
+        const currentTotal = calculateRawTotal();
+        const maxPoints = Math.min(state.availablePoints, currentTotal * 100);
+        document.getElementById("points-input").value = Math.floor(maxPoints);
+        validatePoints();
+      }
+
+      function calculateRawTotal() {
+        const subtotal = state.items.reduce(
+          (sum, item) => sum + item.price * item.qty,
+          0,
+        );
+        const platformFee = subtotal * 0.05;
+        const deliveryFee = state.mode === "delivery" ? subtotal * 0.3 : 0;
+        const offerDiscount = state.offerActive ? state.offerDiscount : 0;
+
+        return subtotal + platformFee + deliveryFee - offerDiscount;
+      }
+
+      function calculateTotals() {
+        const subtotal = state.items.reduce(
+          (sum, item) => sum + item.price * item.qty,
+          0,
+        );
+        const platformFee = subtotal * 0.05;
+        const deliveryFee = state.mode === "delivery" ? subtotal * 0.3 : 0;
+        const offerDiscount = state.offerActive ? state.offerDiscount : 0;
+        const pointsDiscount = state.usedPoints / 100; // 1 point = 1 cent
+
+        let total =
+          subtotal + platformFee + deliveryFee - offerDiscount - pointsDiscount;
+        if (total < 0) total = 0;
+
+        // Calculate points to earn (1 dollar = 10 points) based on final paid amount
+        const pointsToEarn = Math.floor(total * 10);
+
+        // Update UI
+        document.getElementById("bill-subtotal").textContent =
+          `$${subtotal.toFixed(2)}`;
+        document.getElementById("bill-platform").textContent =
+          `$${platformFee.toFixed(2)}`;
+
+        const deliveryRow = document.getElementById("bill-delivery-row");
+        if (state.mode === "delivery") {
+          deliveryRow.style.display = "flex";
+          document.getElementById("bill-delivery").textContent =
+            `$${deliveryFee.toFixed(2)}`;
+        } else {
+          deliveryRow.style.display = "none";
+        }
+
+        const offerRow = document.getElementById("bill-offer-row");
+        if (state.offerActive && offerDiscount > 0) {
+          offerRow.classList.remove("hidden");
+          document.getElementById("bill-offer").textContent =
+            `-$${offerDiscount.toFixed(2)}`;
+        } else {
+          offerRow.classList.add("hidden");
+        }
+
+        const pointsRow = document.getElementById("bill-points-row");
+        if (state.usedPoints > 0) {
+          pointsRow.classList.remove("hidden");
+          document.getElementById("bill-points").textContent =
+            `-$${pointsDiscount.toFixed(2)}`;
+        } else {
+          pointsRow.classList.add("hidden");
+        }
+
+        document.getElementById("bill-total").textContent =
+          `$${total.toFixed(2)}`;
+        document.getElementById("footer-total").textContent =
+          `$${total.toFixed(2)}`;
+        document.getElementById("points-earning").textContent =
+          `+${pointsToEarn} pts`;
+
+        return { total, pointsToEarn };
+      }
+
+      function validateAddress() {
+        if (state.mode === "pickup") return true;
+
+        const street = document.getElementById("addr-street").value.trim();
+        const city = document.getElementById("addr-city").value.trim();
+        const postal = document.getElementById("addr-postal").value.trim();
+
+        return street && city && postal;
+      }
+
+      function processPayment() {
+        if (state.processing) return;
+
+        // Validation
+        if (state.mode === "delivery" && !validateAddress()) {
+          alert("Please fill in all delivery address fields");
+          // Shake animation on address section
+          const addrSection = document.getElementById("address-section");
+          addrSection.classList.add("shake");
+          setTimeout(() => addrSection.classList.remove("shake"), 500);
+          return;
+        }
+
+        state.processing = true;
+        const btn = document.getElementById("pay-button");
+        btn.innerHTML =
+          '<div class="loading-spinner border-white border-t-transparent w-5 h-5"></div>';
+        btn.classList.add("opacity-75", "cursor-not-allowed");
+
+        // Show modal
+        const modal = document.getElementById("payment-modal");
+        const loading = document.getElementById("payment-loading");
+        const success = document.getElementById("payment-success");
+        const failed = document.getElementById("payment-failed");
+
+        modal.classList.remove("hidden");
+        loading.classList.remove("hidden");
+        success.classList.add("hidden");
+        failed.classList.add("hidden");
+
+        // Simulate API call (2 seconds)
+        setTimeout(() => {
+          loading.classList.add("hidden");
+
+          // 90% success rate simulation
+          if (Math.random() > 0.1) {
+            // Success
+            const { pointsToEarn } = calculateTotals();
+            document.getElementById("earned-points-success").textContent =
+              pointsToEarn;
+            success.classList.remove("hidden");
+
+            // Update available points (subtract used, add earned)
+            state.availablePoints =
+              state.availablePoints - state.usedPoints + pointsToEarn;
+            document.getElementById("available-points").textContent =
+              state.availablePoints.toFixed(2);
+          } else {
+            // Failure
+            failed.classList.remove("hidden");
+            state.processing = false;
+            resetButton();
+          }
+        }, 2000);
+      }
+
+      function resetButton() {
+        const btn = document.getElementById("pay-button");
+        btn.innerHTML =
+          '<span>Place Order</span><i class="fa-solid fa-arrow-right"></i>';
+        btn.classList.remove("opacity-75", "cursor-not-allowed");
+      }
+
+      function retryPayment() {
+        document.getElementById("payment-failed").classList.add("hidden");
+        document.getElementById("payment-loading").classList.remove("hidden");
+
+        setTimeout(() => {
+          document.getElementById("payment-loading").classList.add("hidden");
+          const { pointsToEarn } = calculateTotals();
+          document.getElementById("earned-points-success").textContent =
+            pointsToEarn;
+          document.getElementById("payment-success").classList.remove("hidden");
+        }, 1500);
+      }
+
+      function closeModal() {
+        document.getElementById("payment-modal").classList.add("hidden");
+        state.processing = false;
+        resetButton();
+
+        // Reset form for demo purposes
+        state.usedPoints = 0;
+        state.offerActive = true;
+        document.getElementById("points-toggle").checked = false;
+        document.getElementById("points-input").value = "";
+        document.getElementById("points-input-section").classList.add("hidden");
+        calculateTotals();
+      }
+    </script>
+  </body>
+</html>

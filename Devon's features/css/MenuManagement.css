@@ -28,7 +28,6 @@
   --sidebar-width: 260px;
   --sidebar-collapsed-width: 80px;
 }
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -566,6 +565,10 @@ input:checked + .slider:before {
   z-index: 1000; /* Highest priority */
   justify-content: center;
   align-items: center;
+}
+
+.modal-overlay.active {
+  display: flex; /* changes from 'none' to 'flex' */
 }
 
 .modal-content {
