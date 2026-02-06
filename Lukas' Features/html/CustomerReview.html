@@ -202,17 +202,17 @@
 
       <div class="sidebar-footer">
         <div class="user-profile-mini">
-          <div class="circle" id="sidebar-avatar">D</div>
+          <div class="circle" id="sidebar-avatar">?</div>
           <div class="user-info">
-            <h4 id="sidebar-name">Devon Lane</h4>
-            <p>Store Manager</p>
+            <h4 id="sidebar-name">Loading...</h4>
+            <p id="sidebar-role">Store Manager</p>
           </div>
         </div>
-        <a href="../index.html" class="logout-link">Log Out</a>
+        <a href="#" class="logout-link" id="logoutBtn">Log Out</a>
       </div>
     </aside>
 
-    <div class="main-content-wrapper">
+    <div class="main-content-wrapper" id="mainContent">
       <header class="app-header">
         <div class="header-container">
           <div class="header-left">
@@ -222,11 +222,12 @@
             <div class="user-menu-container">
               <div class="user-avatar-small">
                 <img
+                  id="header-avatar"
                   src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vendor&backgroundColor=c0aede"
                   alt="Profile"
                 />
               </div>
-              <span class="user-name">Lukas Manager</span>
+              <span class="user-name" id="header-name">Loading...</span>
             </div>
           </div>
         </div>
@@ -256,6 +257,14 @@
           </div>
         </div>
       </main>
+    </div>
+
+    <!-- Auth Loading Overlay -->
+    <div class="auth-overlay" id="authOverlay">
+      <div class="auth-loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Authenticating...</p>
+      </div>
     </div>
 
     <div class="modal-overlay" id="reviewFormOverlay">
