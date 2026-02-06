@@ -1,14 +1,30 @@
 :root {
+  /* Brand Colors */
   --primary-green: #68a357;
-  --primary-green-dim: #9dc492; /* Lighter version for chart backgrounds */
-  --bg-cream: #f9f7e8;
-  --bg-light-green: #e9f2e6; /* The "Container" background */
-  --text-dark: #1a1a1a;
-  --text-muted: #9e9e9e;
-  --white: #ffffff;
-  --border-light: #f0f0f0;
-}
+  --primary-hover: #578a48;
 
+  /* Backgrounds */
+  --bg-cream: #f9f7e8;
+  --bg-light-green: #e9f2e6;
+  --white: #ffffff;
+
+  /* Text */
+  --text-dark: #1a1a1a;
+  --text-muted: #666666;
+  --border-light: #e0e0e0;
+
+  /* Status Badge Colors */
+  --badge-avail-bg: #dbead5;
+  --badge-avail-text: #2e5c21;
+  --badge-out-bg: #f2e6e6;
+  --badge-out-text: #a35757;
+  --badge-promo-bg: #fff3cd;
+  --badge-promo-text: #856404;
+
+  /* Dimensions */
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 80px;
+}
 /* --- Reset & Base --- */
 * {
   box-sizing: border-box;
