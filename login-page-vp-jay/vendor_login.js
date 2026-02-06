@@ -39,9 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // SUCCESS
       alert("Welcome back, Vendor!");
 
-      // Redirect to the dashboard or home page
-      // (Adjust this path if your home page is in a different folder!)
-      window.location.href = "index.html";
+      // --- NEW: Save the name for the next page ---
+      // In a real app, this comes from the database.
+      // Here we just hardcode "Jay" or take it from input if available.
+      localStorage.setItem("freshEatsUserName", "Jay");
+
+      // --- NEW: Redirect to Vendor Home ---
+      // Since we are in the same folder, just use the filename
+      window.location.href = "../home-page-vp-jay/vendor-home.html";
     } else {
       // FAILURE
       alert(

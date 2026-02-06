@@ -41,11 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Redirect to the dashboard or home page
       // (Adjust this path if your home page is in a different folder!)
-      window.location.href = "../home-page-vp-jay/home-page-p.html";
+      window.location.href = "../home-page-vp-jay/patron-home.html";
     } else {
       // FAILURE
       alert(
-        "Wrong email or password.\n(Hint: Try 'vendor@fresh.com' and '123456')",
+        "Wrong email or password.\n(Hint: Try 'patron@fresh.com' and '123456')",
       );
     }
   });

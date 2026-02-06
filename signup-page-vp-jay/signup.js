@@ -75,13 +75,18 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Account created:", { role, name, email });
     alert("Account created successfully!");
 
+    // --- NEW: Save the real name the user typed! ---
+    localStorage.setItem("freshEatsUserName", name);
+
     // Redirect logic
     if (role === "vendor") {
-      // Adjust this path if your vendor page is in another folder!
-      // Based on your current structure, it might need ../ if inside the signup folder
-      window.location.href = "../Login Page - v/vendor_login.html";
+      // GO TO VENDOR HOME
+      // We need to go UP (../) out of signup folder, then DOWN into Login folder
+      window.location.href = "../home-page-vp-jay/vendor-home.html";
     } else {
-      window.location.href = "../index.html"; // Example redirection
+      // GO TO PATRON HOME (Index)
+      // We need to go UP (../) to the main folder
+      window.location.href = "../home-page-vp-jay/patron-home.html";
     }
   });
 });
