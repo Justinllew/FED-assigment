@@ -1,0 +1,184 @@
+/* --- RESET --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+.split-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* --- LEFT PANEL (Image Side) --- */
+.left-panel {
+  flex: 1;
+  background-image: url("https://images.unsplash.com/photo-1584789921863-0896eba949f2?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* Hawker Centre Placeholder */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* Text at bottom like image */
+  padding: 60px;
+  color: white;
+}
+
+/* Dark overlay so text is readable */
+.left-panel .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.8)
+  );
+}
+
+.left-panel .content {
+  position: relative;
+  z-index: 2;
+  max-width: 500px;
+}
+
+.logo-mark {
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.left-panel h1 {
+  font-size: 3rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.subtext {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* --- RIGHT PANEL (Form Side) --- */
+.right-panel {
+  flex: 1;
+  background-color: #fdfbf0; /* Cream background from image */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.brand-header {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.right-panel h2 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.instruction {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Inputs */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input-group input:focus {
+  border-color: #333;
+}
+
+/* Login Button */
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background-color: #000; /* Black button from image */
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: opacity 0.2s;
+}
+
+.btn-login:hover {
+  opacity: 0.8;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+}
+.back-link a {
+  text-decoration: none;
+  color: #666;
+  font-size: 0.9rem;
+}
+.back-link a:hover {
+  color: #000;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .split-container {
+    flex-direction: column;
+  }
+  .left-panel {
+    min-height: 250px;
+    flex: none;
+    padding: 30px;
+  }
+  .left-panel h1 {
+    font-size: 2rem;
+  }
+  .logo-mark {
+    display: none;
+  }
+}
