@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display Settings - FreshEats Studio</title>
+    <link rel="stylesheet" href="stall-display.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  </head>
+  <body>
+    <div class="app-container light-theme">
+      <aside class="sidebar">
+        <div class="brand-logo">
+          <i
+            class="ph-bold ph-storefront"
+            style="font-size: 24px; color: var(--primary-green)"
+          ></i>
+          <span>FreshEats Studio</span>
+        </div>
+
+        <nav>
+          <ul class="nav-links">
+            <li class="nav-item">
+              <a href="vendor_home.html">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li class="nav-item active">
+              <a href="#">
+                <i class="ph ph-paint-brush-broad"></i>
+                <span>Display</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a
+                href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+              >
+                <i class="ph ph-receipt"></i>
+                <span>Orders</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="../../Devon's features/HTML/MenuManagement - V.html">
+                <i class="ph ph-list-dashes"></i>
+                <span>Menu</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+              >
+                <i class="ph ph-chart-line-up"></i>
+                <span>Analytics</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="../../NEA Inspection Features/dashboardInspect.html">
+                <i class="ph ph-clipboard-text"></i>
+                <span>Inspections</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-profile-mini">
+            <div class="circle" id="sidebar-avatar">V</div>
+            <div class="user-info">
+              <h4 id="sidebar-name">Vendor</h4>
+              <p>Store Manager</p>
+            </div>
+          </div>
+          <a href="../index.html" class="logout-link">Log Out</a>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <header class="studio-header">
+          <div>
+            <h2 class="page-title">Store Display Settings</h2>
+            <p class="subtitle">
+              Customize how your stall appears on the FreshEats App
+            </p>
+          </div>
+          <div class="header-right">
+            <button class="btn-primary" id="save-changes-btn">
+              <i class="ph-bold ph-check"></i> SAVE CHANGES
+            </button>
+            <div class="user-avatar" id="header-avatar">V</div>
+          </div>
+        </header>
+
+        <main class="display-grid">
+          <div class="editor-column">
+            <div class="studio-card">
+              <div class="card-header">
+                <h3>Store Banner</h3>
+              </div>
+              <div class="card-body">
+                <div class="banner-upload-area" id="banner-dropzone">
+                  <img
+                    src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000&auto=format&fit=crop"
+                    alt="Current Banner"
+                    class="current-banner"
+                    id="preview-banner"
+                  />
+                  <div class="upload-overlay">
+                    <i class="ph ph-camera"></i>
+                    <span>Change Cover Image</span>
+                  </div>
+                </div>
+                <p class="helper-text">
+                  Recommended size: 1200 x 400px. JPG or PNG.
+                </p>
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header">
+                <h3>Live Status Message</h3>
+                <label class="switch">
+                  <input type="checkbox" checked id="status-toggle" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="card-body">
+                <div class="input-group">
+                  <label>Message shown to customers:</label>
+                  <select id="status-message-select">
+                    <option value="Open Now">Store is Open</option>
+                    <option value="Long Queue (20+ min)">
+                      Long Queue (20+ min wait)
+                    </option>
+                    <option value="Closing Soon">
+                      Closing Soon (Last Orders)
+                    </option>
+                    <option value="Sold Out">Sold Out for Today</option>
+                  </select>
+                </div>
+                <div class="status-preview-box" id="status-preview-box">
+                  <span class="dot"></span>
+                  <span id="status-text-display">Store is Open</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header">
+                <h3>"Chef's Recommendations"</h3>
+              </div>
+              <div class="card-body">
+                <p class="helper-text">
+                  Select up to 3 items to pin to the top of your menu.
+                </p>
+                <div class="featured-list">
+                  <div class="featured-slot filled">
+                    <img
+                      src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=200&auto=format&fit=crop"
+                      alt="Food"
+                    />
+                    <div class="slot-info">
+                      <h4>Signature Chicken Rice</h4>
+                      <span>$5.50</span>
+                    </div>
+                    <button class="remove-btn">
+                      <i class="ph-bold ph-x"></i>
+                    </button>
+                  </div>
+                  <div class="featured-slot filled">
+                    <img
+                      src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop"
+                      alt="Food"
+                    />
+                    <div class="slot-info">
+                      <h4>Roasted Pork Set</h4>
+                      <span>$6.00</span>
+                    </div>
+                    <button class="remove-btn">
+                      <i class="ph-bold ph-x"></i>
+                    </button>
+                  </div>
+                  <div class="featured-slot empty">
+                    <div class="add-circle">
+                      <i class="ph-bold ph-plus"></i>
+                    </div>
+                    <span>Add Recommendation</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-column">
+            <div class="sticky-wrapper">
+              <h3>Live App Preview</h3>
+              <p class="helper-text">
+                This is how your store looks on the FreshEats App.
+              </p>
+
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="app-nav">
+                    <i class="ph-bold ph-arrow-left"></i>
+                    <i class="ph-bold ph-heart"></i>
+                  </div>
+                  <div
+                    class="app-banner"
+                    id="mobile-banner-preview"
+                    style="
+                      background-image: url(&quot;https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000&auto=format&fit=crop&quot;);
+                    "
+                  ></div>
+
+                  <div class="app-content">
+                    <h2 id="mobile-store-name">Vendor Name</h2>
+                    <div class="app-meta">
+                      <span
+                        ><i class="ph-fill ph-star" style="color: orange"></i>
+                        4.8</span
+                      >
+                      <span>• 1.2km</span>
+                      <span>• $$</span>
+                    </div>
+                    <div class="app-status-pill" id="mobile-status-pill">
+                      Open Now
+                    </div>
+
+                    <h4 style="margin-top: 20px; font-size: 0.9rem">
+                      Chef's Recommendations
+                    </h4>
+                    <div class="app-scroll-row">
+                      <div class="app-card-sm"></div>
+                      <div class="app-card-sm"></div>
+                      <div class="app-card-sm"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="stall-display.js"></script>
+  </body>
+</html>
