@@ -1,66 +1,58 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Helper function to handle navigation ---
+  // Helper function
   function navigateTo(url) {
     window.location.href = url;
   }
 
-  // 1. Select Navigation Buttons (NEA Inspector & Login)
-  // We select the container first, then the specific buttons inside
-  const navButtons = document.querySelectorAll(".nav-right .btn-primary");
-  const neaButton = navButtons[0]; // The first button (NEA Inspector)
-  const loginButton = navButtons[1]; // The second button (Login)
+  // 1. Select The New Footer Button
+  const neaButton = document.getElementById("nea-inspector-btn");
 
-  // 2. Select Tab Buttons (Delivery & Pickup)
-  const tabButtons = document.querySelectorAll(".tabs .tab-btn");
-  const deliveryBtn = tabButtons[0];
-  const pickupBtn = tabButtons[1];
+  // 2. Select Tabs (Using IDs is safer than index [0] or [1])
+  const deliveryBtn = document.getElementById("delivery-tab");
+  const pickupBtn = document.getElementById("pickup-tab");
 
   // 3. Select Order Button
   const orderBtn = document.querySelector(".order-btn");
 
-  // --- Add Click Events ---
+  // --- Click Events ---
 
-  // NEA Inspector Button
+  // NEA Inspector (Now at the bottom)
   if (neaButton) {
     neaButton.addEventListener("click", () => {
-      // Replace with your actual URL
+      // Replace with your actual NEA login page
+      // Assuming you might build a page later or link to external site
       navigateTo("https://www.nea.gov.sg");
-    });
-  }
-
-  // Login Button
-  if (loginButton) {
-    loginButton.addEventListener("click", () => {
-      navigateTo("../login-page-vp-jay\role_selection.html");
     });
   }
 
   // Delivery Tab
   if (deliveryBtn) {
     deliveryBtn.addEventListener("click", () => {
-      navigateTo("https://example.com/delivery");
+      // Toggle visual state (simple logic)
+      deliveryBtn.classList.add("active");
+      pickupBtn.classList.remove("active");
+      // navigateTo(...) // Add link if needed
     });
   }
 
   // Pickup Tab
   if (pickupBtn) {
     pickupBtn.addEventListener("click", () => {
-      navigateTo("https://example.com/pickup");
+      pickupBtn.classList.add("active");
+      deliveryBtn.classList.remove("active");
+      // navigateTo(...) // Add link if needed
     });
   }
 
   // Order Button
   if (orderBtn) {
     orderBtn.addEventListener("click", () => {
-      // You can also grab the value of the input before redirecting
       const address = document.querySelector(".location-input").value;
       if (address) {
-        // Example: sending address as a query parameter
-        navigateTo(
-          `https://example.com/order?location=${encodeURIComponent(address)}`,
-        );
+        alert(`Ordering for: ${address}`);
+        // navigateTo(...)
       } else {
-        navigateTo("https://example.com/order");
+        alert("Please enter an address first!");
       }
     });
   }

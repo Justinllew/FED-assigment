@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEA Inspector Login - FreshEats</title>
+    <link rel="stylesheet" href="nea-login.css" />
+  </head>
+  <body>
+    <div class="split-container">
+      <div class="left-panel">
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="logo-mark">*</div>
+          <h1>
+            Ensuring Hygiene,<br />
+            Maintaining Standards
+          </h1>
+          <p class="subtext">
+            Official portal for NEA officers to conduct, record, and manage
+            hawker centre inspections.
+          </p>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="form-wrapper">
+          <div class="brand-header"><span class="icon">🏢</span> FreshEats</div>
+
+          <h2>NEA Inspector Login</h2>
+          <p class="instruction">Please enter your official credentials.</p>
+
+          <form id="nea-login-form">
+            <div class="input-group">
+              <label>Official Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="officer@nea.gov.sg"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn-login">Login</button>
+
+            <p class="back-link">
+              <a href="../public-page-jay/public-page.html"
+                >← Back to Homepage</a
+              >
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="nea-login.js"></script>
+  </body>
+</html>
