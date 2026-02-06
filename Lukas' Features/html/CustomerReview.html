@@ -89,7 +89,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="/Lukas' Features/html/OrderHistory( v - lukas).html">
+            <a href="/Lukas' Features/html/OrderHistory(v-lukas).html">
               <svg
                 width="20"
                 height="20"
@@ -135,7 +135,7 @@
             </a>
           </li>
 
-          <li class="nav-item active">
+          <li class="nav-item">
             <a
               href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
             >
@@ -157,7 +157,7 @@
             </a>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item active">
             <a href="../../Lukas' Features/html/CustomerReview.html">
               <svg
                 width="20"
@@ -250,7 +250,11 @@
           </button>
         </div>
 
-        <div class="reviews-wrapper" id="reviewsList"></div>
+        <div class="reviews-wrapper" id="reviewsList">
+          <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i> Loading reviews...
+          </div>
+        </div>
       </main>
     </div>
 
@@ -340,6 +344,7 @@
       </div>
     </div>
 
-    <script src="../js/CustomerReviews.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module" src="../js/CustomerReviews.js"></script>
   </body>
 </html>

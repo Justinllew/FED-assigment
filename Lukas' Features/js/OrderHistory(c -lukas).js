@@ -1,233 +1,248 @@
-// CONFIGURATION
-const API_URL =
-  "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app";
-// Get the logged-in user (Default to 2/Hungry Jane if missing)
-const USER_ID = localStorage.getItem("userId") || 2;
+// ======================================================
+// 1. FIREBASE SETUP
+// ======================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-// STATE
-let vendorsMap = {}; // To look up Vendor Name by ID (e.g., 101 -> "McDonalds")
+const firebaseConfig = {
+  apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
+  authDomain: "hawkerbase-fedasg.firebaseapp.com",
+  databaseURL:
+    "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hawkerbase-fedasg",
+  storageBucket: "hawkerbase-fedasg.firebasestorage.app",
+  messagingSenderId: "216203478131",
+  appId: "1:216203478131:web:cb0ff58ba3f51911de9606",
+  measurementId: "G-T2CVBCSMV4",
+};
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // 1. Fetch Vendor details first (so we know names)
-  await loadVendors();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const ORDER_ID = "ORD-8829";
+const orderRef = ref(db, "orders/" + ORDER_ID);
 
-  // 2. Load Orders
-  await loadOrders();
+// ======================================================
+// 2. CONFIGURATION
+// ======================================================
 
-  // 3. Set User Name
-  document.getElementById("user-name-display").innerText =
-    `User ID: ${USER_ID}`;
+// CHANGED: Removed 'sub' property. Only one label now.
+const steps = [
+  { id: "confirmed", label: "Order Placed", icon: "fa-file-invoice" },
+  { id: "cooking", label: "Cooking", icon: "fa-utensils" },
+  { id: "onway", label: "On the Way", icon: "fa-motorcycle" },
+  { id: "delivered", label: "Delivered", icon: "fa-smile" },
+];
+
+const contentData = {
+  confirmed: {
+    title: "Order Received",
+    desc: "The restaurant has received your order and is preparing to accept it.",
+    visual: "fa-clipboard-check",
+    isDelivered: false,
+  },
+  cooking: {
+    title: "In the Kitchen",
+    desc: "Chef Lim is currently preparing your Chicken Rice. It smells great!",
+    visual: "fa-fire",
+    isDelivered: false,
+  },
+  onway: {
+    title: "On the Move",
+    desc: "Your rider (Ahmad) has picked up the order and is 5 mins away.",
+    visual: "fa-motorcycle",
+    isDelivered: false,
+  },
+  delivered: {
+    title: "Order Completed",
+    desc: "Delivered to your doorstep.",
+    visual: "fa-box-open",
+    isDelivered: true,
+  },
+};
+
+// ======================================================
+// 3. LISTEN FOR REAL-TIME UPDATES
+// ======================================================
+onValue(orderRef, (snapshot) => {
+  const data = snapshot.val();
+
+  if (data) {
+    const timeString = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    // 1. Update Header
+    const activeStepObj = steps.find((s) => s.id === data.status);
+    const labelText = activeStepObj ? activeStepObj.label : data.status;
+    document.getElementById("status-pill").innerText = labelText;
+    document.getElementById("last-updated").innerText = "Updated " + timeString;
+
+    // 2. Render Steps
+    renderSteps(data.status);
+
+    // 3. Render Detail View
+    updateDetailView(data.status, timeString);
+  } else {
+    update(orderRef, { status: "confirmed", timestamp: Date.now() });
+  }
 });
 
-// ==========================================
-// 1. DATA FETCHING
-// ==========================================
+// ======================================================
+// 4. RENDERING FUNCTIONS
+// ======================================================
 
-async function loadVendors() {
-  try {
-    const res = await fetch(`${API_URL}/vendors`);
-    const vendors = await res.json();
-    // Create a quick lookup map: { 101: "Lim's Chicken Rice" }
-    vendors.forEach((v) => (vendorsMap[v.id] = v.name));
-  } catch (e) {
-    console.error("Error loading vendors:", e);
+function renderSteps(activeId) {
+  const container = document.getElementById("steps-container");
+  const fillLine = document.querySelector(".progress-line-fill");
+
+  const activeIndex = steps.findIndex((s) => s.id === activeId);
+
+  if (fillLine && activeIndex !== -1) {
+    const percent = (activeIndex / (steps.length - 1)) * 100;
+    fillLine.style.width = `${percent}%`;
   }
-}
 
-async function loadOrders() {
-  try {
-    const res = await fetch(`${API_URL}/customers/${USER_ID}/history`);
-    const orders = await res.json();
+  // CHANGED: Generating HTML without the subtitle div
+  container.innerHTML = steps
+    .map((step, index) => {
+      let className = "step-card";
+      if (index < activeIndex) className += " completed";
+      if (index === activeIndex) className += " active";
 
-    // Clear Loading Text
-    const activeContainer = document.getElementById("active-list");
-    const historyContainer = document.getElementById("history-list");
-    activeContainer.innerHTML = "";
-    historyContainer.innerHTML = "";
-
-    // Filter Orders
-    // Active = Pending, Cooking, or On the Way
-    const activeOrders = orders.filter((o) =>
-      ["PENDING", "COOKING", "READY", "ON_WAY"].includes(o.status),
-    );
-    // History = Completed or Cancelled
-    const pastOrders = orders.filter((o) =>
-      ["COMPLETED", "CANCELLED"].includes(o.status),
-    );
-
-    // --- RENDER ACTIVE ---
-    if (activeOrders.length === 0) {
-      activeContainer.innerHTML = `<div style="text-align:center; padding:40px; color:#888;">No active orders right now.</div>`;
-    } else {
-      activeOrders.forEach((order) => {
-        activeContainer.innerHTML += createActiveOrderCard(order);
-      });
-    }
-
-    // --- RENDER HISTORY ---
-    if (pastOrders.length === 0) {
-      historyContainer.innerHTML = `<div style="text-align:center; padding:40px; color:#888;">No past orders found.</div>`;
-    } else {
-      pastOrders.forEach((order) => {
-        historyContainer.innerHTML += createHistoryCard(order);
-      });
-    }
-  } catch (error) {
-    console.error("Error fetching orders:", error);
-    document.getElementById("active-list").innerHTML =
-      `<p style="color:red; text-align:center;">Error connecting to server. Is 'node server.js' running?</p>`;
-  }
-}
-
-// ==========================================
-// 2. HTML GENERATORS
-// ==========================================
-
-function createActiveOrderCard(order) {
-  const vendorName = vendorsMap[order.vendorId] || `Vendor #${order.vendorId}`;
-  const total = order.total.toFixed(2);
-
-  // Generate Receipt Rows from items array
-  const itemsHtml = order.items
-    .map(
-      (item) => `
-        <div class="receipt-row">
-            <span>${item.qty}x Item #${item.itemId}</span> <span>$${(item.price * item.qty).toFixed(2)}</span>
-        </div>
-    `,
-    )
+      return `
+            <div class="${className}" onclick="window.handleStepClick('${step.id}')">
+                <div class="step-icon"><i class="fas ${step.icon}"></i></div>
+                <div class="step-title">${step.label}</div>
+            </div>
+        `;
+    })
     .join("");
-
-  return `
-    <div class="track-card">
-        <div class="track-header">
-            <div>
-                <div class="store-name">${vendorName}</div>
-                <div class="order-meta">Order #${order.id} • Arriving Soon</div>
-            </div>
-            <div class="status-badge-container">
-                <span class="status-badge">${order.status}</span>
-            </div>
-        </div>
-
-        <div class="stepper">
-            ${generateStepper(order.status)}
-        </div>
-
-        <div class="receipt-box">
-            ${itemsHtml}
-            <div class="receipt-total">
-                <span>Total</span> <span>$${total}</span>
-            </div>
-        </div>
-    </div>`;
 }
 
-function createHistoryCard(order) {
-  const vendorName = vendorsMap[order.vendorId] || `Vendor #${order.vendorId}`;
-  const date = new Date(order.timestamp).toLocaleDateString();
+function updateDetailView(id, time) {
+  const data = contentData[id];
+  const container = document.getElementById("detail-view");
+  if (!data) return;
 
-  return `
-    <div class="track-card">
-        <div class="track-header history-header">
-            <div>
-                <div class="store-name muted">${vendorName}</div>
-                <div class="order-meta">Order #${order.id} • ${date} • ${order.status}</div>
+  // Render logic remains similar, just cleaner
+  if (data.isDelivered) {
+    container.innerHTML = `
+            <div class="status-banner">
+                <i class="fas fa-check-circle" style="font-size:2rem; margin-bottom:10px;"></i>
+                <h2>Delivered!</h2>
+                <p>Enjoy your food</p>
             </div>
-            <button class="btn-action" onclick="alert('Reorder feature coming soon!')">Reorder</button>
-        </div>
-    </div>`;
-}
-
-// ==========================================
-// 3. HELPER LOGIC (The Progress Bar)
-// ==========================================
-
-function generateStepper(currentStatus) {
-  // Define the sequence of status steps
-  const steps = ["PENDING", "COOKING", "ON_WAY", "COMPLETED"];
-  const labels = ["Placed", "Cooking", "On Way", "Delivered"];
-
-  // Find where we are in the process (0 to 3)
-  let currentIndex = steps.indexOf(currentStatus);
-  if (currentIndex === -1) currentIndex = 0; // Default to start if unknown
-
-  let html = "";
-
-  for (let i = 0; i < steps.length; i++) {
-    let className = "step";
-    let content = i + 1; // Default number (1, 2, 3...)
-
-    if (i < currentIndex) {
-      // Steps we have already passed (Green checkmark)
-      className += " completed";
-      content = "✓";
-    } else if (i === currentIndex) {
-      // Current step (Green outline)
-      className += " active";
-    }
-
-    html += `
-        <div class="${className}">
-            <div class="step-circle">${content}</div>
-            <div class="step-label">${labels[i]}</div>
-        </div>`;
-  }
-  return html;
-}
-
-// ==========================================
-// 4. TAB SWITCHING (Active vs History)
-// ==========================================
-window.toggleView = function (viewName) {
-  const activeList = document.getElementById("active-list");
-  const historyList = document.getElementById("history-list");
-  const activeBtn = document.getElementById("btn-active");
-  const historyBtn = document.getElementById("btn-history");
-
-  if (viewName === "active") {
-    activeBtn.classList.add("active");
-    historyBtn.classList.remove("active");
-    activeList.classList.remove("hidden");
-    historyList.classList.add("hidden");
+            <div class="delivered-body">
+                <i class="fas ${data.visual} big-icon" style="font-size:4rem; color:#68a357; margin-bottom:20px;"></i>
+                <p style="color:#666; font-size:1.1rem;">This order was completed at <strong>${time}</strong>.</p>
+                <button class="btn-primary" style="margin-top:20px;">Leave a Review</button>
+            </div>
+        `;
   } else {
-    historyBtn.classList.add("active");
-    activeBtn.classList.remove("active");
-    historyList.classList.remove("hidden");
-    activeList.classList.add("hidden");
+    container.innerHTML = `
+            <div class="detail-content-wrapper detail-body-grid">
+                <div class="detail-content">
+                    <h2 style="margin-top:0;">${data.title}</h2>
+                    <p style="color:#666; line-height:1.6; margin-bottom:20px; font-size:1.05rem;">${data.desc}</p>
+                    
+                    <div style="display:inline-flex; align-items:center; background:#f5f5f5; padding:8px 16px; border-radius:8px;">
+                        <i class="fas fa-clock" style="margin-right:8px; color:#666;"></i>
+                        <span style="color:#444; font-weight:500;">Last Update: ${time}</span>
+                    </div>
+                </div>
+                <div class="detail-visual">
+                    <i class="fas ${data.visual} moving-icon"></i>
+                </div>
+            </div>
+        `;
+  }
+}
+
+// ======================================================
+// 5. EVENT HANDLERS
+// ======================================================
+
+// Receipt Modal Logic
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("receipt-modal");
+  const btn = document.getElementById("btn-receipt");
+  const close = document.getElementById("close-modal");
+
+  if (btn && modal) {
+    btn.onclick = () => {
+      modal.classList.remove("hidden");
+    };
+  }
+
+  if (close && modal) {
+    close.onclick = () => {
+      modal.classList.add("hidden");
+    };
+  }
+
+  // Close on clicking outside
+  window.onclick = (event) => {
+    if (event.target === modal) {
+      modal.classList.add("hidden");
+    }
+  };
+});
+
+// Demo Controller
+window.handleStepClick = function (newStatus) {
+  update(orderRef, {
+    status: newStatus,
+    updatedAt: Date.now(),
+  }).catch((err) => console.error(err));
+};
+
+// ======================================================
+// 6. RECEIPT MODAL LOGIC
+// ======================================================
+
+// Function to open the modal
+function openReceipt() {
+  const modal = document.getElementById("receipt-modal");
+  if (modal) {
+    modal.classList.remove("hidden"); // Shows the modal
+  }
+}
+
+// Function to close the modal
+window.closeReceipt = function () {
+  // Exposed to window for HTML onclick
+  const modal = document.getElementById("receipt-modal");
+  if (modal) {
+    modal.classList.add("hidden"); // Hides the modal
   }
 };
 
-function navigateTo(viewId) {
-  // 1. Hide all Content Views
-  const views = document.querySelectorAll(".view-section");
-  views.forEach((view) => {
-    view.classList.add("hidden"); // Adds the CSS class that sets display: none
-  });
-
-  // 2. Remove 'active' class from all Sidebar items
-  const navItems = document.querySelectorAll(".nav-item");
-  navItems.forEach((item) => {
-    item.classList.remove("active");
-  });
-
-  // 3. Show the Specific View we clicked
-  const targetView = document.getElementById(`view-${viewId}`);
-  if (targetView) {
-    targetView.classList.remove("hidden");
-  } else {
-    console.error(`Error: Could not find view with id "view-${viewId}"`);
-  }
-
-  // 4. Highlight the clicked Sidebar item
-  const activeNav = document.getElementById(`nav-${viewId}`);
-  if (activeNav) {
-    activeNav.classList.add("active");
-  }
-}
-
-// Optional: Ensure the default view is correct on load
+// Event Listeners (Wait for page to load)
 document.addEventListener("DOMContentLoaded", () => {
-  // If you want to force "Orders" to open first:
-  navigateTo("orders");
+  const btn = document.getElementById("btn-receipt");
+  const closeBtn = document.getElementById("close-modal");
+  const modal = document.getElementById("receipt-modal");
+
+  // 1. Click "View Receipt" Button
+  if (btn) {
+    btn.addEventListener("click", openReceipt);
+  }
+
+  // 2. Click "X" Button
+  if (closeBtn) {
+    closeBtn.addEventListener("click", window.closeReceipt);
+  }
+
+  // 3. Click Outside the modal (Background) to close
+  window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      window.closeReceipt();
+    }
+  });
 });

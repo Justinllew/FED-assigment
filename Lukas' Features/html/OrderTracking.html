@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Track Order | FreshEats</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,6 +15,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+
     <link rel="stylesheet" href="../css/OrderTracking( c- lukas).css" />
   </head>
   <body>
@@ -213,98 +215,133 @@
         </div>
       </aside>
 
-      <div class="main-content">
+      <main class="main-content-wrapper">
         <header class="app-header">
           <div class="header-container">
-            <div class="header-left">
-              <h2 class="page-title">Order Tracking</h2>
-            </div>
+            <h2 class="page-title">Order Tracking</h2>
             <div class="header-right">
               <div class="status-badge live">
-                <span class="dot"></span> Live System
+                <span class="dot"></span> Live Update
               </div>
               <div class="user-menu-container">
                 <div class="user-avatar-small">
                   <img
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lukas&backgroundColor=c0aede"
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Devon"
                     alt="Profile"
                   />
                 </div>
-                <span class="user-name">Lukas Manager</span>
+                <span class="user-name">Devon Lane</span>
               </div>
             </div>
           </div>
         </header>
 
-        <main class="content-area">
-        
-        <div class="tracking-header-card">
-          <div class="card-icon">
-            <i class="fas fa-box-open"></i>
-          </div>
-          <div class="card-info">
-            <h1 id="order-id-display">Loading Order...</h1>
-            <div class="status-row">
-              <span class="pill-badge" id="status-pill">--</span>
-              <span class="time-ago" id="last-updated">Updating...</span>
+        <div class="content-area">
+          <div class="tracking-card-container">
+            <div class="tracking-header-card">
+              <div class="header-left">
+                <div class="card-icon"><i class="fas fa-receipt"></i></div>
+                <div class="card-info">
+                  <h1 id="order-id-display">ORD-8829</h1>
+                  <div class="status-row">
+                    <span class="pill-badge" id="status-pill">Loading...</span>
+                    <span class="time-ago" id="last-updated"
+                      >Connecting...</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <button class="btn-outline" id="btn-receipt">
+                  View Receipt
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="card-actions">
-            <button class="btn-outline" onclick="viewReceipt()">View Receipt</button>
-            <button class="btn-primary" onclick="contactDriver()">Contact Driver</button>
-          </div>
-        </div>
 
-        <div class="progress-section">
-          <div class="progress-line-bg"></div>
-          <div class="steps-grid" id="steps-container">
+            <div class="progress-section">
+              <div class="progress-line-bg"></div>
+              <div class="progress-line-fill"></div>
+              <div class="steps-grid" id="steps-container"></div>
             </div>
-        </div>
 
-        <div class="detail-view-container" id="detail-view">
-          <div class="detail-header">
-            <div>
-              <h3 id="detail-title">Select a Stage</h3>
-              <p id="detail-subtitle">Click a step above to see details</p>
+            <div class="detail-view-container" id="detail-view">
+              <div style="padding: 60px; text-align: center; color: #999">
+                <i class="fas fa-circle-notch fa-spin"></i> Loading...
+              </div>
             </div>
-            <div class="detail-meta">
-              <span class="label">TIMESTAMP</span>
-              <span class="value" id="detail-timestamp">--:--:--</span>
-            </div>
-          </div>
 
-          <div class="detail-body-grid">
-            <div class="detail-content" id="detail-content-left">
-                <p style="color:#888;">Select a step to view details.</p>
-            </div>
-            <div class="detail-visual" id="detail-visual-container"></div>
-          </div>
-        </div>
-
-        <div class="address-grid">
-          <div class="address-card vendor">
-            <h4><i class="fas fa-store"></i> Pick-up Location</h4>
-            <div class="address-text">
-              <strong>Lim's Chicken Rice</strong><br>
-              Maxwell Food Centre<br>
-              #01-10, 1 Kadayanallur St<br>
-              Singapore, 069184
-            </div>
-          </div>
-          <div class="address-card customer">
-            <h4><i class="fas fa-map-marker-alt"></i> Delivery Address</h4>
-            <div class="address-text">
-              <strong>Terry Lee</strong><br>
-              15 Crowhurst Drive<br>
-              (Serangoon Gardens)<br>
-              Singapore, 550100
+            <div class="address-grid">
+              <div class="address-card vendor">
+                <div class="address-header">
+                  <div class="icon-box"><i class="fas fa-store"></i></div>
+                  <h4>Pick-up Location</h4>
+                </div>
+                <div class="address-text">
+                  <strong>Lim's Chicken Rice</strong><br />Maxwell Food Centre,
+                  #01-10
+                </div>
+              </div>
+              <div class="address-card customer">
+                <div class="address-header">
+                  <div class="icon-box blue">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <h4>Delivery Address</h4>
+                </div>
+                <div class="address-text">
+                  <strong>Terry Lee</strong><br />15 Crowhurst Drive, Singapore
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
       </main>
     </div>
 
-    <script src="../js/OrderTracking.js"></script>
+    <div id="receipt-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Receipt</h3>
+          <button id="close-modal" class="close-btn">&times;</button>
+        </div>
+        <div class="receipt-body">
+          <div class="receipt-store">
+            <i class="fas fa-store"></i>
+            <h4>Lim's Chicken Rice</h4>
+            <p>Maxwell Food Centre</p>
+          </div>
+          <hr class="dashed-line" />
+          <div class="receipt-items">
+            <div class="item-row">
+              <span>1x Hainanese Chicken Rice</span>
+              <span>$5.50</span>
+            </div>
+            <div class="item-row">
+              <span>1x Lime Juice</span>
+              <span>$1.50</span>
+            </div>
+          </div>
+          <hr class="solid-line" />
+          <div class="receipt-total">
+            <span>Total Paid</span>
+            <span>$7.00</span>
+          </div>
+          <div class="receipt-footer">
+            <p>Order #ORD-8829</p>
+            <p>Paid via PayLah!</p>
+          </div>
+        </div>
+        <button
+          class="btn-primary full-width"
+          onclick="
+            document.getElementById('receipt-modal').classList.add('hidden')
+          "
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="../js/OrderTracking.js"></script>
   </body>
 </html>
