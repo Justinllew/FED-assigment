@@ -1,52 +1,79 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Select the form and inputs
-  const loginForm = document.querySelector("form");
-  // If you haven't added IDs to your inputs yet, we can select them by type:
-  const emailInput = document.querySelector('input[type="email"]');
-  const passwordInput = document.querySelector('input[type="password"]');
+// 1. IMPORT
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  loginForm.addEventListener("submit", (e) => {
-    // 1. Stop the form from refreshing the page
+// 2. CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
+  authDomain: "hawkerbase-fedasg.firebaseapp.com",
+  databaseURL:
+    "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hawkerbase-fedasg",
+  storageBucket: "hawkerbase-fedasg.firebasestorage.app",
+  messagingSenderId: "216203478131",
+  appId: "1:216203478131:web:cb0ff58ba3f51911de9606",
+  measurementId: "G-T2CVBCSMV4",
+};
+
+// 3. INIT
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// 4. LOGIC
+document.addEventListener("DOMContentLoaded", () => {
+  // Use querySelector because your ID in HTML might be 'vendor-login-form'
+  // (This handles both 'patron-login-form' and 'vendor-login-form')
+  const form = document.querySelector("form");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // 2. Get the values
+    const emailInput = form.querySelector('input[type="email"]');
+    const passwordInput = form.querySelector('input[type="password"]');
+
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
 
-    // --- VALIDATION (School-Friendly Logic) ---
-
-    // Check A: Are they empty?
-    if (email === "" || password === "") {
-      alert("Please fill in both email and password.");
-      return;
-    }
-
-    // Check B: Basic Email Structure (Same logic as Signup)
-    if (!email.includes("@") || !email.includes(".")) {
-      alert("Invalid email format. Must contain '@' and '.'");
-      return;
-    }
-
-    // --- MOCK LOGIN (The "Fake" Database) ---
-    // Since we don't have a real backend yet, we check against a specific string.
-    // You can tell your grader: "Use 'vendor@fresh.com' and '123456' to log in."
-    //!!! Make sure to link to our firebase Database.
-
-    const validEmail = "patron@fresh.com";
-    const validPassword = "123456";
-
-    if (email === validEmail && password === validPassword) {
-      // SUCCESS
-      alert("Welcome back, Patron!");
-
-      // Redirect to the dashboard or home page
-      // (Adjust this path if your home page is in a different folder!)
-      window.location.href = "../home-page-vp-jay/patron-home.html";
-    } else {
-      // FAILURE
-      alert(
-        "Wrong email or password.\n(Hint: Try 'patron@fresh.com' and '123456')",
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
       );
+      const user = userCredential.user;
+
+      const snapshot = await get(ref(db, "users/" + user.uid));
+
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+
+        if (userData.role === "patron") {
+          localStorage.setItem("freshEatsUserName", userData.username);
+          localStorage.setItem("freshEatsRole", userData.role);
+
+          alert("Welcome back, " + userData.username + "!");
+          // Check this path!
+          window.location.href = "../patron-home/patron-home.html";
+        } else {
+          alert("Access Denied: You are a Vendor.");
+        }
+      } else {
+        alert("Error: User profile not found.");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Login Failed: " + error.message);
     }
   });
 });

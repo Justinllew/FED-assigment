@@ -64,37 +64,6 @@
         </div>
       </div>
     </div>
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import {
-        getAuth,
-        createUserWithEmailAndPassword,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-      import {
-        getDatabase,
-        ref,
-        set,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-      // ⚠️ PASTE YOUR CONFIG HERE
-      const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      window.auth = getAuth(app);
-      window.db = getDatabase(app);
-      window.createAccount = createUserWithEmailAndPassword;
-      window.dbSet = set;
-      window.dbRef = ref;
-    </script>
-
-    <script src="signup.js"></script>
+    <script type="module" src="signup.js"></script>
   </body>
 </html>

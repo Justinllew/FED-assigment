@@ -1,54 +1,79 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.querySelector("form");
-  const emailInput = document.querySelector('input[type="email"]');
-  const passwordInput = document.querySelector('input[type="password"]');
+// 1. IMPORT
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  loginForm.addEventListener("submit", async (e) => {
+// 2. CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
+  authDomain: "hawkerbase-fedasg.firebaseapp.com",
+  databaseURL:
+    "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hawkerbase-fedasg",
+  storageBucket: "hawkerbase-fedasg.firebasestorage.app",
+  messagingSenderId: "216203478131",
+  appId: "1:216203478131:web:cb0ff58ba3f51911de9606",
+  measurementId: "G-T2CVBCSMV4",
+};
+
+// 3. INIT
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// 4. LOGIC
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("vendor-login-form");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    const emailInput = form.querySelector('input[type="email"]');
+    const passwordInput = form.querySelector('input[type="password"]');
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
 
-    if (!email || !password) return alert("Please fill in all fields.");
-
     try {
-      // 1. AUTHENTICATE with Firebase
-      const userCredential = await window.loginUser(
-        window.auth,
+      // Authenticate
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
         email,
         password,
       );
       const user = userCredential.user;
 
-      // 2. GET USER DETAILS (Name & Role)
-      // We look up the 'users/{uid}' path we created during sign up
-      const snapshot = await window.dbGet(
-        window.dbRef(window.db, "users/" + user.uid),
-      );
+      // Check Database Role
+      const snapshot = await get(ref(db, "users/" + user.uid));
 
       if (snapshot.exists()) {
         const userData = snapshot.val();
 
-        // 3. STORE IN LOCAL STORAGE (The "Hybrid" Handshake)
-        localStorage.setItem("freshEatsUserName", userData.name);
-        localStorage.setItem("freshEatsRole", userData.role);
-
-        alert(`Welcome back, ${userData.name}!`);
-
-        // 4. SMART REDIRECT
-        // Even if they log in on the Vendor page, check if they are actually a Vendor!
         if (userData.role === "vendor") {
+          localStorage.setItem("freshEatsUserName", userData.username);
+          localStorage.setItem("freshEatsRole", userData.role);
+
+          alert("Welcome back, " + userData.username + "!");
+          // Redirect (Ensure this file exists in the SAME folder, or adjust path)
           window.location.href = "vendor_home.html";
         } else {
-          // If a Patron tries to log in here, send them to the main page
-          window.location.href = "../index.html";
+          alert("Access Denied: You are a Patron.");
         }
       } else {
         alert("Error: User profile not found.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Login Failed: Incorrect email or password.");
+      console.error("Login Error:", error);
+      alert("Login Failed: " + error.message);
     }
   });
 });
