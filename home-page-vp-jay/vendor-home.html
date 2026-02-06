@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FreshEats Studio - Dashboard</title>
     <link rel="stylesheet" href="vendor-home.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
   </head>
   <body>
     <div class="app-container light-theme">
@@ -28,108 +29,41 @@
           </svg>
           <span>FreshEats Studio</span>
         </div>
-
         <nav>
           <ul class="nav-links">
             <li class="nav-item active">
-              <a href="#">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <rect x="3" y="3" width="7" height="7"></rect>
-                  <rect x="14" y="3" width="7" height="7"></rect>
-                  <rect x="14" y="14" width="7" height="7"></rect>
-                  <rect x="3" y="14" width="7" height="7"></rect>
-                </svg>
-                <span>Dashboard</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a
-                href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+              <a href="#"
+                ><i class="ph ph-squares-four"></i><span>Dashboard</span></a
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <circle cx="9" cy="21" r="1"></circle>
-                  <circle cx="20" cy="21" r="1"></circle>
-                  <path
-                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
-                  ></path>
-                </svg>
-                <span>Orders</span>
-              </a>
             </li>
-
             <li class="nav-item">
-              <a href="../../Devon's features/HTML/MenuManagement - V.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
-                  <path d="M7 2v20"></path>
-                  <path
-                    d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"
-                  ></path>
-                </svg>
-                <span>Menu</span>
-              </a>
+              <a href="stall-display.html"
+                ><i class="ph ph-paint-brush-broad"></i><span>Display</span></a
+              >
             </li>
-
+            <li class="nav-item">
+              <a href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+                ><i class="ph ph-receipt"></i><span>Orders</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="../../Devon's features/HTML/MenuManagement - V.html"
+                ><i class="ph ph-list-dashes"></i><span>Menu</span></a
+              >
+            </li>
             <li class="nav-item">
               <a
                 href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+                ><i class="ph ph-chart-line-up"></i><span>Analytics</span></a
               >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <line x1="18" y1="20" x2="18" y2="10"></line>
-                  <line x1="12" y1="20" x2="12" y2="4"></line>
-                  <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-                <span>Analytics</span>
-              </a>
             </li>
-
             <li class="nav-item">
-              <a href="../../NEA Inspection Features/dashboardInspect.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
-                <span>Inspections</span>
-              </a>
+              <a href="../../NEA Inspection Features/dashboardInspect.html"
+                ><i class="ph ph-clipboard-text"></i><span>Inspections</span></a
+              >
             </li>
           </ul>
         </nav>
-
         <div class="sidebar-footer">
           <div class="user-profile-mini">
             <div class="circle" id="sidebar-avatar">V</div>
@@ -138,18 +72,7 @@
               <p>Store Manager</p>
             </div>
           </div>
-          <div style="margin-top: 10px; padding-left: 50px">
-            <a
-              href="../index.html"
-              style="
-                text-decoration: none;
-                color: #dc2626;
-                font-size: 0.8rem;
-                font-weight: 600;
-              "
-              >Log Out</a
-            >
-          </div>
+          <a href="../index.html" class="logout-link">Log Out</a>
         </div>
       </aside>
 
@@ -161,32 +84,8 @@
               href="../../Devon's features/HTML/MenuManagement - V.html"
               class="btn-create"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-              ADD ITEM
+              <i class="ph-bold ph-plus"></i> ADD ITEM
             </a>
-            <div class="icon-btn">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#666"
-                stroke-width="2"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </div>
             <div class="user-avatar" id="header-avatar">V</div>
           </div>
         </header>
@@ -202,7 +101,7 @@
                 <div class="status-hero">
                   <div class="hero-icon-lg">🏪</div>
                   <div class="hero-details">
-                    <h2>Store is OPEN</h2>
+                    <h2 id="dash-main-status">Store is OPEN</h2>
                     <p>Closing at 9:00 PM today.</p>
                   </div>
                 </div>
@@ -227,9 +126,7 @@
             </div>
 
             <div class="studio-card">
-              <div class="card-header">
-                <h3>Latest Menu Alert</h3>
-              </div>
+              <div class="card-header"><h3>Latest Menu Alert</h3></div>
               <div class="card-body compact">
                 <p>
                   <strong>Wagyu Beef Burger</strong> is marked as "Sold Out".
@@ -245,9 +142,7 @@
 
           <div class="grid-column middle-col">
             <div class="studio-card">
-              <div class="card-header">
-                <h3>Today's Performance</h3>
-              </div>
+              <div class="card-header"><h3>Today's Performance</h3></div>
               <div class="card-body">
                 <div class="metric-large">
                   <h2>$1,250.50</h2>
@@ -257,12 +152,10 @@
                 <hr class="divider" />
                 <div class="metric-list">
                   <div class="metric-item">
-                    <span>Total Orders</span>
-                    <strong>45</strong>
+                    <span>Total Orders</span><strong>45</strong>
                   </div>
                   <div class="metric-item">
-                    <span>Avg Order Value</span>
-                    <strong>$27.80</strong>
+                    <span>Avg Order Value</span><strong>$27.80</strong>
                   </div>
                 </div>
               </div>
@@ -275,20 +168,18 @@
             </div>
 
             <div class="studio-card">
-              <div class="card-header">
-                <h3>Recent Reviews</h3>
-              </div>
+              <div class="card-header"><h3>Recent Reviews</h3></div>
               <div class="card-body compact review-list">
                 <div class="review-item">
                   <div class="stars">★★★★★</div>
                   <p class="review-text">
-                    "Best burger in town! Fast delivery." - John D.
+                    "Best burger in town! Fast delivery."
                   </p>
                 </div>
                 <div class="review-item">
                   <div class="stars">★★★★☆</div>
                   <p class="review-text">
-                    "Food was good, fries were a bit cold." - Sarah M.
+                    "Food was good, fries were a bit cold."
                   </p>
                 </div>
               </div>
@@ -297,9 +188,70 @@
 
           <div class="grid-column right-col">
             <div class="studio-card">
-              <div class="card-header">
-                <h3>Quick Actions</h3>
+              <div class="card-header"><h3>Live Display Sketch</h3></div>
+              <div class="card-body compact" style="padding-bottom: 20px">
+                <div
+                  id="sketch-banner"
+                  style="
+                    width: 100%;
+                    height: 110px;
+                    background-color: #eee;
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 12px;
+                    margin-bottom: 12px;
+                    border: 1px solid #e0e0e0;
+                  "
+                ></div>
+
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                  "
+                >
+                  <div>
+                    <h4
+                      id="sketch-name"
+                      style="
+                        margin: 0;
+                        font-size: 1rem;
+                        font-weight: 700;
+                        color: #333;
+                      "
+                    >
+                      Vendor
+                    </h4>
+                    <span style="font-size: 0.75rem; color: #666"
+                      >App Preview</span
+                    >
+                  </div>
+                  <span
+                    id="sketch-pill"
+                    style="
+                      padding: 4px 12px;
+                      background: #e9f2e6;
+                      color: #68a357;
+                      border-radius: 20px;
+                      font-size: 0.75rem;
+                      font-weight: 700;
+                    "
+                  >
+                    Loading...
+                  </span>
+                </div>
+                <a
+                  href="stall_display.html"
+                  class="text-link"
+                  style="margin-top: 15px; display: block"
+                  >Edit Display Settings</a
+                >
               </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header"><h3>Quick Actions</h3></div>
               <div class="card-body compact action-list">
                 <a href="#" class="action-link">Update Opening Hours</a>
                 <a
@@ -310,37 +262,41 @@
                 <a href="#" class="action-link">Store Settings</a>
               </div>
             </div>
-
-            <div class="studio-card news-card">
-              <div class="card-header">
-                <h3>FreshEats Insider</h3>
-              </div>
-              <div class="card-body compact">
-                <div class="news-img-placeholder">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#68a357"
-                    stroke-width="2"
-                  >
-                    <path
-                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                    ></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                  </svg>
-                </div>
-                <h4>Boost sales with new photos</h4>
-                <p>
-                  Learn how high-quality menu photos can increase orders by 30%.
-                </p>
-              </div>
-            </div>
           </div>
         </main>
       </div>
     </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      // ⚠️ REPLACE WITH YOUR FIREBASE CONFIG
+      const firebaseConfig = {
+        apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
+        authDomain: "hawkerbase-fedasg.firebaseapp.com",
+        projectId: "hawkerbase-fedasg",
+        storageBucket: "hawkerbase-fedasg.firebasestorage.app",
+        messagingSenderId: "216203478131",
+        appId: "1:216203478131:web:39072e8b25296b8ede9606",
+        measurementId: "G-E4S08BB1PG",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      window.db = getDatabase(app);
+      window.auth = getAuth(app);
+      window.dbRef = ref;
+      window.dbOnValue = onValue;
+      window.authCheck = onAuthStateChanged;
+    </script>
 
     <script src="vendor-home.js"></script>
   </body>
