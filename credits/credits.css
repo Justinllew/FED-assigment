@@ -1,0 +1,80 @@
+/* --- Simple Academic Styling --- */
+:root {
+  --primary-color: #333;
+  --border-color: #ddd;
+  --header-bg: #f4f4f4;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #fff;
+}
+
+h1 {
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 40px;
+  color: #555;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Table Styling --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+th,
+td {
+  border: 1px solid var(--border-color);
+  padding: 12px 15px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background-color: var(--header-bg);
+  font-weight: 600;
+  width: 25%; /* Width of "Source Type" column */
+}
+
+/* Specific column widths */
+td.desc-col {
+  width: 40%;
+}
+td.link-col {
+  width: 35%;
+}
+
+a {
+  color: #0066cc;
+  text-decoration: none;
+  word-break: break-all; /* Prevents long URLs from breaking layout */
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+  margin-top: 50px;
+  font-size: 0.8rem;
+  color: #777;
+  text-align: center;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
