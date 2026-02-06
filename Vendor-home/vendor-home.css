@@ -1,0 +1,387 @@
+/* --- FRESH EATS BRAND VARIABLES --- */
+:root {
+  --primary-green: #68a357;
+  --primary-hover: #578a48;
+  --bg-cream: #f9f7e8;
+  --bg-white: #ffffff;
+  --bg-light-green: #e9f2e6;
+  --text-dark: #1a1a1a;
+  --text-muted: #666666;
+  --border-light: #e0e0e0;
+  --accent-red: #dc2626;
+  --accent-blue: #2563eb;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+}
+
+/* --- LAYOUT --- */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+  width: 240px;
+  background: var(--bg-white);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  margin-bottom: 24px;
+  padding: 0 24px;
+}
+
+.nav-links {
+  list-style: none;
+}
+.nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.1s;
+  border-left: 4px solid transparent;
+}
+.nav-item.active a {
+  background-color: var(--bg-light-green);
+  color: var(--primary-green);
+  border-left-color: var(--primary-green);
+}
+.nav-item a:hover:not(.active a) {
+  background-color: #f5f5f5;
+  color: var(--primary-green);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 24px;
+  border-top: 1px solid var(--border-light);
+}
+.user-profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.circle {
+  width: 36px;
+  height: 36px;
+  background-color: var(--bg-light-green);
+  color: var(--primary-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.user-info h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.user-info p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* --- MAIN CONTENT AREA --- */
+.main-content {
+  margin-left: 240px;
+  flex: 1;
+  padding: 30px 40px;
+}
+
+/* Studio Header */
+.studio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* "CREATE" button */
+.btn-create {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--primary-green);
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(104, 163, 87, 0.3);
+  transition: transform 0.2s;
+}
+.btn-create:hover {
+  transform: translateY(-2px);
+  background-color: var(--primary-hover);
+}
+
+.icon-btn {
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  background: var(--primary-green);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* --- 3-COLUMN DASHBOARD GRID --- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr; /* Left column slightly wider */
+  gap: 24px;
+  align-items: start;
+}
+
+/* Studio Card Styling */
+.studio-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+}
+.card-header h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.card-body {
+  padding: 24px;
+}
+.card-body.compact {
+  padding: 16px 24px;
+}
+
+.card-footer {
+  padding: 12px 24px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+.card-footer a {
+  color: var(--primary-green);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 16px 0;
+}
+
+/* --- WIDGET SPECIFICS --- */
+
+/* Main Card (Live Status) */
+.live-indicator {
+  background: var(--accent-red);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.status-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.hero-icon-lg {
+  font-size: 3rem;
+  background: #f0fdf4;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.hero-details h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-dark);
+}
+.hero-details p {
+  color: var(--text-muted);
+}
+
+.quick-stats-row {
+  display: flex;
+  gap: 40px;
+}
+.qs-item h4 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+.qs-item p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Analytics Card */
+.metric-large h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+.metric-large p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.trend.up {
+  color: var(--primary-green);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.metric-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+.metric-item span {
+  color: var(--text-muted);
+}
+.metric-item strong {
+  color: var(--text-dark);
+}
+
+/* Reviews & Actions */
+.review-item {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f5f5f5;
+}
+.review-item:last-child {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.stars {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.review-text {
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+}
+.text-link {
+  color: var(--primary-green);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: block;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.action-link {
+  display: block;
+  padding: 12px 0;
+  color: var(--text-dark);
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.action-link:last-child {
+  border-bottom: none;
+}
+.action-link:hover {
+  color: var(--primary-green);
+}
+
+.news-img-placeholder {
+  width: 100%;
+  height: 120px;
+  background: #e9f2e6;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.news-card h4 {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+.news-card p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

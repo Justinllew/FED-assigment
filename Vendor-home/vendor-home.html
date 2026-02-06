@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshEats Studio - Dashboard</title>
+    <link rel="stylesheet" href="vendor-home.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  </head>
+  <body>
+    <div class="app-container light-theme">
+      <aside class="sidebar">
+        <div class="brand-logo">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+            <line x1="6" y1="1" x2="6" y2="4"></line>
+            <line x1="10" y1="1" x2="10" y2="4"></line>
+            <line x1="14" y1="1" x2="14" y2="4"></line>
+          </svg>
+          <span>FreshEats Studio</span>
+        </div>
+        <nav>
+          <ul class="nav-links">
+            <li class="nav-item active">
+              <a href="#"
+                ><i class="ph ph-squares-four"></i><span>Dashboard</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="stall-display.html"
+                ><i class="ph ph-paint-brush-broad"></i><span>Display</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+                ><i class="ph ph-receipt"></i><span>Orders</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="../../Devon's features/HTML/MenuManagement - V.html"
+                ><i class="ph ph-list-dashes"></i><span>Menu</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+                ><i class="ph ph-chart-line-up"></i><span>Analytics</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="../../NEA Inspection Features/dashboardInspect.html"
+                ><i class="ph ph-clipboard-text"></i><span>Inspections</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-profile-mini">
+            <div class="circle" id="sidebar-avatar">V</div>
+            <div class="user-info">
+              <h4 id="sidebar-name">Vendor</h4>
+              <p>Store Manager</p>
+            </div>
+          </div>
+          <a href="../index.html" class="logout-link">Log Out</a>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <header class="studio-header">
+          <h2 class="page-title">Channel dashboard</h2>
+          <div class="header-right">
+            <a
+              href="../../Devon's features/HTML/MenuManagement - V.html"
+              class="btn-create"
+            >
+              <i class="ph-bold ph-plus"></i> ADD ITEM
+            </a>
+            <div class="user-avatar" id="header-avatar">V</div>
+          </div>
+        </header>
+
+        <main class="dashboard-grid">
+          <div class="grid-column main-col">
+            <div class="studio-card main-card">
+              <div class="card-header">
+                <h3>Live Store Status</h3>
+                <span class="live-indicator">LIVE</span>
+              </div>
+              <div class="card-body">
+                <div class="status-hero">
+                  <div class="hero-icon-lg">🏪</div>
+                  <div class="hero-details">
+                    <h2 id="dash-main-status">Store is OPEN</h2>
+                    <p>Closing at 9:00 PM today.</p>
+                  </div>
+                </div>
+                <hr class="divider" />
+                <div class="quick-stats-row">
+                  <div class="qs-item">
+                    <h4>5</h4>
+                    <p>Active Orders</p>
+                  </div>
+                  <div class="qs-item">
+                    <h4>~12 min</h4>
+                    <p>Avg Prep Time</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a
+                  href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+                  >GO TO LIVE ORDERS</a
+                >
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header"><h3>Latest Menu Alert</h3></div>
+              <div class="card-body compact">
+                <p>
+                  <strong>Wagyu Beef Burger</strong> is marked as "Sold Out".
+                </p>
+                <a
+                  href="../../Devon's features/HTML/MenuManagement - V.html"
+                  class="text-link"
+                  >Manage Inventory</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-column middle-col">
+            <div class="studio-card">
+              <div class="card-header"><h3>Today's Performance</h3></div>
+              <div class="card-body">
+                <div class="metric-large">
+                  <h2>$1,250.50</h2>
+                  <p>Revenue</p>
+                  <span class="trend up">↑ 12% vs yesterday</span>
+                </div>
+                <hr class="divider" />
+                <div class="metric-list">
+                  <div class="metric-item">
+                    <span>Total Orders</span><strong>45</strong>
+                  </div>
+                  <div class="metric-item">
+                    <span>Avg Order Value</span><strong>$27.80</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a
+                  href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+                  >GO TO ANALYTICS</a
+                >
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header"><h3>Recent Reviews</h3></div>
+              <div class="card-body compact review-list">
+                <div class="review-item">
+                  <div class="stars">★★★★★</div>
+                  <p class="review-text">
+                    "Best burger in town! Fast delivery."
+                  </p>
+                </div>
+                <div class="review-item">
+                  <div class="stars">★★★★☆</div>
+                  <p class="review-text">
+                    "Food was good, fries were a bit cold."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-column right-col">
+            <div class="studio-card">
+              <div class="card-header"><h3>Live Display Sketch</h3></div>
+              <div class="card-body compact" style="padding-bottom: 20px">
+                <div
+                  id="sketch-banner"
+                  style="
+                    width: 100%;
+                    height: 110px;
+                    background-color: #eee;
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 12px;
+                    margin-bottom: 12px;
+                    border: 1px solid #e0e0e0;
+                  "
+                ></div>
+
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                  "
+                >
+                  <div>
+                    <h4
+                      id="sketch-name"
+                      style="
+                        margin: 0;
+                        font-size: 1rem;
+                        font-weight: 700;
+                        color: #333;
+                      "
+                    >
+                      Vendor
+                    </h4>
+                    <span style="font-size: 0.75rem; color: #666"
+                      >App Preview</span
+                    >
+                  </div>
+                  <span
+                    id="sketch-pill"
+                    style="
+                      padding: 4px 12px;
+                      background: #e9f2e6;
+                      color: #68a357;
+                      border-radius: 20px;
+                      font-size: 0.75rem;
+                      font-weight: 700;
+                    "
+                  >
+                    Loading...
+                  </span>
+                </div>
+                <a
+                  href="stall-display.html"
+                  class="text-link"
+                  style="margin-top: 15px; display: block"
+                  >Edit Display Settings</a
+                >
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header"><h3>Quick Actions</h3></div>
+              <div class="card-body compact action-list">
+                <a href="#" class="action-link">Update Opening Hours</a>
+                <a
+                  href="../../NEA Inspection Features/dashboardInspect.html"
+                  class="action-link"
+                  >View NEA Checklist</a
+                >
+                <a href="#" class="action-link">Store Settings</a>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      // ⚠️ REPLACE WITH YOUR FIREBASE CONFIG
+      const firebaseConfig = {
+        apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
+        authDomain: "hawkerbase-fedasg.firebaseapp.com",
+        projectId: "hawkerbase-fedasg",
+        storageBucket: "hawkerbase-fedasg.firebasestorage.app",
+        messagingSenderId: "216203478131",
+        appId: "1:216203478131:web:39072e8b25296b8ede9606",
+        measurementId: "G-E4S08BB1PG",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      window.db = getDatabase(app);
+      window.auth = getAuth(app);
+      window.dbRef = ref;
+      window.dbOnValue = onValue;
+      window.authCheck = onAuthStateChanged;
+    </script>
+
+    <script src="vendor-home.js"></script>
+  </body>
+</html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshEats - Home</title>
+    <link rel="stylesheet" href="patron-home.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  </head>
+  <body>
+    <div class="overlay" id="overlay"></div>
+
+    <nav>
+      <div class="nav-left">
+        <i class="ph ph-storefront" style="font-size: 24px"></i>
+        <span>FreshEats</span>
+      </div>
+
+      <div class="nav-right">
+        <div class="user-menu-trigger" id="userMenuBtn">
+          <i class="ph ph-user"></i>
+          <span>User's Name</span>
+          <i class="ph ph-caret-down"></i>
+        </div>
+
+        <a href="favorites.html" class="icon-link" title="Favorites">
+          <i class="ph ph-heart icon-btn"></i>
+        </a>
+
+        <a href="cart.html" class="cart-btn" title="Cart">
+          <i class="ph ph-shopping-bag"></i>
+        </a>
+      </div>
+
+      <div class="dropdown-menu" id="dropdownMenu">
+        <ul>
+          <li>
+            <a href="order-history.html">
+              <i class="ph ph-notepad"></i> Order history
+            </a>
+          </li>
+          <li>
+            <a href="profile.html"><i class="ph ph-user"></i> Profile</a>
+          </li>
+          <li>
+            <a href="rewards.html"><i class="ph ph-trophy"></i> Rewards</a>
+          </li>
+        </ul>
+        <hr />
+        <ul>
+          <li>
+            <a href="../public-page-jay/public-page.html" class="logout">
+              <i class="ph ph-sign-out"></i> Log out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="hero">
+      <div class="hero-content">
+        <h1>Slogan</h1>
+        <p class="tagline">
+          tagline tagline tagline tagline tagline tagline tagline tagline
+        </p>
+
+        <div class="order-widget">
+          <div class="tabs">
+            <button class="tab-btn active" id="deliveryBtn">
+              <i class="ph ph-moped"></i> Delivery
+            </button>
+            <button class="tab-btn" id="pickupBtn">
+              <i class="ph ph-bag"></i> Pick up
+            </button>
+          </div>
+
+          <div class="input-group">
+            <div class="location-input-wrapper">
+              <i class="ph ph-map-pin location-icon"></i>
+              <input
+                type="text"
+                class="location-input"
+                id="locationInput"
+                placeholder="Enter your address"
+              />
+            </div>
+            <button class="order-btn">
+              <i class="ph ph-magnifying-glass" style="color: white"></i>
+              Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image-placeholder"></div>
+    </main>
+
+    <section class="cards-section">
+      <h2 style="margin-bottom: 24px; font-weight: 600; font-size: 1.5rem">
+        Restaurants Near You
+      </h2>
+
+      <div class="stores-grid">
+        <div class="store-card">
+          <div class="store-img" style="background-color: #ffdab9"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Chicken Rice King</h3>
+              <span class="rating">4.8 ★</span>
+            </div>
+            <p class="store-meta">Chinese • 20-30 min • Free Delivery</p>
+          </div>
+        </div>
+
+        <div class="store-card">
+          <div class="store-img" style="background-color: #add8e6"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Burger & Co.</h3>
+              <span class="rating">4.5 ★</span>
+            </div>
+            <p class="store-meta">Western • 15-25 min</p>
+          </div>
+        </div>
+
+        <div class="store-card">
+          <div class="store-img" style="background-color: #98fb98"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Salad Stop</h3>
+              <span class="rating">4.9 ★</span>
+            </div>
+            <p class="store-meta">Healthy • 10-20 min</p>
+          </div>
+        </div>
+
+        <div class="store-card">
+          <div class="store-img" style="background-color: #e6e6fa"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Pasta House</h3>
+              <span class="rating">4.2 ★</span>
+            </div>
+            <p class="store-meta">Italian • 30-45 min</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="patron-home.js"></script>
+  </body>
+</html>

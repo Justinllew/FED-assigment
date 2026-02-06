@@ -197,10 +197,12 @@ async function deleteItem() {
 // ==========================================
 
 function renderMenuItem(docId, data) {
+  console.log(`Rendering Item: ${data.name}`);
+  console.log(`Status from DB: "${data.status}"`);
   const container = document.querySelector(".menu-list-card");
 
   const article = document.createElement("article");
-  article.className = "menu-item-row";
+  article.className = "menu-item"; // Changed from 'menu-item-row' to match CSS 'menu-item'
   article.setAttribute("data-id", docId);
 
   // Fallback for missing image
@@ -209,29 +211,90 @@ function renderMenuItem(docId, data) {
       ? data.imgSrc
       : "https://placehold.co/100";
 
-  article.innerHTML = `
-        <div class="item-info">
-            <img src="${image}" alt="${data.name}" class="item-thumb">
-            <div>
-                <h4 class="item-name">${data.name}</h4>
-                <p class="item-desc">${data.desc || "No description"}</p>
-                <span class="item-price">$${Number(data.price).toFixed(2)}</span>
-            </div>
-        </div>
-        <div class="item-actions">
-            <button class="icon-btn edit-btn" title="Edit">
-                ✏️
-            </button>
-        </div>
-    `;
+  // Determine Status Styling
+  let statusLabel = "Available";
+  let statusClass = "available";
+  let originalPrice = Number(data.price);
+  let discountedPrice = originalPrice;
+  let priceHTML = `<div class="price">$${originalPrice.toFixed(2)}</div>`;
 
-  // Attach Edit Listener directly to the button we just created
+  if (data.status === "sold_out") {
+    statusLabel = "Sold Out";
+    statusClass = "sold-out";
+  } else if (data.status === "promotion") {
+    statusLabel = "Promotion";
+    statusClass = "promotion";
+
+    discountedPrice = originalPrice * 0.8;
+    priceHTML = `
+            <div class="price">
+                $${originalPrice.toFixed(2)}
+                <div style="font-size: 0.75rem; color: #15803d; font-weight: 500; margin-top:2px;">
+                    Selling: $${discountedPrice.toFixed(2)}
+                </div>
+            </div>
+        `;
+  }
+
+  // Generate HTML (Added the Status Wrapper section)
+  article.innerHTML = `
+        <img src="${image}" alt="${data.name}" class="item-img">
+        <div class="item-info">
+            <h4 class="item-name">${data.name}</h4>
+            <p class="item-desc">${data.desc || "No description"}</p>
+        </div>
+        <div class="item-actions-col">
+            ${priceHTML}
+            <div class="status-wrapper">
+                <div class="status-badge ${statusClass}">
+                    ${statusLabel} ▾
+                </div>
+                <div class="status-menu">
+                    <div class="status-option" data-val="available"><span class="status-dot" style="background:#22c55e"></span> Available</div>
+                    <div class="status-option" data-val="sold_out"><span class="status-dot" style="background:#ef4444"></span> Sold Out</div>
+                    <div class="status-option" data-val="promotion"><span class="status-dot" style="background:#eab308"></span> Promotion</div>
+                </div>
+            </div>
+            <button class="btn-text edit-btn">Edit Item</button>
+        </div>`;
+
+  // --- EVENT LISTENERS ---
+
+  // 1. Edit Button
   article
     .querySelector(".edit-btn")
     .addEventListener("click", () => openEditModal(article, data));
 
+  // 2. Status Badge Click (Toggle Dropdown)
+  const badge = article.querySelector(".status-badge");
+  const menu = article.querySelector(".status-menu");
+
+  badge.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent closing immediately
+    // Close all other open menus first
+    document.querySelectorAll(".status-menu.active").forEach((m) => {
+      if (m !== menu) m.classList.remove("active");
+    });
+    menu.classList.toggle("active");
+  });
+
+  // 3. Status Option Click (Update Firebase)
+  article.querySelectorAll(".status-option").forEach((option) => {
+    option.addEventListener("click", () => {
+      const newStatus = option.getAttribute("data-val");
+      updateItemStatus(docId, newStatus);
+    });
+  });
+
   container.appendChild(article);
 }
+
+// Global Click Listener to close dropdowns when clicking outside
+document.addEventListener("click", () => {
+  document.querySelectorAll(".status-menu.active").forEach((menu) => {
+    menu.classList.remove("active");
+  });
+});
 
 // --- MODAL CONTROLS ---
 
@@ -288,6 +351,57 @@ function toggleSidebar() {
   document.querySelector(".sidebar").classList.toggle("collapsed");
 }
 
+/**
+ * UPDATE STATUS: Updates just the status field
+ */
+async function updateItemStatus(docId, newStatus) {
+  if (!currentUserUid) return;
+
+  try {
+    const itemRef = doc(db, "vendors", currentUserUid, "menu_items", docId);
+    await updateDoc(itemRef, {
+      status: newStatus,
+    });
+
+    // Reload to show changes
+    loadMenuFromFirebase();
+  } catch (error) {
+    console.error("Error updating status:", error);
+    alert("Failed to update status");
+  }
+}
+const checkFirebase = setInterval(() => {
+  if (window.auth) {
+    clearInterval(checkFirebase);
+    initAuth();
+  }
+}, 100);
+
+function initAuth() {
+  window.authCheck(window.auth, (user) => {
+    if (user) {
+      // --- SUCCESS: USER IS LOGGED IN ---
+      currentUser = user;
+      console.log("Logged in as:", user.uid);
+
+      loadData(user.uid);
+
+      // Set User Name UI
+      const name = localStorage.getItem("freshEatsUserName") || "Vendor";
+      if (document.getElementById("sidebar-name"))
+        document.getElementById("sidebar-name").textContent = name;
+      if (document.getElementById("sidebar-avatar"))
+        document.getElementById("sidebar-avatar").textContent = name
+          .charAt(0)
+          .toUpperCase();
+    } else {
+      // --- FAILURE: NO USER FOUND ---
+      alert("Access Denied: You must be logged in to view this page.");
+      // Redirect back to the main landing page (adjust path as needed)
+      window.location.href = "../index.html";
+    }
+  });
+}
 // ==========================================
 // 6. EXPOSE FUNCTIONS TO WINDOW
 // ==========================================
