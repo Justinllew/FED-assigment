@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FreshEats Studio - Dashboard</title>
     <link rel="stylesheet" href="vendor-home.css" />
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
   </head>
   <body>
-    <div class="app-container light-theme">
+    <div class="app-container">
       <aside class="sidebar">
-        <div class="brand-logo">
+        <div class="brand-logo" onclick="toggleSidebar()" title="Toggle Menu">
           <svg
             width="28"
             height="28"
@@ -29,46 +28,170 @@
           </svg>
           <span>FreshEats Studio</span>
         </div>
-        <nav>
+
+        <nav class="sidebar-nav">
           <ul class="nav-links">
             <li class="nav-item active">
-              <a href="#"
-                ><i class="ph ph-squares-four"></i><span>Dashboard</span></a
-              >
+              <a href="vendor-home.html">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>Dashboard</span>
+              </a>
             </li>
+
             <li class="nav-item">
-              <a href="stall-display.html"
-                ><i class="ph ph-paint-brush-broad"></i><span>Display</span></a
-              >
+              <a href="stall-display.html">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                  <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                  <path d="M2 2l7.586 7.586"></path>
+                  <circle cx="11" cy="11" r="2"></circle>
+                </svg>
+                <span>Display</span>
+              </a>
             </li>
+
             <li class="nav-item">
-              <a href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
-                ><i class="ph ph-receipt"></i><span>Orders</span></a
+              <a
+                href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
               >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  ></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>Orders</span>
+              </a>
             </li>
+
             <li class="nav-item">
-              <a href="../../Devon's features/HTML/MenuManagement - V.html"
-                ><i class="ph ph-list-dashes"></i><span>Menu</span></a
-              >
+              <a href="../../Devon's features/HTML/MenuManagement - V.html">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                <span>Menu</span>
+              </a>
             </li>
+
             <li class="nav-item">
               <a
                 href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
-                ><i class="ph ph-chart-line-up"></i><span>Analytics</span></a
               >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <span>Analytics</span>
+              </a>
             </li>
+
             <li class="nav-item">
-              <a href="../../NEA Inspection Features/dashboardInspect.html"
-                ><i class="ph ph-clipboard-text"></i><span>Inspections</span></a
-              >
+              <a href="../../Lukas' Features/html/CustomerReview.html">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  ></polygon>
+                </svg>
+                <span>Reviews</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="../../NEA Inspection Features/dashboardInspect.html">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                  ></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span>Inspections</span>
+              </a>
             </li>
           </ul>
         </nav>
+
         <div class="sidebar-footer">
           <div class="user-profile-mini">
-            <div class="circle" id="sidebar-avatar">V</div>
+            <div class="circle" id="sidebar-avatar">L</div>
             <div class="user-info">
-              <h4 id="sidebar-name">Vendor</h4>
+              <h4 id="sidebar-name">Lukas</h4>
               <p>Store Manager</p>
             </div>
           </div>
@@ -203,7 +326,6 @@
                     border: 1px solid #e0e0e0;
                   "
                 ></div>
-
                 <div
                   style="
                     display: flex;
@@ -237,9 +359,8 @@
                       font-size: 0.75rem;
                       font-weight: 700;
                     "
+                    >Loading...</span
                   >
-                    Loading...
-                  </span>
                 </div>
                 <a
                   href="stall-display.html"
@@ -249,7 +370,6 @@
                 >
               </div>
             </div>
-
             <div class="studio-card">
               <div class="card-header"><h3>Quick Actions</h3></div>
               <div class="card-body compact action-list">
@@ -267,6 +387,12 @@
       </div>
     </div>
 
+    <script>
+      function toggleSidebar() {
+        document.querySelector(".app-container").classList.toggle("collapsed");
+      }
+    </script>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -279,7 +405,6 @@
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-      // ⚠️ REPLACE WITH YOUR FIREBASE CONFIG
       const firebaseConfig = {
         apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
         authDomain: "hawkerbase-fedasg.firebaseapp.com",
@@ -287,7 +412,6 @@
         storageBucket: "hawkerbase-fedasg.firebasestorage.app",
         messagingSenderId: "216203478131",
         appId: "1:216203478131:web:39072e8b25296b8ede9606",
-        measurementId: "G-E4S08BB1PG",
       };
 
       const app = initializeApp(firebaseConfig);
@@ -297,7 +421,6 @@
       window.dbOnValue = onValue;
       window.authCheck = onAuthStateChanged;
     </script>
-
     <script src="vendor-home.js"></script>
   </body>
 </html>

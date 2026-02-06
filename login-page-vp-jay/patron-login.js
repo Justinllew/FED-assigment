@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           alert("Welcome back, " + userData.username + "!");
           // Check this path!
-          window.location.href = "../patron-home/patron-home.html";
+          window.location.href = "../home-page-vp-jay/patron-home.html";
         } else {
           alert("Access Denied: You are a Vendor.");
         }

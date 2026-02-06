@@ -21,76 +21,161 @@ body {
   min-height: 100vh;
 }
 
-/* REUSE SIDEBAR STYLES FROM VENDOR_HOME.CSS IF POSSIBLE */
+/* ========================================= */
+/* SIDEBAR & NAVIGATION (COLLAPSIBLE)        */
+/* ========================================= */
 .sidebar {
-  width: 240px;
+  width: 260px; /* Wider to match screenshot spacing */
   background: var(--bg-white);
   border-right: 1px solid var(--border-light);
-  position: fixed;
-  height: 100%;
-  top: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
   padding: 24px 0;
+  z-index: 100;
+  transition: width 0.3s ease;
+  overflow: hidden;
 }
+
+/* Logo Area */
 .brand-logo {
-  color: var(--primary-green);
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 24px;
-  margin-bottom: 30px;
-}
-.nav-links {
-  list-style: none;
-  padding: 0;
-}
-.nav-item a {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 24px;
+  padding: 0 32px; /* Matches screenshot spacing */
+  margin-bottom: 40px;
+  cursor: pointer; /* Indicates clickable for toggle */
+  color: var(--primary-green);
+  font-weight: 800;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+/* Navigation List */
+.nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Spacing between items */
+  padding: 0 16px;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
   color: var(--text-muted);
   text-decoration: none;
   font-weight: 500;
-  border-left: 4px solid transparent;
+  font-size: 1rem;
+  border-radius: 8px; /* Rounded corners like screenshot */
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
+
+/* Hover State */
+.nav-item a:hover {
+  background-color: #f5f5f5;
+  color: var(--text-dark);
+}
+
+/* Active State (Matches Screenshot) */
 .nav-item.active a {
-  background: var(--bg-light-green);
-  color: var(--primary-green);
-  border-left-color: var(--primary-green);
+  background-color: var(--bg-light-green); /* Light green bg */
+  color: var(--primary-green); /* Green text */
+  font-weight: 600;
 }
+
+/* Footer (Profile) */
 .sidebar-footer {
   margin-top: auto;
-  padding: 24px;
-  border-top: 1px solid var(--border-light);
+  padding: 24px 32px;
 }
+
 .user-profile-mini {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 12px;
+  white-space: nowrap;
 }
+
 .circle {
-  width: 36px;
-  height: 36px;
-  background: var(--bg-light-green);
+  min-width: 40px;
+  height: 40px;
+  background-color: var(--bg-light-green);
   color: var(--primary-green);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  font-size: 1.1rem;
 }
+
+.user-info h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 2px;
+}
+
+.user-info p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
 .logout-link {
   display: block;
-  margin-top: 10px;
-  font-size: 0.8rem;
-  color: #dc2626;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #c05621; /* Burnt orange/red from screenshot */
   text-decoration: none;
-  padding-left: 46px;
-  font-weight: 600;
+  padding-left: 52px; /* Aligned with text */
+  transition: 0.2s;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+}
+
+/* --- COLLAPSED STATE LOGIC --- */
+/* When .collapsed is added to app-container via JS */
+.app-container.collapsed .sidebar {
+  width: 80px;
+}
+.app-container.collapsed .main-content {
+  margin-left: 80px;
+}
+
+/* Center items and hide text */
+.app-container.collapsed .brand-logo {
+  padding: 0;
+  justify-content: center;
+}
+.app-container.collapsed .nav-links {
+  padding: 0 10px;
+}
+.app-container.collapsed .nav-item a {
+  justify-content: center;
+  padding: 12px;
+}
+.app-container.collapsed .sidebar-footer {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Elements to hide */
+.app-container.collapsed .brand-logo span,
+.app-container.collapsed .nav-item span,
+.app-container.collapsed .user-info,
+.app-container.collapsed .logout-link {
+  display: none;
 }
 
 /* MAIN CONTENT */
