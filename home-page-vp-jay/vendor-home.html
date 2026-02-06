@@ -3,61 +3,343 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vendor Home - FreshEats</title>
+    <title>FreshEats Studio - Dashboard</title>
     <link rel="stylesheet" href="vendor-home.css" />
   </head>
   <body>
-    <nav class="navbar">
-      <div class="nav-left">
-        <span class="logo-icon">🏪</span>
-        <span class="brand-name">FreshEats</span>
-      </div>
-      <div class="nav-right">
-        <div class="user-menu" id="userMenuBtn">
-          <span class="icon-user">👤</span>
-          <span id="display-name">Vendor</span> <span class="chevron">⌄</span>
+    <div class="app-container light-theme">
+      <aside class="sidebar">
+        <div class="brand-logo">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+            <line x1="6" y1="1" x2="6" y2="4"></line>
+            <line x1="10" y1="1" x2="10" y2="4"></line>
+            <line x1="14" y1="1" x2="14" y2="4"></line>
+          </svg>
+          <span>FreshEats Studio</span>
         </div>
-        <div class="dropdown-menu" id="userDropdown">
-          <a href="#">Profile</a>
-          <a href="#">Settings</a>
-          <a href="../index.html">Log Out</a>
-        </div>
-      </div>
-    </nav>
 
-    <div class="main-container">
-      <div class="left-hero">
-        <div class="hero-content">
-          <h1>
-            Welcome back! Vendor<br />
-            <span class="highlight-name" id="hero-name">(Name)</span>
-          </h1>
-          <p class="tagline">
-            tagline tagline tagline tagline tagline tagline tagline tagline
-          </p>
-        </div>
-      </div>
+        <nav>
+          <ul class="nav-links">
+            <li class="nav-item active">
+              <a href="#">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>Dashboard</span>
+              </a>
+            </li>
 
-      <div class="right-links">
-        <div class="link-container">
-          <h2>Stall Management System</h2>
-          <hr class="divider" />
+            <li class="nav-item">
+              <a
+                href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  ></path>
+                </svg>
+                <span>Orders</span>
+              </a>
+            </li>
 
-          <h3>Stall</h3>
-          <ul class="nav-list">
-            <li><a href="#">Display</a></li>
-            <li><a href="#">Menu</a></li>
-            <li><a href="#">Orders</a></li>
-            <li><a href="#">Store Performance</a></li>
+            <li class="nav-item">
+              <a href="../../Devon's features/HTML/MenuManagement - V.html">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                  <path d="M7 2v20"></path>
+                  <path
+                    d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"
+                  ></path>
+                </svg>
+                <span>Menu</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a
+                href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <span>Analytics</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="../../NEA Inspection Features/dashboardInspect.html">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Inspections</span>
+              </a>
+            </li>
           </ul>
-        </div>
-      </div>
-    </div>
+        </nav>
 
-    <div class="bottom-cards">
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
+        <div class="sidebar-footer">
+          <div class="user-profile-mini">
+            <div class="circle" id="sidebar-avatar">V</div>
+            <div class="user-info">
+              <h4 id="sidebar-name">Vendor</h4>
+              <p>Store Manager</p>
+            </div>
+          </div>
+          <div style="margin-top: 10px; padding-left: 50px">
+            <a
+              href="../index.html"
+              style="
+                text-decoration: none;
+                color: #dc2626;
+                font-size: 0.8rem;
+                font-weight: 600;
+              "
+              >Log Out</a
+            >
+          </div>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <header class="studio-header">
+          <h2 class="page-title">Channel dashboard</h2>
+          <div class="header-right">
+            <a
+              href="../../Devon's features/HTML/MenuManagement - V.html"
+              class="btn-create"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              ADD ITEM
+            </a>
+            <div class="icon-btn">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#666"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <div class="user-avatar" id="header-avatar">V</div>
+          </div>
+        </header>
+
+        <main class="dashboard-grid">
+          <div class="grid-column main-col">
+            <div class="studio-card main-card">
+              <div class="card-header">
+                <h3>Live Store Status</h3>
+                <span class="live-indicator">LIVE</span>
+              </div>
+              <div class="card-body">
+                <div class="status-hero">
+                  <div class="hero-icon-lg">🏪</div>
+                  <div class="hero-details">
+                    <h2>Store is OPEN</h2>
+                    <p>Closing at 9:00 PM today.</p>
+                  </div>
+                </div>
+                <hr class="divider" />
+                <div class="quick-stats-row">
+                  <div class="qs-item">
+                    <h4>5</h4>
+                    <p>Active Orders</p>
+                  </div>
+                  <div class="qs-item">
+                    <h4>~12 min</h4>
+                    <p>Avg Prep Time</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a
+                  href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+                  >GO TO LIVE ORDERS</a
+                >
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header">
+                <h3>Latest Menu Alert</h3>
+              </div>
+              <div class="card-body compact">
+                <p>
+                  <strong>Wagyu Beef Burger</strong> is marked as "Sold Out".
+                </p>
+                <a
+                  href="../../Devon's features/HTML/MenuManagement - V.html"
+                  class="text-link"
+                  >Manage Inventory</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-column middle-col">
+            <div class="studio-card">
+              <div class="card-header">
+                <h3>Today's Performance</h3>
+              </div>
+              <div class="card-body">
+                <div class="metric-large">
+                  <h2>$1,250.50</h2>
+                  <p>Revenue</p>
+                  <span class="trend up">↑ 12% vs yesterday</span>
+                </div>
+                <hr class="divider" />
+                <div class="metric-list">
+                  <div class="metric-item">
+                    <span>Total Orders</span>
+                    <strong>45</strong>
+                  </div>
+                  <div class="metric-item">
+                    <span>Avg Order Value</span>
+                    <strong>$27.80</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a
+                  href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+                  >GO TO ANALYTICS</a
+                >
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header">
+                <h3>Recent Reviews</h3>
+              </div>
+              <div class="card-body compact review-list">
+                <div class="review-item">
+                  <div class="stars">★★★★★</div>
+                  <p class="review-text">
+                    "Best burger in town! Fast delivery." - John D.
+                  </p>
+                </div>
+                <div class="review-item">
+                  <div class="stars">★★★★☆</div>
+                  <p class="review-text">
+                    "Food was good, fries were a bit cold." - Sarah M.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-column right-col">
+            <div class="studio-card">
+              <div class="card-header">
+                <h3>Quick Actions</h3>
+              </div>
+              <div class="card-body compact action-list">
+                <a href="#" class="action-link">Update Opening Hours</a>
+                <a
+                  href="../../NEA Inspection Features/dashboardInspect.html"
+                  class="action-link"
+                  >View NEA Checklist</a
+                >
+                <a href="#" class="action-link">Store Settings</a>
+              </div>
+            </div>
+
+            <div class="studio-card news-card">
+              <div class="card-header">
+                <h3>FreshEats Insider</h3>
+              </div>
+              <div class="card-body compact">
+                <div class="news-img-placeholder">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#68a357"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    ></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                </div>
+                <h4>Boost sales with new photos</h4>
+                <p>
+                  Learn how high-quality menu photos can increase orders by 30%.
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
 
     <script src="vendor-home.js"></script>
