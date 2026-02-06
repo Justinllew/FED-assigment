@@ -63,6 +63,281 @@
           </p>
         </div>
       </div>
+
+      <!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+          <title>Vendor Review Dashboard</title>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          />
+          <link rel="stylesheet" href="../css/CustomerReviews( c- lukas).css" />
+        </head>
+        <body>
+          <header class="app-header">
+            <div class="header-container">
+              <div class="header-left">
+                <div class="logo-area">
+                  <i
+                    class="fas fa-certificate"
+                    style="color: var(--purple)"
+                  ></i>
+                  <span class="brand-name"
+                    >Vendor<span style="font-weight: 400">Dash</span></span
+                  >
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="user-menu-container" onclick="toggleDropdown()">
+                  <div class="user-avatar-small">
+                    <img
+                      src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vendor&backgroundColor=c0aede"
+                      alt="Profile"
+                    />
+                  </div>
+                  <span class="user-name">Vendor Name</span>
+                  <i class="fas fa-chevron-down" id="dropdownArrow"></i>
+
+                  <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-item">
+                      <i class="fas fa-shopping-bag"></i> <span>Orders</span>
+                    </div>
+                    <div class="dropdown-item">
+                      <i class="fas fa-chart-line"></i> <span>Analytics</span>
+                    </div>
+                    <div
+                      class="dropdown-item"
+                      onclick="resetData()"
+                      style="color: var(--orange)"
+                    >
+                      <i class="fas fa-sync-alt"></i> <span>Reset Data</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item danger">
+                      <i class="fas fa-sign-out-alt"></i> <span>Log out</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div class="layout-container">
+            <aside class="sidebar">
+              <div class="brand-logo">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                  <line x1="6" y1="1" x2="6" y2="4"></line>
+                  <line x1="10" y1="1" x2="10" y2="4"></line>
+                  <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+                <span>FreshEats Studio</span>
+              </div>
+
+              <nav class="sidebar-nav">
+                <ul class="nav-links">
+                  <li class="nav-item">
+                    <a href="../../home-page-vp-jay/home-page-p.html">
+                      <i class="fas fa-th-large" style="font-size: 1.1rem"></i>
+                      <span>Dashboard</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="../../Devon's features/html/MenuManagement - V.html"
+                    >
+                      <i class="fas fa-utensils" style="font-size: 1.1rem"></i>
+                      <span>Menu Content</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item active">
+                    <a href="#">
+                      <i
+                        class="fas fa-shopping-cart"
+                        style="font-size: 1.1rem"
+                      ></i>
+                      <span>Orders</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="../../Devon's features/html/StorePerformanceDashboard - V.html"
+                    >
+                      <i class="fas fa-chart-bar" style="font-size: 1.1rem"></i>
+                      <span>Analytics</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="../../Lukas' Features/html/CustomerReview.html">
+                      <i class="fas fa-star" style="font-size: 1.1rem"></i>
+                      <span>Reviews</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="../../NEA Inspection Features/dashboardInspect.html"
+                    >
+                      <i
+                        class="fas fa-shield-alt"
+                        style="font-size: 1.1rem"
+                      ></i>
+                      <span>Inspections</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+
+              <div class="sidebar-footer">
+                <div class="user-profile-mini">
+                  <div class="avatar-circle">L</div>
+                  <div class="user-info">
+                    <h4>Lukas</h4>
+                    <p>Store Manager</p>
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <main class="feed-content">
+              <div class="feed-header">
+                <h2>Reviews</h2>
+                <button class="btn-primary" onclick="toggleReviewForm()">
+                  <i class="fas fa-pen"></i> Write a Review
+                </button>
+              </div>
+
+              <div class="modal-overlay" id="reviewFormOverlay">
+                <div class="modal-card" id="reviewForm">
+                  <div class="modal-header">
+                    <h3>Write a Review</h3>
+                    <button
+                      class="close-modal-btn"
+                      onclick="toggleReviewForm()"
+                    >
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+
+                  <form onsubmit="submitReview(event)">
+                    <div class="form-grid">
+                      <div class="form-group">
+                        <label>Your Name</label>
+                        <input
+                          type="text"
+                          id="inputName"
+                          class="input-field"
+                          placeholder="John Doe"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label>Stall Name</label>
+                        <input
+                          type="text"
+                          id="inputStall"
+                          class="input-field"
+                          placeholder="e.g. Felix's Kitchen"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Rating</label>
+                      <div class="star-select-wrapper">
+                        <div class="star-rating-input" id="starRatingInput">
+                          <i class="fas fa-star star" data-rating="1"></i>
+                          <i class="fas fa-star star" data-rating="2"></i>
+                          <i class="fas fa-star star" data-rating="3"></i>
+                          <i class="fas fa-star star" data-rating="4"></i>
+                          <i class="fas fa-star star" data-rating="5"></i>
+                        </div>
+                        <span id="ratingLabel" class="rating-helper-text"
+                          >Select stars</span
+                        >
+                      </div>
+                      <div id="ratingError" class="error-msg">
+                        Please select a rating
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>What was the highlight?</label>
+                      <input
+                        type="text"
+                        id="inputLike"
+                        class="input-field"
+                        placeholder="e.g. Friendly staff, Fast delivery"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label>Detailed Review</label>
+                      <textarea
+                        id="inputReview"
+                        class="input-field textarea-field"
+                        placeholder="Share your experience..."
+                        required
+                      ></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn-secondary"
+                        onclick="toggleReviewForm()"
+                      >
+                        Cancel
+                      </button>
+                      <button type="submit" class="btn-primary">
+                        Submit Review
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="feed-filters">
+                <span class="active-filter">Most Recent</span>
+                <span>Highest Rated</span>
+                <span>Lowest Rated</span>
+              </div>
+
+              <div class="reviews-wrapper" id="reviewsList"></div>
+            </main>
+          </div>
+
+          <script src="../js/CustomerReviews.js"></script>
+        </body>
+      </html>
     </main>
 
     <script src="../js/OrderHistory(c -lukas).js"></script>

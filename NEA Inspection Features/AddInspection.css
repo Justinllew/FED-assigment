@@ -54,10 +54,10 @@ body {
 /* ===== FORM CONTAINER ===== */
 .form-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   background-color: white;
   border-radius: 40px;
-  padding: 50px 60px;
+  padding: 60px 80px;
 
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
@@ -90,7 +90,9 @@ label {
 input,
 textarea,
 select {
+  width: 100%;
   padding: 14px 16px;
+  box-sizing: border-box;
   border-radius: 16px;
   border: 2px solid #ddd;
   font-size: 14px;
