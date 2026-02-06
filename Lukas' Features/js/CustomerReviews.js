@@ -1,5 +1,6 @@
 // CONFIGURATION
-const API_URL = "http://localhost:3000/api";
+const API_URL =
+  "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app";
 const VENDOR_ID = 101;
 
 // STATE
