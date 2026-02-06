@@ -3,68 +3,207 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grade View</title>
+    <title>FreshEats Studio - Inspections</title>
     <link rel="stylesheet" href="VendorGradeViewpage.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <header class="top-bar">
-      ☰ <span class="app-name">Regulatory Compliance Dashboard</span>
-    </header>
-
-    <main class="page-wrapper">
-      <h1 class="page-title">Grade Overview</h1>
-      <div class="grade-box current-grade">
-        <div class="grade-circle">
-          <span class="grade-label">Grade</span>
-          <span class="grade-letter" id="currentGrade">A</span>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="brand-logo">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+            <line x1="6" y1="1" x2="6" y2="4"></line>
+            <line x1="10" y1="1" x2="10" y2="4"></line>
+            <line x1="14" y1="1" x2="14" y2="4"></line>
+          </svg>
+          <span>FreshEats Studio</span>
         </div>
-      </div>
 
-      <div class="grade-box previous-grades">
-        <h2>Past Inspection Results</h2>
-        <div class="prev-grade-list">
-          <div class="prev-grade">2023: B</div>
-          <div class="prev-grade">2022: A</div>
-          <div class="prev-grade">2021: C</div>
+        <nav>
+          <ul class="nav-links">
+            <li class="nav-item">
+              <a href="#">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  ></path>
+                </svg>
+                <span>Orders</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                  <path d="M7 2v20"></path>
+                  <path
+                    d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"
+                  ></path>
+                </svg>
+                <span>Menu</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                <span>Analytics</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a href="#">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Inspections</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-profile-mini">
+            <div class="avatar-circle">D</div>
+            <div class="user-info">
+              <h4>Devon Lane</h4>
+              <p>Store Manager</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </aside>
 
-      <div class="grade-box grade-legend">
-        <h2>Grading Legend</h2>
-        <div class="legend-list">
-          <div class="legend-item">
-            <span
-              class="legend-circle"
-              style="background-color: #be0808"
-            ></span>
-            Excellent
+      <main class="main-content">
+        <header class="studio-header">
+          <h2 class="page-title">Vendor Hygiene Grade Profile</h2>
+        </header>
+
+        <section class="status-hero-card">
+          <div class="grade-circle">
+            <span class="grade-label">Grade:</span>
+            <span class="grade-letter">A</span>
           </div>
-          <div class="legend-item">
-            <span
-              class="legend-circle"
-              style="background-color: #18ec58"
-            ></span>
-            Good
+          <div class="award-text">
+            <p>Awarded on:</p>
+            <h3>12/10/2025</h3>
           </div>
-          <div class="legend-item">
-            <span
-              class="legend-circle"
-              style="background-color: #a16a17"
-            ></span>
-            Average
+        </section>
+
+        <div class="dashboard-grid">
+          <div class="studio-card">
+            <div class="card-header">
+              <h3>Hygiene History</h3>
+            </div>
+            <div class="card-body">
+              <div class="history-list">
+                <div class="history-item">
+                  <span>2025</span>
+                  <span class="pill pill-blue">Excellent</span>
+                </div>
+                <div class="history-item">
+                  <span>2024</span>
+                  <span class="pill pill-green">Good</span>
+                </div>
+                <div class="history-item">
+                  <span>2023</span>
+                  <span class="pill pill-orange">Average</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="widgets-column">
+            <div class="studio-card">
+              <div class="card-header"><h3>Grading Legend</h3></div>
+              <div class="card-body legend-body">
+                <div class="legend-row">
+                  <span class="dot dot-red"></span> Excellent (> 85%)
+                </div>
+                <div class="legend-row">
+                  <span class="dot dot-green"></span> Good (70-84%)
+                </div>
+                <div class="legend-row">
+                  <span class="dot dot-orange"></span> Average (50-69%)
+                </div>
+              </div>
+            </div>
+
+            <div class="studio-card">
+              <div class="card-header"><h3>Comments</h3></div>
+              <div class="card-body">
+                <p class="comment-quote">
+                  "The stall maintains high standards of hygiene. Food handling
+                  procedures are compliant."
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- Comments Box -->
-      <div class="grade-box comments-box">
-        <h2>Additional Comments / Concerns</h2>
-        <p>No major issues found. Stall maintained good hygiene practices.</p>
-      </div>
-    </main>
+      </main>
+    </div>
   </body>
 </html>
