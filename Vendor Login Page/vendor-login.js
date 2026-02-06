@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           alert("Welcome back, " + userData.username + "!");
           // Redirect (Ensure this file exists in the SAME folder, or adjust path)
-          window.location.href = "vendor_home.html";
+          window.location.href = "/Vendor-home/vendor-home.html";
         } else {
           alert("Access Denied: You are a Patron.");
         }
