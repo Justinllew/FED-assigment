@@ -4,34 +4,30 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = url;
   }
 
-  // 1. Select The New Footer Button
+  // 1. Select The Footer Button (Using ID for specificity)
   const neaButton = document.getElementById("nea-inspector-btn");
 
-  // 2. Select Tabs (Using IDs is safer than index [0] or [1])
+  // 2. Select Tabs
   const deliveryBtn = document.getElementById("delivery-tab");
   const pickupBtn = document.getElementById("pickup-tab");
 
   // 3. Select Order Button
   const orderBtn = document.querySelector(".order-btn");
 
+  // 4. Select Store Cards
+  const storeCards = document.querySelectorAll(".store-card");
+
   // --- Click Events ---
 
-  // NEA Inspector (Now at the bottom)
-  if (neaButton) {
-    neaButton.addEventListener("click", () => {
-      // Replace with your actual NEA login page
-      // Assuming you might build a page later or link to external site
-      navigateTo("https://www.nea.gov.sg");
-    });
-  }
+  // Note: neaButton is now an <a> tag, so standard href navigation works.
+  // We don't necessarily need a JS listener unless you want to preventDefault()
+  // or add analytics. Leaving it clean for standard navigation.
 
   // Delivery Tab
   if (deliveryBtn) {
     deliveryBtn.addEventListener("click", () => {
-      // Toggle visual state (simple logic)
       deliveryBtn.classList.add("active");
       pickupBtn.classList.remove("active");
-      // navigateTo(...) // Add link if needed
     });
   }
 
@@ -40,20 +36,29 @@ document.addEventListener("DOMContentLoaded", () => {
     pickupBtn.addEventListener("click", () => {
       pickupBtn.classList.add("active");
       deliveryBtn.classList.remove("active");
-      // navigateTo(...) // Add link if needed
     });
   }
 
   // Order Button
   if (orderBtn) {
     orderBtn.addEventListener("click", () => {
-      const address = document.querySelector(".location-input").value;
+      const addressInput = document.querySelector(".location-input");
+      const address = addressInput ? addressInput.value : "";
+
       if (address) {
         alert(`Ordering for: ${address}`);
-        // navigateTo(...)
       } else {
         alert("Please enter an address first!");
       }
     });
   }
+
+  // Store Cards Interactivity
+  storeCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const storeName = card.querySelector("h3").innerText;
+      console.log(`Clicked on ${storeName}`);
+      // navigateTo(...)
+    });
+  });
 });

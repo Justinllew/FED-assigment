@@ -14,41 +14,54 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.classList.remove("active");
   }
 
-  userMenuBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (dropdownMenu.classList.contains("active")) {
+  if (userMenuBtn) {
+    userMenuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (dropdownMenu.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener("click", () => {
       closeMenu();
-    } else {
-      openMenu();
-    }
-  });
+    });
+  }
 
-  overlay.addEventListener("click", () => {
-    closeMenu();
-  });
-
-  // --- NEW: DELIVERY VS PICKUP TOGGLE LOGIC ---
+  // --- DELIVERY VS PICKUP TOGGLE LOGIC ---
   const deliveryBtn = document.getElementById("deliveryBtn");
   const pickupBtn = document.getElementById("pickupBtn");
   const locationInput = document.getElementById("locationInput");
 
   // Click "Delivery"
-  deliveryBtn.addEventListener("click", () => {
-    // Toggle active styling
-    deliveryBtn.classList.add("active");
-    pickupBtn.classList.remove("active");
-
-    // Update Input for Delivery Context
-    locationInput.placeholder = "Enter your address";
-  });
+  if (deliveryBtn) {
+    deliveryBtn.addEventListener("click", () => {
+      deliveryBtn.classList.add("active");
+      pickupBtn.classList.remove("active");
+      if (locationInput) locationInput.placeholder = "Enter your address";
+    });
+  }
 
   // Click "Pick up"
-  pickupBtn.addEventListener("click", () => {
-    // Toggle active styling
-    pickupBtn.classList.add("active");
-    deliveryBtn.classList.remove("active");
+  if (pickupBtn) {
+    pickupBtn.addEventListener("click", () => {
+      pickupBtn.classList.add("active");
+      deliveryBtn.classList.remove("active");
+      if (locationInput) locationInput.placeholder = "Enter pickup location";
+    });
+  }
 
-    // Update Input for Pickup Context
-    locationInput.placeholder = "Enter pickup location";
+  // --- STORE CARD CLICK LOGIC ---
+  const storeCards = document.querySelectorAll(".store-card");
+
+  storeCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const storeName = card.querySelector("h3").innerText;
+      console.log(`Navigating to ${storeName}...`);
+      alert(`Navigating to ${storeName}...`);
+    });
   });
 });

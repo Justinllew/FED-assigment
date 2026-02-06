@@ -24,26 +24,33 @@ document.addEventListener("DOMContentLoaded", () => {
   function initAuth() {
     window.authCheck(window.auth, (user) => {
       if (user) {
+        // --- SUCCESS: USER IS LOGGED IN ---
         currentUser = user;
-        // Load existing data
+        console.log("Logged in as:", user.uid);
+
         loadData(user.uid);
 
         // Set User Name UI
         const name = localStorage.getItem("freshEatsUserName") || "Vendor";
-        document.getElementById("sidebar-name").textContent = name;
-        document.getElementById("mobile-store-name").textContent = name;
-        document.getElementById("sidebar-avatar").textContent = name
-          .charAt(0)
-          .toUpperCase();
+        if (document.getElementById("sidebar-name"))
+          document.getElementById("sidebar-name").textContent = name;
+        if (document.getElementById("mobile-store-name"))
+          document.getElementById("mobile-store-name").textContent = name;
+        if (document.getElementById("sidebar-avatar"))
+          document.getElementById("sidebar-avatar").textContent = name
+            .charAt(0)
+            .toUpperCase();
       } else {
-        alert("Please log in first.");
+        // --- FAILURE: NO USER FOUND ---
+        alert("Access Denied: You must be logged in to view this page.");
+        // Redirect back to the main landing page (adjust path as needed)
+        window.location.href = "../index.html";
       }
     });
   }
 
   // 2. UI UPDATE FUNCTION
   function updateLocalUI() {
-    // Status Logic
     if (!statusToggle.checked) {
       textDisplay.textContent = "Store is Closed";
       textDisplay.style.color = "#dc2626";
@@ -58,8 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
       mobilePill.style.background = "#e9f2e6";
       mobilePill.style.color = "#68a357";
     }
-
-    // Banner Logic
     previewBanner.src = currentBannerUrl;
     mobileBanner.style.backgroundImage = `url('${currentBannerUrl}')`;
   }
@@ -68,11 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
   statusSelect.addEventListener("change", updateLocalUI);
   statusToggle.addEventListener("change", updateLocalUI);
 
-  // Banner Cycling (Simulated Upload)
   const images = [
-    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000", // Pancakes
-    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1000", // Steak
-    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000", // Salad
+    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000",
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1000",
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000",
   ];
   let imgIndex = 0;
 

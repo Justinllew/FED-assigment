@@ -1,57 +1,54 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Select the form and inputs
   const loginForm = document.querySelector("form");
-  // If you haven't added IDs to your inputs yet, we can select them by type:
   const emailInput = document.querySelector('input[type="email"]');
   const passwordInput = document.querySelector('input[type="password"]');
 
-  loginForm.addEventListener("submit", (e) => {
-    // 1. Stop the form from refreshing the page
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // 2. Get the values
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
 
-    // --- VALIDATION (School-Friendly Logic) ---
+    if (!email || !password) return alert("Please fill in all fields.");
 
-    // Check A: Are they empty?
-    if (email === "" || password === "") {
-      alert("Please fill in both email and password.");
-      return;
-    }
-
-    // Check B: Basic Email Structure (Same logic as Signup)
-    if (!email.includes("@") || !email.includes(".")) {
-      alert("Invalid email format. Must contain '@' and '.'");
-      return;
-    }
-
-    // --- MOCK LOGIN (The "Fake" Database) ---
-    // Since we don't have a real backend yet, we check against a specific string.
-    // You can tell your grader: "Use 'vendor@fresh.com' and '123456' to log in."
-    //!!! Make sure to link to our firebase Database.
-
-    const validEmail = "vendor@fresh.com";
-    const validPassword = "123456";
-
-    if (email === validEmail && password === validPassword) {
-      // SUCCESS
-      alert("Welcome back, Vendor!");
-
-      // --- NEW: Save the name for the next page ---
-      // In a real app, this comes from the database.
-      // Here we just hardcode "Jay" or take it from input if available.
-      localStorage.setItem("freshEatsUserName", "Jay");
-
-      // --- NEW: Redirect to Vendor Home ---
-      // Since we are in the same folder, just use the filename
-      window.location.href = "../home-page-vp-jay/vendor-home.html";
-    } else {
-      // FAILURE
-      alert(
-        "Wrong email or password.\n(Hint: Try 'vendor@fresh.com' and '123456')",
+    try {
+      // 1. AUTHENTICATE with Firebase
+      const userCredential = await window.loginUser(
+        window.auth,
+        email,
+        password,
       );
+      const user = userCredential.user;
+
+      // 2. GET USER DETAILS (Name & Role)
+      // We look up the 'users/{uid}' path we created during sign up
+      const snapshot = await window.dbGet(
+        window.dbRef(window.db, "users/" + user.uid),
+      );
+
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+
+        // 3. STORE IN LOCAL STORAGE (The "Hybrid" Handshake)
+        localStorage.setItem("freshEatsUserName", userData.name);
+        localStorage.setItem("freshEatsRole", userData.role);
+
+        alert(`Welcome back, ${userData.name}!`);
+
+        // 4. SMART REDIRECT
+        // Even if they log in on the Vendor page, check if they are actually a Vendor!
+        if (userData.role === "vendor") {
+          window.location.href = "vendor_home.html";
+        } else {
+          // If a Patron tries to log in here, send them to the main page
+          window.location.href = "../index.html";
+        }
+      } else {
+        alert("Error: User profile not found.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Login Failed: Incorrect email or password.");
     }
   });
 });

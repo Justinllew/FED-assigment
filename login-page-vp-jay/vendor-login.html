@@ -40,7 +40,28 @@
         </form>
       </div>
     </div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+      // ... (Paste Config Here) ...
+
+      const app = initializeApp(firebaseConfig);
+      window.auth = getAuth(app);
+      window.db = getDatabase(app);
+      window.loginUser = signInWithEmailAndPassword;
+      window.dbGet = get; // We need this to read the profile
+      window.dbRef = ref;
+    </script>
+    <script src="vendor_login.js"></script>
     <script src="vendor-login.js"></script>
   </body>
 </html>

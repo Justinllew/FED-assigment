@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="public-page.css" />
-    <title>Homepage</title>
+    <title>FreshEats Homepage</title>
   </head>
   <body>
     <nav>
@@ -27,7 +27,7 @@
 
       <div class="nav-right">
         <a
-          href="../login-page-vp-jay\role_selection.html"
+          href="../login-page-vp-jay/role_selection.html"
           class="btn btn-primary"
           style="text-decoration: none"
         >
@@ -128,16 +128,65 @@
     </main>
 
     <section class="cards-section">
-      <div class="card-placeholder"></div>
-      <div class="card-placeholder"></div>
-      <div class="card-placeholder"></div>
+      <h2 style="margin-bottom: 20px; font-weight: 600">Popular Near You</h2>
+
+      <div class="stores-grid">
+        <div class="store-card">
+          <div class="store-img" style="background-color: #ffdab9"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Chicken Rice King</h3>
+              <span class="rating">4.8 ★</span>
+            </div>
+            <p class="store-meta">Chinese • 20-30 min • Free Delivery</p>
+          </div>
+        </div>
+
+        <div class="store-card">
+          <div class="store-img" style="background-color: #add8e6"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Burger & Co.</h3>
+              <span class="rating">4.5 ★</span>
+            </div>
+            <p class="store-meta">Western • 15-25 min</p>
+          </div>
+        </div>
+
+        <div class="store-card">
+          <div class="store-img" style="background-color: #98fb98"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Salad Stop</h3>
+              <span class="rating">4.9 ★</span>
+            </div>
+            <p class="store-meta">Healthy • 10-20 min</p>
+          </div>
+        </div>
+
+        <div class="store-card">
+          <div class="store-img" style="background-color: #e6e6fa"></div>
+          <div class="store-info">
+            <div class="store-header">
+              <h3>Pasta House</h3>
+              <span class="rating">4.2 ★</span>
+            </div>
+            <p class="store-meta">Italian • 30-45 min</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <footer class="footer">
       <p style="margin-bottom: 10px; color: #666">Admin Access Only</p>
-      <button class="btn btn-secondary" id="nea-inspector-btn">
+      <a
+        href="../login-page-vp-jay/nea-login.html"
+        class="btn btn-secondary"
+        id="nea-inspector-btn"
+        style="text-decoration: none; display: inline-block"
+      >
         NEA Inspector Login
-      </button>
+      </a>
     </footer>
 
     <script src="public-page.js"></script>
