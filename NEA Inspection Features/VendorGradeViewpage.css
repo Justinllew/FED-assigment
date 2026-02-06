@@ -2,179 +2,298 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Poppins", sans-serif;
 }
 
 body {
-  background-color: #feffc1;
+  background-color: #f9f7e8;
+  color: #1a1a1a;
+  font-family: "Poppins", sans-serif;
+}
+
+.app-container {
+  display: flex;
   min-height: 100vh;
 }
 
-/* ===== HEADER ===== */
-.top-bar {
-  padding: 20px 40px;
-  font-size: 40px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  border-right: 1px solid #e0e0e0;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-weight: 500;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  flex-direction: column;
+  padding: 24px 0;
+  position: fixed;
+  height: 100%;
 }
 
-.app-name {
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #68a357;
+  margin-bottom: 24px;
+  padding: 0 24px;
+}
+
+.nav-links {
+  list-style: none;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  color: #666666;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.1s;
+  border-left: 4px solid transparent;
+}
+
+.nav-item.active a {
+  background-color: #e9f2e6;
+  color: #68a357;
+  border-left-color: #68a357;
+}
+
+.nav-item a:hover:not(.active a) {
+  background-color: #f5f5f5;
+  color: #68a357;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.user-profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  background-color: #e9f2e6;
+  color: #68a357;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.user-info h4 {
+  font-size: 0.9rem;
   font-weight: 600;
 }
-
-/* ===== PAGE WRAPPER ===== */
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  gap: 40px;
+.user-info p {
+  font-size: 0.75rem;
+  color: #666666;
 }
 
-/* ===== PAGE TITLE ===== */
+.main-content {
+  margin-left: 240px;
+  flex: 1;
+  padding: 30px 40px;
+}
+
 .page-title {
-  font-size: 36px;
-  font-weight: 500;
-  margin-bottom: 20px;
-  background-color: white;
-  padding: 18px 50px;
-  border-radius: 30px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 30px;
 }
 
-/* ===== GRADE BOXES ===== */
-.grade-box {
-  width: 90%;
-  max-width: 800px;
-  background-color: white;
-  border-radius: 30px;
-  padding: 40px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+.status-hero-card {
+  background: #ffffff;
+  border: 6px solid #c0392b;
+  border-radius: 20px;
+  padding: 50px;
+  text-align: center;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* ===== CURRENT GRADE ===== */
-.current-grade .grade-circle {
-  width: 180px;
-  height: 180px;
+.grade-circle {
+  width: 140px;
+  height: 140px;
+  background: #c0392b;
+  color: white;
   border-radius: 50%;
-  background-color: #4caf50; /* Can change depending on grade */
+  margin: 0 auto 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: 700;
-  color: white;
-  text-align: center;
-  gap: 5px;
-}
-
-.grade-label {
-  font-size: 20px;
-  font-weight: 500;
 }
 
 .grade-letter {
-  font-size: 70px;
-  font-weight: 700;
+  font-size: 4.5rem;
+  font-weight: 800;
   line-height: 1;
 }
 
-/* ===== PREVIOUS YEARS ===== */
-.previous-grades h2 {
-  font-size: 22px;
-  margin-bottom: 15px;
+.grade-label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
-.prev-grade-list {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
+.award-text h3 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
-.prev-grade {
-  background-color: #c7e5b5;
-  padding: 15px 25px;
-  border-radius: 20px;
+.award-text p {
+  color: #666666;
+  margin-bottom: 4px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+}
+
+.studio-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px 24px;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card-header h3 {
+  font-size: 1.05rem;
   font-weight: 600;
-  font-size: 18px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  color: #444;
 }
 
-/* ===== LEGEND ===== */
-.grade-legend h2 {
-  font-size: 22px;
-  margin-bottom: 15px;
+.card-body {
+  padding: 24px;
 }
 
-.legend-list {
+.history-item {
   display: flex;
-  gap: 25px;
-  flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-.legend-item {
+.history-item:last-child {
+  border: none;
+}
+
+.pill {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.pill-blue {
+  background: #fff7ed;
+  color: #c0392b;
+}
+
+.pill-green {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.pill-orange {
+  background: #e7d8c7;
+  color: #a16a17;
+}
+
+.widgets-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.legend-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 500;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
 }
 
-.legend-circle {
-  width: 24px;
-  height: 24px;
+.dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
 
-/* ===== COMMENTS BOX ===== */
-.comments-box h2 {
-  font-size: 22px;
-  margin-bottom: 15px;
+.dot-red {
+  background: #c0392b;
 }
 
-.comments-box p {
-  font-size: 16px;
-  line-height: 1.5;
-  text-align: center;
+.dot-green {
+  background: #22c55e;
 }
 
-/* ===== MOBILE ===== */
-@media (max-width: 700px) {
-  .page-title {
-    font-size: 28px;
-    padding: 14px 30px;
+.dot-orange {
+  background: #a16a17;
+}
+
+.comment-quote {
+  font-style: italic;
+  color: #666666;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
   }
-
-  .grade-box {
+  .sidebar {
     width: 100%;
-    padding: 30px 20px;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
   }
-
+  .main-content {
+    margin-left: 0;
+    padding: 15px 20px;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
   .grade-circle {
-    width: 140px;
-    height: 140px;
-    font-size: 50px;
+    width: 100px;
+    height: 100px;
   }
-
-  .prev-grade {
-    font-size: 16px;
-    padding: 12px 20px;
+  .grade-letter {
+    font-size: 2.8rem;
   }
-
-  .legend-circle {
-    width: 20px;
-    height: 20px;
+  .award-text h3 {
+    font-size: 1.5rem;
+  }
+  .studio-card {
+    padding: 12px;
+  }
+  .pill {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+  .legend-row {
+    font-size: 0.85rem;
   }
 }

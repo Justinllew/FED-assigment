@@ -23,10 +23,15 @@
       <!-- ===== FORM CONTAINER ===== -->
       <div class="form-container">
         <form class="inspection-form">
-          <!-- Hawker Stall Name -->
+          <!-- Hawker Stall Name (Read-only) -->
           <div class="form-group">
             <label for="stallName">Hawker Stall Name</label>
-            <input type="text" id="stallName" placeholder="Enter stall name" />
+            <input
+              type="text"
+              id="stallName"
+              readonly
+              value="Ah Seng Chicken Rice"
+            />
           </div>
 
           <!-- Date -->
@@ -56,5 +61,6 @@
         </form>
       </div>
     </div>
+    <script src="InspectionForm.js"></script>
   </body>
 </html>
