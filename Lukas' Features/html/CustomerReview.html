@@ -17,194 +17,186 @@
     <link rel="stylesheet" href="../css/CustomerReviews( c- lukas).css" />
   </head>
   <body>
-    <header class="app-header">
-      <div class="header-container">
-        <div class="header-left">
-          <div class="logo-area">
-            <i class="fas fa-certificate" style="color: var(--purple)"></i>
-            <span class="brand-name"
-              >Vendor<span style="font-weight: 400">Dash</span></span
+    <aside class="sidebar">
+      <div class="brand-logo">
+        <i class="fas fa-certificate" style="font-size: 1.5rem"></i>
+        <span>FreshEats Studio</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="../../home-page-vp-jay/home-page-p.html">
+              <i class="fas fa-th-large"></i><span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../../Devon's features/html/MenuManagement - V.html">
+              <i class="fas fa-utensils"></i><span>Menu Content</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#">
+              <i class="fas fa-shopping-cart"></i><span>Orders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              href="../../Devon's features/html/StorePerformanceDashboard - V.html"
             >
-          </div>
-        </div>
+              <i class="fas fa-chart-bar"></i><span>Analytics</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="../../Lukas' Features/html/CustomerReview.html">
+              <i class="fas fa-star"></i><span>Reviews</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../../NEA Inspection Features/dashboardInspect.html">
+              <i class="fas fa-shield-alt"></i><span>Inspections</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-        <div class="header-right">
-          <div class="user-menu-container" onclick="toggleDropdown()">
-            <div class="user-avatar-small">
-              <img
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vendor&backgroundColor=c0aede"
-                alt="Profile"
-              />
-            </div>
-            <span class="user-name">Vendor Name</span>
-            <i class="fas fa-chevron-down" id="dropdownArrow"></i>
-
-            <div class="dropdown-menu" id="dropdownMenu">
-              <div class="dropdown-item">
-                <i class="fas fa-shopping-bag"></i> <span>Orders</span>
-              </div>
-              <div class="dropdown-item">
-                <i class="fas fa-chart-line"></i> <span>Analytics</span>
-              </div>
-              <div
-                class="dropdown-item"
-                onclick="resetData()"
-                style="color: var(--orange)"
-              >
-                <i class="fas fa-sync-alt"></i> <span>Reset Data</span>
-              </div>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item danger">
-                <i class="fas fa-sign-out-alt"></i> <span>Log out</span>
-              </div>
-            </div>
+      <div class="sidebar-footer">
+        <div class="user-profile-mini">
+          <div class="avatar-circle">L</div>
+          <div class="user-info">
+            <h4>Lukas</h4>
+            <p>Store Manager</p>
           </div>
         </div>
       </div>
-    </header>
+    </aside>
 
-    <div class="layout-container">
-      <aside class="sidebar">
-        <div class="sidebar-card">
-          <div class="vendor-profile-header">
-            <div class="vendor-img-lg">
-              <img
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4"
-                alt="Vendor"
-              />
-            </div>
-            <div class="vendor-text">
-              <h1>Felix's Kitchen</h1>
-              <p class="subtitle">Fine Dining & Takeaway</p>
-            </div>
+    <div class="main-content-wrapper">
+      <header class="app-header">
+        <div class="header-container">
+          <div class="header-left">
+            <h2 class="page-title">Customer Reviews</h2>
           </div>
-
-          <div class="overall-rating-box">
-            <div class="rating-huge">
-              <span id="avgRatingDisplay">0.0</span>
-              <div class="star-stack">
-                <div class="stars-row" id="headerStars"></div>
-                <span class="review-count-label"
-                  ><span id="totalReviewsDisplay">0</span> Customer
-                  Reviews</span
-                >
+          <div class="header-right">
+            <div class="user-menu-container">
+              <div class="user-avatar-small">
+                <img
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vendor&backgroundColor=c0aede"
+                  alt="Profile"
+                />
               </div>
+              <span class="user-name">Lukas Manager</span>
             </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="rating-breakdown" id="ratingBars"></div>
-
-          <div class="tags-section">
-            <h4>Customer Highlights</h4>
-            <div class="tags-cloud" id="likesContainer"></div>
           </div>
         </div>
-      </aside>
+      </header>
 
       <main class="feed-content">
-        <div class="feed-header">
-          <h2>Reviews</h2>
+        <div class="feed-header-controls">
+          <div class="feed-filters">
+            <button class="filter-btn active" onclick="switchFilter('recent')">
+              Most Recent
+            </button>
+            <button class="filter-btn" onclick="switchFilter('highest')">
+              Highest Rated
+            </button>
+            <button class="filter-btn" onclick="switchFilter('lowest')">
+              Lowest Rated
+            </button>
+          </div>
           <button class="btn-primary" onclick="toggleReviewForm()">
             <i class="fas fa-pen"></i> Write a Review
           </button>
         </div>
 
-        <div class="modal-overlay" id="reviewFormOverlay">
-          <div class="modal-card" id="reviewForm">
-            <div class="modal-header">
-              <h3>Write a Review</h3>
-              <button class="close-modal-btn" onclick="toggleReviewForm()">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-
-            <form onsubmit="submitReview(event)">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Your Name</label>
-                  <input
-                    type="text"
-                    id="inputName"
-                    class="input-field"
-                    placeholder="John Doe"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Stall Name</label>
-                  <input
-                    type="text"
-                    id="inputStall"
-                    class="input-field"
-                    placeholder="e.g. Felix's Kitchen"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Rating</label>
-                <div class="star-select-wrapper">
-                  <div class="star-rating-input" id="starRatingInput">
-                    <i class="fas fa-star star" data-rating="1"></i>
-                    <i class="fas fa-star star" data-rating="2"></i>
-                    <i class="fas fa-star star" data-rating="3"></i>
-                    <i class="fas fa-star star" data-rating="4"></i>
-                    <i class="fas fa-star star" data-rating="5"></i>
-                  </div>
-                  <span id="ratingLabel" class="rating-helper-text"
-                    >Select stars</span
-                  >
-                </div>
-                <div id="ratingError" class="error-msg">
-                  Please select a rating
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>What was the highlight?</label>
-                <input
-                  type="text"
-                  id="inputLike"
-                  class="input-field"
-                  placeholder="e.g. Friendly staff, Fast delivery"
-                />
-              </div>
-
-              <div class="form-group">
-                <label>Detailed Review</label>
-                <textarea
-                  id="inputReview"
-                  class="input-field textarea-field"
-                  placeholder="Share your experience..."
-                  required
-                ></textarea>
-              </div>
-
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn-secondary"
-                  onclick="toggleReviewForm()"
-                >
-                  Cancel
-                </button>
-                <button type="submit" class="btn-primary">Submit Review</button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="feed-filters">
-          <span class="active-filter">Most Recent</span>
-          <span>Highest Rated</span>
-          <span>Lowest Rated</span>
-        </div>
-
         <div class="reviews-wrapper" id="reviewsList"></div>
       </main>
+    </div>
+
+    <div class="modal-overlay" id="reviewFormOverlay">
+      <div class="modal-card" id="reviewForm">
+        <div class="modal-header">
+          <h3>Write a Review</h3>
+          <button class="close-modal-btn" onclick="toggleReviewForm()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <form onsubmit="submitReview(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input
+                type="text"
+                id="inputName"
+                class="input-field"
+                placeholder="e.g. Lukas"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Stall Name</label>
+              <input
+                type="text"
+                id="inputStall"
+                class="input-field"
+                placeholder="e.g. Turkish Kebab"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Rating</label>
+            <div class="star-select-wrapper">
+              <div class="star-rating-input" id="starRatingInput">
+                <i class="fas fa-star star" data-rating="1"></i>
+                <i class="fas fa-star star" data-rating="2"></i>
+                <i class="fas fa-star star" data-rating="3"></i>
+                <i class="fas fa-star star" data-rating="4"></i>
+                <i class="fas fa-star star" data-rating="5"></i>
+              </div>
+              <span id="ratingLabel" class="rating-helper-text"
+                >Click stars to rate</span
+              >
+            </div>
+            <div id="ratingError" class="error-msg">
+              Please select a star rating.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>What was the highlight? (Optional)</label>
+            <input
+              type="text"
+              id="inputLike"
+              class="input-field"
+              placeholder="e.g. Great value, Tasty sauce"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Detailed Review</label>
+            <textarea
+              id="inputReview"
+              class="input-field textarea-field"
+              placeholder="Share your experience..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn-secondary"
+              onclick="toggleReviewForm()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary">Submit Review</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script src="../js/CustomerReviews.js"></script>

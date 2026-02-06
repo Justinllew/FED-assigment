@@ -196,3 +196,37 @@ window.toggleView = function (viewName) {
     activeList.classList.add("hidden");
   }
 };
+
+function navigateTo(viewId) {
+  // 1. Hide all Content Views
+  const views = document.querySelectorAll(".view-section");
+  views.forEach((view) => {
+    view.classList.add("hidden"); // Adds the CSS class that sets display: none
+  });
+
+  // 2. Remove 'active' class from all Sidebar items
+  const navItems = document.querySelectorAll(".nav-item");
+  navItems.forEach((item) => {
+    item.classList.remove("active");
+  });
+
+  // 3. Show the Specific View we clicked
+  const targetView = document.getElementById(`view-${viewId}`);
+  if (targetView) {
+    targetView.classList.remove("hidden");
+  } else {
+    console.error(`Error: Could not find view with id "view-${viewId}"`);
+  }
+
+  // 4. Highlight the clicked Sidebar item
+  const activeNav = document.getElementById(`nav-${viewId}`);
+  if (activeNav) {
+    activeNav.classList.add("active");
+  }
+}
+
+// Optional: Ensure the default view is correct on load
+document.addEventListener("DOMContentLoaded", () => {
+  // If you want to force "Orders" to open first:
+  navigateTo("orders");
+});

@@ -1,10 +1,11 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
-app.use(bodyParser.json());
-app.use(cors());
+
+// MIDDLEWARE
+app.use(express.json()); // Built-in body parser (replaces body-parser)
+app.use(cors()); // Allows your frontend (port 5500) to talk to backend (port 3000)
 
 // ==========================================
 // 1. MOCK DATABASE
@@ -78,6 +79,7 @@ const orders = [];
 const generatePastOrders = () => {
   const now = new Date();
   for (let i = 0; i < 50; i++) {
+    // Generate a random past date within the last year
     const pastDate = new Date(now.getTime() - Math.random() * 31536000000);
     orders.push({
       id: `ORD-${1000 + i}`,
@@ -115,14 +117,15 @@ const reviews = [
     customerName: "Hungry Jane",
     rating: 5,
     comment: "Chilli is power!",
-    date: "2026-02-01",
+    highlight: "Spicy Chilli",
+    date: new Date("2026-02-01").toISOString(),
   },
 ];
 
-// Helper Function
+// Helper Function: Hygiene Grade
 const calculateHygieneGrade = (vendorId) => {
   const vendorInspections = inspections.filter(
-    (i) => i.vendorId == parseInt(vendorId),
+    (i) => i.vendorId === parseInt(vendorId),
   );
   if (vendorInspections.length === 0) return "New";
   const latest = vendorInspections[0];
@@ -135,21 +138,22 @@ const calculateHygieneGrade = (vendorId) => {
 // 2. API ENDPOINTS
 // ==========================================
 
-// --- CUSTOMER FEATURES ---
+// --- CUSTOMER REVIEWS ---
 
 // 1. Submit Review
 app.post("/api/vendors/:id/review", (req, res) => {
+  console.log(`[POST] Review received for Vendor ${req.params.id}`);
   const { customerId, customerName, rating, comment, highlight } = req.body;
 
   const newReview = {
     id: reviews.length + 1,
-    vendorId: req.params.id,
+    vendorId: parseInt(req.params.id),
     customerId,
     customerName: customerName || "Anonymous",
     rating,
     comment,
     highlight,
-    date: new Date(),
+    date: new Date().toISOString(),
   };
 
   reviews.push(newReview);
@@ -158,14 +162,24 @@ app.post("/api/vendors/:id/review", (req, res) => {
 
 // 2. Get Reviews
 app.get("/api/vendors/:id/reviews", (req, res) => {
-  const vendorReviews = reviews.filter((r) => r.vendorId == req.params.id);
+  console.log(`[GET] Fetching reviews for Vendor ${req.params.id}`);
+  const vendorReviews = reviews.filter(
+    (r) => r.vendorId === parseInt(req.params.id),
+  );
   res.json(vendorReviews);
 });
+
+// --- VENDOR DASHBOARD ---
 
 // 3. Get Vendor Dashboard Stats
 app.get("/api/vendors/:id/dashboard", (req, res) => {
   const vendorId = parseInt(req.params.id);
+
+  // Filter Data
   const vendorOrders = orders.filter((o) => o.vendorId === vendorId);
+  const vendorReviews = reviews.filter((r) => r.vendorId === vendorId);
+
+  // Calculate Last Year Revenue
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
   const recentOrders = vendorOrders.filter(
@@ -175,10 +189,12 @@ app.get("/api/vendors/:id/dashboard", (req, res) => {
   const totalRevenue = recentOrders.reduce((acc, curr) => acc + curr.total, 0);
   const totalOrders = recentOrders.length;
 
-  const vendorReviews = reviews.filter((r) => r.vendorId == vendorId);
+  // Calculate Avg Rating
   const avgRating =
-    vendorReviews.reduce((acc, curr) => acc + curr.rating, 0) /
-    (vendorReviews.length || 1);
+    vendorReviews.length > 0
+      ? vendorReviews.reduce((acc, curr) => acc + curr.rating, 0) /
+        vendorReviews.length
+      : 0;
 
   res.json({
     period: "Last 1 Year",
@@ -186,7 +202,7 @@ app.get("/api/vendors/:id/dashboard", (req, res) => {
     totalOrders: totalOrders,
     averageRating: avgRating.toFixed(1),
     hygieneGrade: calculateHygieneGrade(vendorId),
-    recentOrders: recentOrders.slice(0, 5),
+    recentOrders: recentOrders.slice(0, 5), // Send top 5 recent
   });
 });
 
@@ -199,15 +215,19 @@ app.get("/api/vendors", (req, res) => {
   res.json(enrichedVendors);
 });
 
+// --- ORDERING SYSTEM ---
+
 // 5. Get Menu
 app.get("/api/vendors/:id/menu", (req, res) => {
-  const vendorMenu = menuItems.filter((m) => m.vendorId == req.params.id);
+  const vendorMenu = menuItems.filter(
+    (m) => m.vendorId === parseInt(req.params.id),
+  );
   res.json(vendorMenu);
 });
 
 // 6. Like Menu Item
 app.post("/api/menu/:itemId/like", (req, res) => {
-  const item = menuItems.find((m) => m.id == req.params.itemId);
+  const item = menuItems.find((m) => m.id === parseInt(req.params.itemId));
   if (item) {
     item.likes++;
     res.json({ success: true, newLikes: item.likes });
@@ -218,6 +238,7 @@ app.post("/api/menu/:itemId/like", (req, res) => {
 
 // 7. Place Order
 app.post("/api/orders", (req, res) => {
+  console.log("[POST] New Order Received");
   const { customerId, vendorId, items, paymentMethod } = req.body;
 
   let total = 0;
@@ -225,7 +246,7 @@ app.post("/api/orders", (req, res) => {
 
   const newOrder = {
     id: `ORD-${Date.now()}`,
-    vendorId,
+    vendorId: parseInt(vendorId),
     customerId,
     items,
     total,
@@ -234,9 +255,10 @@ app.post("/api/orders", (req, res) => {
     paymentStatus: "PAID",
     timestamp: new Date(),
   };
-  orders.push(newOrder);
+  orders.unshift(newOrder); // Add to beginning of array
 
-  const customer = users.find((u) => u.id == customerId);
+  // Update Loyalty Points
+  const customer = users.find((u) => u.id === parseInt(customerId));
   if (customer) {
     customer.points += Math.floor(total);
   }
@@ -248,26 +270,34 @@ app.post("/api/orders", (req, res) => {
   });
 });
 
-// 8. Order History
+// 8. Order History (Customer)
 app.get("/api/customers/:id/history", (req, res) => {
+  // Note: Since mock IDs are numbers but params are strings, we accept both for the customer check
   const history = orders
     .filter((o) => o.customerId == req.params.id)
-    .sort((a, b) => b.timestamp - a.timestamp);
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   res.json(history);
 });
 
-// --- VENDOR KITCHEN FEATURES ---
+// --- KITCHEN DISPLAY SYSTEM ---
 
-// 9. Get Orders for Kitchen Display
+// 9. Get Orders for Kitchen
 app.get("/api/vendors/:id/orders", (req, res) => {
-  const vendorOrders = orders.filter((o) => o.vendorId == req.params.id);
+  const vendorOrders = orders.filter(
+    (o) => o.vendorId === parseInt(req.params.id),
+  );
+  // Sort by newest first
+  vendorOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   res.json(vendorOrders);
 });
 
-// 10. Update Order Status
+// 10. Update Order Status (Cooking -> Completed)
 app.put("/api/orders/:id/status", (req, res) => {
+  console.log(
+    `[PUT] Update Status for Order ${req.params.id} -> ${req.body.status}`,
+  );
   const { status } = req.body;
-  const order = orders.find((o) => o.id == req.params.id);
+  const order = orders.find((o) => o.id == req.params.id); // Order IDs are strings (ORD-123)
 
   if (order) {
     order.status = status;
@@ -277,15 +307,15 @@ app.put("/api/orders/:id/status", (req, res) => {
   }
 });
 
-// --- NEA (REGULATORY) FEATURES ---
+// --- NEA FEATURES ---
 
 // 11. Log Inspection
 app.post("/api/nea/inspection", (req, res) => {
   const { vendorId, officer, majorLapses, score, comments } = req.body;
   const newInspection = {
     id: inspections.length + 500,
-    vendorId,
-    date: new Date(),
+    vendorId: parseInt(vendorId),
+    date: new Date().toISOString().split("T")[0], // YYYY-MM-DD
     officer,
     majorLapses,
     score,
@@ -299,7 +329,7 @@ app.post("/api/nea/inspection", (req, res) => {
 app.get("/api/nea/status/:vendorId", (req, res) => {
   const grade = calculateHygieneGrade(req.params.vendorId);
   const lastInspection = inspections.find(
-    (i) => i.vendorId == req.params.vendorId,
+    (i) => i.vendorId === parseInt(req.params.vendorId),
   );
 
   res.json({
@@ -315,8 +345,16 @@ app.get("/api/nea/status/:vendorId", (req, res) => {
 // ==========================================
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Hawker Centre API running on http://localhost:${PORT}`);
-  console.log(`- Vendor Dashboard: /api/vendors/101/dashboard`);
-  console.log(`- Customer Menu: /api/vendors/101/menu`);
-  console.log(`- Kitchen Display: /api/vendors/101/orders`);
+  console.log(`\n🚀 Hawker Centre API running on http://localhost:${PORT}`);
+  console.log(`-----------------------------------------------------`);
+  console.log(
+    `- Vendor Dashboard:  http://localhost:${PORT}/api/vendors/101/dashboard`,
+  );
+  console.log(
+    `- Vendor Reviews:    http://localhost:${PORT}/api/vendors/101/reviews`,
+  );
+  console.log(
+    `- Kitchen Display:   http://localhost:${PORT}/api/vendors/101/orders`,
+  );
+  console.log(`-----------------------------------------------------\n`);
 });

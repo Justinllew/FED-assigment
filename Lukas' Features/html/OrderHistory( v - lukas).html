@@ -4,35 +4,102 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vendor Kitchen Display</title>
-    <link rel="stylesheet" href="../css/OrderHistory(v-lukas).css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="../css/OrderHistory(v-lukas).css" />
   </head>
   <body>
-    <header>
-      <div class="header-left">
-        <div class="logo-icon">
-          <i class="fas fa-utensils"></i>
-        </div>
-        <span>Vendor Portal</span>
+    <aside class="sidebar">
+      <div class="brand-logo">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+          <line x1="6" y1="1" x2="6" y2="4"></line>
+          <line x1="10" y1="1" x2="10" y2="4"></line>
+          <line x1="14" y1="1" x2="14" y2="4"></line>
+        </svg>
+        <span>FreshEats Studio</span>
       </div>
-      <div class="header-right">
-        <div class="status-indicator online">
-          <span class="dot"></span> Live
-        </div>
-        <div class="user-menu">
-          <div class="user-avatar">L</div>
-          <span>Lim's Chicken Rice</span>
-        </div>
-      </div>
-    </header>
 
-    <main>
-      <div class="dashboard-header">
-        <div class="header-title-row">
-          <h2 class="page-title">Kitchen Display System</h2>
+      <nav class="sidebar-nav">
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="../../home-page-vp-jay/home-page-p.html">
+              <i class="fas fa-th-large" style="font-size: 1.1rem"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../../Devon's features/html/MenuManagement - V.html">
+              <i class="fas fa-utensils" style="font-size: 1.1rem"></i>
+              <span>Menu Content</span>
+            </a>
+          </li>
+
+          <li class="nav-item active">
+            <a href="#">
+              <i class="fas fa-shopping-cart" style="font-size: 1.1rem"></i>
+              <span>Orders</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a
+              href="../../Devon's features/html/StorePerformanceDashboard - V.html"
+            >
+              <i class="fas fa-chart-bar" style="font-size: 1.1rem"></i>
+              <span>Analytics</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../../Lukas' Features/html/CustomerReview.html">
+              <i class="fas fa-star" style="font-size: 1.1rem"></i>
+              <span>Reviews</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="../../NEA Inspection Features/dashboardInspect.html">
+              <i class="fas fa-shield-alt" style="font-size: 1.1rem"></i>
+              <span>Inspections</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-mini">
+          <div class="avatar-circle">L</div>
+          <div class="user-info">
+            <h4>Lukas</h4>
+            <p>Store Manager</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-content-wrapper">
+      <header>
+        <div class="header-left">
+          <h2 class="page-header-title">Kitchen Display System</h2>
+        </div>
+        <div class="header-right">
+          <div class="status-indicator online">
+            <span class="dot"></span> Live
+          </div>
           <button
             onclick="manualRefresh()"
             class="btn-icon"
@@ -41,7 +108,9 @@
             <i class="fas fa-sync-alt" id="refresh-icon"></i>
           </button>
         </div>
+      </header>
 
+      <main>
         <div class="tabs-container">
           <button class="tab-btn active" onclick="switchTab(event, 'PENDING')">
             New Orders <span class="badge" id="count-PENDING">0</span>
@@ -55,15 +124,15 @@
             <span class="badge badge-completed" id="count-COMPLETED">0</span>
           </button>
         </div>
-      </div>
 
-      <div class="orders-grid" id="orders-container">
-        <div class="loading-state">
-          <i class="fas fa-spinner fa-spin"></i>
-          <p>Connecting to Kitchen Server...</p>
+        <div class="orders-grid" id="orders-container">
+          <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Connecting to Kitchen Server...</p>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
 
     <script src="../js/OrderHistory(v - lukas).js"></script>
   </body>
