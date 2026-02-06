@@ -52,6 +52,7 @@ header {
   gap: 8px;
   cursor: pointer;
   font-size: 0.95rem;
+  font-weight: 600;
 }
 
 /* Layout */
@@ -130,6 +131,7 @@ h2.page-title {
 .order-meta {
   color: #888;
   font-size: 0.9rem;
+  margin-top: 4px;
 }
 
 /* Status Badge */
@@ -144,9 +146,11 @@ h2.page-title {
   border-radius: 20px;
   font-weight: 600;
   font-size: 0.9rem;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
-/* Stepper */
+/* Stepper (Progress Bar) */
 .stepper {
   display: flex;
   align-items: center;
@@ -186,6 +190,7 @@ h2.page-title {
   margin: 0 auto 10px auto;
   font-weight: bold;
   border: 3px solid white;
+  transition: all 0.3s;
 }
 
 .step-label {
@@ -210,10 +215,19 @@ h2.page-title {
 }
 
 /* Receipt Area */
+.receipt-box {
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
 .receipt-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: #555;
 }
 
 .receipt-total {
@@ -224,6 +238,7 @@ h2.page-title {
   font-weight: 700;
   font-size: 1.1rem;
   padding-top: 15px;
+  color: var(--text-dark);
 }
 
 /* History Specific */
@@ -240,10 +255,12 @@ h2.page-title {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
+  font-weight: 600;
 }
 
 .btn-action:hover {
   background: #f5f5f5;
+  border-color: #999;
 }
 
 .hidden {

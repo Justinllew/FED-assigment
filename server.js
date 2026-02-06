@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // ==========================================
-// 1. MOCK DATABASE (In-Memory for Demo)
+// 1. MOCK DATABASE
 // ==========================================
 
 // Users
@@ -73,12 +73,12 @@ const menuItems = [
   },
 ];
 
-// Orders (Historical Data for '1 Year' Timeline)
+// Orders (With Fake History)
 const orders = [];
 const generatePastOrders = () => {
   const now = new Date();
   for (let i = 0; i < 50; i++) {
-    const pastDate = new Date(now.getTime() - Math.random() * 31536000000); // Random time in last 1 year
+    const pastDate = new Date(now.getTime() - Math.random() * 31536000000);
     orders.push({
       id: `ORD-${1000 + i}`,
       vendorId: 101,
@@ -137,7 +137,7 @@ const calculateHygieneGrade = (vendorId) => {
 
 // --- CUSTOMER FEATURES ---
 
-// Submit Review (Supports Name & Highlight)
+// 1. Submit Review
 app.post("/api/vendors/:id/review", (req, res) => {
   const { customerId, customerName, rating, comment, highlight } = req.body;
 
@@ -156,13 +156,13 @@ app.post("/api/vendors/:id/review", (req, res) => {
   res.json({ success: true, message: "Review posted" });
 });
 
-// Get Reviews
+// 2. Get Reviews
 app.get("/api/vendors/:id/reviews", (req, res) => {
   const vendorReviews = reviews.filter((r) => r.vendorId == req.params.id);
   res.json(vendorReviews);
 });
 
-// Get Vendor Dashboard Data
+// 3. Get Vendor Dashboard Stats
 app.get("/api/vendors/:id/dashboard", (req, res) => {
   const vendorId = parseInt(req.params.id);
   const vendorOrders = orders.filter((o) => o.vendorId === vendorId);
@@ -190,7 +190,7 @@ app.get("/api/vendors/:id/dashboard", (req, res) => {
   });
 });
 
-// Customer Homepage (List Vendors)
+// 4. List Vendors
 app.get("/api/vendors", (req, res) => {
   const enrichedVendors = vendors.map((v) => ({
     ...v,
@@ -199,13 +199,13 @@ app.get("/api/vendors", (req, res) => {
   res.json(enrichedVendors);
 });
 
-// Get Menu
+// 5. Get Menu
 app.get("/api/vendors/:id/menu", (req, res) => {
   const vendorMenu = menuItems.filter((m) => m.vendorId == req.params.id);
   res.json(vendorMenu);
 });
 
-// Like Menu Item
+// 6. Like Menu Item
 app.post("/api/menu/:itemId/like", (req, res) => {
   const item = menuItems.find((m) => m.id == req.params.itemId);
   if (item) {
@@ -216,7 +216,7 @@ app.post("/api/menu/:itemId/like", (req, res) => {
   }
 });
 
-// Place Order
+// 7. Place Order
 app.post("/api/orders", (req, res) => {
   const { customerId, vendorId, items, paymentMethod } = req.body;
 
@@ -231,6 +231,7 @@ app.post("/api/orders", (req, res) => {
     total,
     status: "PENDING",
     paymentMethod,
+    paymentStatus: "PAID",
     timestamp: new Date(),
   };
   orders.push(newOrder);
@@ -247,14 +248,7 @@ app.post("/api/orders", (req, res) => {
   });
 });
 
-// Order Tracking
-app.get("/api/orders/:orderId", (req, res) => {
-  const order = orders.find((o) => o.id == req.params.orderId);
-  if (order) res.json(order);
-  else res.status(404).json({ error: "Order not found" });
-});
-
-// Order History
+// 8. Order History
 app.get("/api/customers/:id/history", (req, res) => {
   const history = orders
     .filter((o) => o.customerId == req.params.id)
@@ -262,9 +256,30 @@ app.get("/api/customers/:id/history", (req, res) => {
   res.json(history);
 });
 
+// --- VENDOR KITCHEN FEATURES ---
+
+// 9. Get Orders for Kitchen Display
+app.get("/api/vendors/:id/orders", (req, res) => {
+  const vendorOrders = orders.filter((o) => o.vendorId == req.params.id);
+  res.json(vendorOrders);
+});
+
+// 10. Update Order Status
+app.put("/api/orders/:id/status", (req, res) => {
+  const { status } = req.body;
+  const order = orders.find((o) => o.id == req.params.id);
+
+  if (order) {
+    order.status = status;
+    res.json({ success: true, order });
+  } else {
+    res.status(404).json({ error: "Order not found" });
+  }
+});
+
 // --- NEA (REGULATORY) FEATURES ---
 
-// NEA Inspection Log
+// 11. Log Inspection
 app.post("/api/nea/inspection", (req, res) => {
   const { vendorId, officer, majorLapses, score, comments } = req.body;
   const newInspection = {
@@ -280,7 +295,7 @@ app.post("/api/nea/inspection", (req, res) => {
   res.json({ success: true, message: "Inspection logged" });
 });
 
-// Public Hygiene Status Check
+// 12. Public Hygiene Status
 app.get("/api/nea/status/:vendorId", (req, res) => {
   const grade = calculateHygieneGrade(req.params.vendorId);
   const lastInspection = inspections.find(
@@ -303,5 +318,5 @@ app.listen(PORT, () => {
   console.log(`Hawker Centre API running on http://localhost:${PORT}`);
   console.log(`- Vendor Dashboard: /api/vendors/101/dashboard`);
   console.log(`- Customer Menu: /api/vendors/101/menu`);
-  console.log(`- NEA Status: /api/nea/status/101`);
+  console.log(`- Kitchen Display: /api/vendors/101/orders`);
 });
