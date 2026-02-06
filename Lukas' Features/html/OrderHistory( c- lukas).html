@@ -24,7 +24,9 @@
         <span>DeliveryApp</span>
       </div>
       <div class="header-right">
-        <div class="user-menu"><span>Julia Ann</span></div>
+        <div class="user-menu">
+          <span id="user-name-display">Loading User...</span>
+        </div>
       </div>
     </header>
 
@@ -50,70 +52,15 @@
 
       <div class="dashboard-container">
         <div id="active-list">
-          <div class="track-card">
-            <div class="track-header">
-              <div>
-                <div class="store-name">McDonalds</div>
-                <div class="order-meta">Order #0001 • Arriving in 25 mins</div>
-              </div>
-              <div class="status-badge-container">
-                <span class="status-badge">On The Way</span>
-              </div>
-            </div>
-
-            <div class="stepper">
-              <div class="step completed">
-                <div class="step-circle">✓</div>
-                <div class="step-label">Placed</div>
-              </div>
-              <div class="step completed">
-                <div class="step-circle">✓</div>
-                <div class="step-label">Cooking</div>
-              </div>
-              <div class="step active">
-                <div class="step-circle">3</div>
-                <div class="step-label">On Way</div>
-              </div>
-              <div class="step">
-                <div class="step-circle">4</div>
-                <div class="step-label">Delivered</div>
-              </div>
-            </div>
-
-            <div class="receipt-box">
-              <div class="receipt-row">
-                <span>1x Big Mac Meal</span> <span>$10.50</span>
-              </div>
-              <div class="receipt-row">
-                <span>2x McWings</span> <span>$2.00</span>
-              </div>
-              <div class="receipt-total">
-                <span>Total</span> <span>$12.50</span>
-              </div>
-            </div>
-          </div>
+          <p style="text-align: center; color: #888; margin-top: 20px">
+            Loading active orders...
+          </p>
         </div>
 
         <div id="history-list" class="hidden">
-          <div class="track-card">
-            <div class="track-header history-header">
-              <div>
-                <div class="store-name muted">KFC (Yesterday)</div>
-                <div class="order-meta">Order #0002 • Delivered</div>
-              </div>
-              <button class="btn-action">Reorder</button>
-            </div>
-          </div>
-
-          <div class="track-card">
-            <div class="track-header history-header">
-              <div>
-                <div class="store-name muted">Burger King (Jan 24)</div>
-                <div class="order-meta">Order #0009 • Cancelled</div>
-              </div>
-              <button class="btn-action">View</button>
-            </div>
-          </div>
+          <p style="text-align: center; color: #888; margin-top: 20px">
+            Loading history...
+          </p>
         </div>
       </div>
     </main>

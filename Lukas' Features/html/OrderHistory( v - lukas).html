@@ -5,158 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vendor Kitchen Display</title>
     <link rel="stylesheet" href="../css/OrderHistory(v-lukas).css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
   </head>
   <body>
     <header>
       <div class="header-left">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        </svg>
+        <div class="logo-icon">
+          <i class="fas fa-utensils"></i>
+        </div>
         <span>Vendor Portal</span>
       </div>
       <div class="header-right">
+        <div class="status-indicator online">
+          <span class="dot"></span> Live
+        </div>
         <div class="user-menu">
-          <div class="user-avatar">M</div>
-          <span>McDonalds Admin</span>
+          <div class="user-avatar">L</div>
+          <span>Lim's Chicken Rice</span>
         </div>
       </div>
     </header>
 
     <main>
       <div class="dashboard-header">
-        <h2 class="page-title">Kitchen Display System</h2>
+        <div class="header-title-row">
+          <h2 class="page-title">Kitchen Display System</h2>
+          <button
+            onclick="manualRefresh()"
+            class="btn-icon"
+            title="Refresh Board"
+          >
+            <i class="fas fa-sync-alt" id="refresh-icon"></i>
+          </button>
+        </div>
 
         <div class="tabs-container">
-          <button class="tab-btn active" onclick="switchTab(event, 'new')">
-            New Orders <span class="tab-count" id="count-new">2</span>
+          <button class="tab-btn active" onclick="switchTab(event, 'PENDING')">
+            New Orders <span class="badge" id="count-PENDING">0</span>
           </button>
-          <button class="tab-btn" onclick="switchTab(event, 'cooking')">
-            Cooking <span class="tab-count" id="count-cooking">1</span>
+          <button class="tab-btn" onclick="switchTab(event, 'COOKING')">
+            Cooking
+            <span class="badge badge-cooking" id="count-COOKING">0</span>
           </button>
-          <button class="tab-btn" onclick="switchTab(event, 'completed')">
-            Completed <span class="tab-count" id="count-completed">0</span>
+          <button class="tab-btn" onclick="switchTab(event, 'COMPLETED')">
+            Completed
+            <span class="badge badge-completed" id="count-COMPLETED">0</span>
           </button>
         </div>
       </div>
 
-      <div class="orders-board">
-        <div class="order-card" id="order-001" data-status="new">
-          <div class="card-header">
-            <div>
-              <div class="order-id">#0001</div>
-              <div class="customer-name">Julia Ann</div>
-            </div>
-            <div class="order-timer">Placed 2m ago</div>
-          </div>
-          <div class="card-body">
-            <div class="item-list">
-              <div class="item-row">
-                <div><span class="item-qty">1x</span> Big Mac Meal</div>
-              </div>
-              <span class="item-mods">- No Pickles, No Onions</span>
-              <span class="item-mods">- Large Coke</span>
-              <span class="item-mods">- Large Fries</span>
-              <div class="item-row" style="margin-top: 10px">
-                <div><span class="item-qty">2x</span> McWings (Add-on)</div>
-              </div>
-            </div>
-            <div class="payment-info">
-              <div class="total-price">$12.50</div>
-              <div class="payment-method">Paid via Card 💳</div>
-            </div>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-secondary">Print Ticket</button>
-            <button
-              class="btn btn-primary"
-              onclick="moveOrder('order-001', 'cooking')"
-            >
-              Start Cooking
-            </button>
-          </div>
-        </div>
-
-        <div class="order-card" id="order-002" data-status="new">
-          <div class="card-header">
-            <div>
-              <div class="order-id">#0002</div>
-              <div class="customer-name">Mike Ross</div>
-            </div>
-            <div class="order-timer">Placed 5m ago</div>
-          </div>
-          <div class="card-body">
-            <div class="item-list">
-              <div class="item-row">
-                <div><span class="item-qty">2x</span> Filet-O-Fish</div>
-              </div>
-              <div class="item-row">
-                <div><span class="item-qty">1x</span> Vanilla Cone</div>
-              </div>
-            </div>
-            <div class="payment-info">
-              <div class="total-price">$8.20</div>
-              <div class="payment-method">Cash on Delivery 💵</div>
-            </div>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-secondary">Print Ticket</button>
-            <button
-              class="btn btn-primary"
-              onclick="moveOrder('order-002', 'cooking')"
-            >
-              Start Cooking
-            </button>
-          </div>
-        </div>
-
-        <div class="order-card hidden" id="order-005" data-status="cooking">
-          <div class="card-header">
-            <div>
-              <div class="order-id">#0005</div>
-              <div class="customer-name">Sarah J.</div>
-            </div>
-            <div class="order-timer status-cooking">Cooking for 8m</div>
-          </div>
-          <div class="card-body">
-            <div class="item-list">
-              <div class="item-row">
-                <div><span class="item-qty">1x</span> 20pc McNuggets</div>
-              </div>
-              <span class="item-mods">- Sweet & Sour Sauce</span>
-            </div>
-            <div class="payment-info">
-              <div class="total-price">$10.00</div>
-              <div class="payment-method">Paid via Card 💳</div>
-            </div>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-secondary">Reprint</button>
-            <button
-              class="btn btn-success"
-              onclick="moveOrder('order-005', 'completed')"
-            >
-              Mark Completed
-            </button>
-          </div>
+      <div class="orders-grid" id="orders-container">
+        <div class="loading-state">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Connecting to Kitchen Server...</p>
         </div>
       </div>
     </main>
 
-    <footer class="base-footer">
-      <div class="signature">
-        <p>© 2026 Vendor Portal. Designed for efficiency.</p>
-      </div>
-    </footer>
-
-    <script src="../css/OrderHistory(v-lukas).css"></script>
+    <script src="../js/OrderHistory(v - lukas).js"></script>
   </body>
 </html>
