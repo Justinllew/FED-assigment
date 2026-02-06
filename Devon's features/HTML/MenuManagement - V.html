@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/Devon's features/css/MenuManagement.css" />
+    <title>Vendor Menu</title>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="brand-logo">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+            <line x1="6" y1="1" x2="6" y2="4"></line>
+            <line x1="10" y1="1" x2="10" y2="4"></line>
+            <line x1="14" y1="1" x2="14" y2="4"></line>
+          </svg>
+          <span>FreshEats</span>
+        </div>
+
+        <nav>
+          <ul class="nav-links">
+            <li class="nav-item">
+              <a
+                href="/Devon's features/HTML/StorePerformanceDashboard - V.html "
+              >
+                <sv g
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a href="MenuManagement.html">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                  <path d="M7 2v20"></path>
+                  <path
+                    d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"
+                  ></path>
+                </svg>
+                <span>Menu Manager</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="OrderTracking.html">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  ></path>
+                </svg>
+                <span>Orders</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="Reviews.html">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  ></path>
+                </svg>
+                <span>Reviews</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-profile-mini">
+            <div
+              class="circle"
+              style="width: 35px; height: 35px; background: #eee; color: #333"
+            >
+              D
+            </div>
+            <div class="user-info">
+              <h4 style="font-size: 0.9rem">Devon Lane</h4>
+              <p style="font-size: 0.75rem; color: #666">Store Manager</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <header>
+          <div class="header-title">
+            <h1>Menu Management</h1>
+            <p>Organize your food items and categories</p>
+          </div>
+          <div class="header-actions">
+            <button
+              class="icon-btn"
+              style="
+                background: var(--primary-green);
+                color: white;
+                border: none;
+              "
+              aria-label="Add New Item"
+              onclick="openAddModal()"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <main>
+          <div class="store-banner">
+  <div class="store-banner-info">
+    <div class="store-icon-large">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </div>
+    <div>
+      <h2 class="store-name-heading">FreshEats Signature</h2>
+      <a href="#" class="store-link">
+        View Store Homepage 
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+    </div>
+  </div>
+  
+  <div class="store-status-pill">
+    <span class="indicator"></span> Open Now
+  </div>
+</div>
+
+            <section class="menu-list-card" aria-label="Menu Items List">
+              <article class="menu-item">
+                <img
+                  src="https://placehold.co/100x100/dbead5/68a357?text=Toast"
+                  alt="Avocado Toast"
+                  class="item-img"
+                />
+
+                <div class="item-info">
+                  <h3 class="item-name">Classic Avocado Toast</h3>
+                  <p class="item-desc">
+                    Sourdough bread topped with smashed avocado, poached egg,
+                    chili flakes, and a drizzle of lime oil.
+                  </p>
+                  <span class="item-meta">Vegetarian • 350 kcal</span>
+                </div>
+
+                <div class="item-actions-col">
+                  <span class="price">$12.50</span>
+
+                  <div class="status-wrapper">
+                    <button
+                      class="status-badge available"
+                      onclick="toggleStatusMenu(this)"
+                    >
+                      <span class="status-text">Available</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="status-menu">
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'available')"
+                      >
+                        <span style="color: #68a357">●</span> Available
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'sold-out')"
+                      >
+                        <span style="color: #a35757">●</span> Sold Out
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'promotion')"
+                      >
+                        <span style="color: #d97706">●</span> Promotion
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="manage-actions">
+                    <button class="btn-text" onclick="openEditModal(this)">
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="menu-item">
+                <img
+                  src="https://placehold.co/100x100/fff3cd/d97706?text=Burger"
+                  alt="Wagyu Burger"
+                  class="item-img"
+                />
+
+                <div class="item-info">
+                  <h3 class="item-name">Wagyu Beef Burger</h3>
+                  <p class="item-desc">
+                    Premium wagyu patty, aged cheddar, caramelized onions,
+                    lettuce, and house sauce on a brioche bun.
+                  </p>
+                  <span class="item-meta">Chef's Special</span>
+                </div>
+
+                <div class="item-actions-col">
+                  <span class="price">$18.00</span>
+
+                  <div class="status-wrapper">
+                    <button
+                      class="status-badge available"
+                      onclick="toggleStatusMenu(this)"
+                    >
+                      <span class="status-text">Available</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="status-menu">
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'available')"
+                      >
+                        <span style="color: #68a357">●</span> Available
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'sold-out')"
+                      >
+                        <span style="color: #a35757">●</span> Sold Out
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'promotion')"
+                      >
+                        <span style="color: #d97706">●</span> Promotion
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="manage-actions">
+                    <button class="btn-text" onclick="openEditModal(this)">
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="menu-item">
+                <img
+                  src="https://placehold.co/100x100/e9f2e6/68a357?text=Caesar"
+                  alt="Salad"
+                  class="item-img"
+                />
+                <div class="item-info">
+                  <h3 class="item-name">Grilled Chicken Caesar</h3>
+                  <p class="item-desc">
+                    Crisp romaine lettuce, garlic croutons, parmesan cheese, and
+                    grilled chicken breast with caesar dressing.
+                  </p>
+                </div>
+                <div class="item-actions-col">
+                  <span class="price">$15.00</span>
+
+                  <div class="status-wrapper">
+                    <button
+                      class="status-badge available"
+                      onclick="toggleStatusMenu(this)"
+                    >
+                      <span class="status-text">Available</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="status-menu">
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'available')"
+                      >
+                        <span style="color: #68a357">●</span> Available
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'sold-out')"
+                      >
+                        <span style="color: #a35757">●</span> Sold Out
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'promotion')"
+                      >
+                        <span style="color: #d97706">●</span> Promotion
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="manage-actions">
+                    <button class="btn-text" onclick="openEditModal(this)">
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="menu-item">
+                <img
+                  src="https://placehold.co/100x100/f2e6e6/a35757?text=Risotto"
+                  alt="Risotto"
+                  class="item-img"
+                />
+                <div class="item-info">
+                  <h3 class="item-name">Truffle Mushroom Risotto</h3>
+                  <p class="item-desc">
+                    Arborio rice slow-cooked with wild mushrooms, white wine,
+                    truffle oil, and parmesan.
+                  </p>
+                  <span class="item-meta">Gluten Free</span>
+                </div>
+                <div class="item-actions-col">
+                  <span class="price">$19.50</span>
+
+                  <div class="status-wrapper">
+                    <button
+                      class="status-badge sold-out"
+                      onclick="toggleStatusMenu(this)"
+                    >
+                      <span class="status-text">Sold Out</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="status-menu">
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'available')"
+                      >
+                        <span style="color: #68a357">●</span> Available
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'sold-out')"
+                      >
+                        <span style="color: #a35757">●</span> Sold Out
+                      </div>
+                      <div
+                        class="status-option"
+                        onclick="updateStatus(this, 'promotion')"
+                      >
+                        <span style="color: #d97706">●</span> Promotion
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="manage-actions">
+                    <button class="btn-text" onclick="openEditModal(this)">
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+    <div id="editModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Menu Item</h3>
+          <button class="close-btn" onclick="closeModal()">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Item Image</label>
+          <div class="image-upload-preview" onclick="document.getElementById('itemImageInput').click()">
+            <img id="previewImage" src="https://placehold.co/100x100/e0e0e0/666?text=Upload" alt="Preview">
+              <span class="upload-hint">Click to upload image</span>
+          </div>
+            <input type=  "file" id="itemImageInput" accept="image/*" style="display: none" onchange="previewFile()">
+        </div>
+
+          <input type="hidden" id="editItemIndex" />
+
+          <div class="form-group">
+            <label>Item Name</label>
+            <input type="text" id="editName" placeholder="Item Name" />
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea
+              id="editDesc"
+              rows="3"
+              placeholder="Description of the dish"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Price</label>
+            <div class="price-input-wrapper">
+              <span>$</span>
+              <input
+                type="number"
+                id="editPrice"
+                step="0.01"
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-delete" onclick="deleteItem()">Remove Item</button>
+          <div class="footer-actions">
+            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+            <button class="btn-save" onclick="saveChanges()">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/Devon's features/JavaScript/MenuManagement.js"></script>
+  </body>
+</html>
