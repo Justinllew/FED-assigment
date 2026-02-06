@@ -1,5 +1,6 @@
 // CONFIGURATION
-const API_URL = "http://localhost:3000/api";
+const API_URL =
+  "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app";
 // Get the logged-in user (Default to 2/Hungry Jane if missing)
 const USER_ID = localStorage.getItem("userId") || 2;
 
