@@ -30,12 +30,11 @@ body {
   min-height: 100vh;
 }
 
-/* --- SIDEBAR --- */
 /* ========================================= */
-/* SIDEBAR & NAVIGATION (COLLAPSIBLE)        */
+/* SIDEBAR & NAVIGATION (IDENTICAL TO DISPLAY) */
 /* ========================================= */
 .sidebar {
-  width: 260px; /* Wider to match screenshot spacing */
+  width: 260px; /* Aligned with Stall Display */
   background: var(--bg-white);
   border-right: 1px solid var(--border-light);
   display: flex;
@@ -55,9 +54,9 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 32px; /* Matches screenshot spacing */
-  margin-bottom: 40px;
-  cursor: pointer; /* Indicates clickable for toggle */
+  padding: 0 32px;
+  margin-bottom: 40px; /* Standardized spacing */
+  cursor: pointer;
   color: var(--primary-green);
   font-weight: 800;
   font-size: 1.2rem;
@@ -69,7 +68,7 @@ body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Spacing between items */
+  gap: 8px;
   padding: 0 16px;
 }
 
@@ -82,9 +81,17 @@ body {
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
-  border-radius: 8px; /* Rounded corners like screenshot */
+  border-radius: 8px;
   transition: all 0.2s ease;
   white-space: nowrap;
+  border: none; /* Removed old border style */
+}
+
+/* SVG Icon Sizing Lock */
+.nav-item svg {
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 /* Hover State */
@@ -93,10 +100,10 @@ body {
   color: var(--text-dark);
 }
 
-/* Active State (Matches Screenshot) */
+/* Active State */
 .nav-item.active a {
-  background-color: var(--bg-light-green); /* Light green bg */
-  color: var(--primary-green); /* Green text */
+  background-color: var(--bg-light-green);
+  color: var(--primary-green);
   font-weight: 600;
 }
 
@@ -142,9 +149,9 @@ body {
   display: block;
   margin-top: 12px;
   font-size: 0.85rem;
-  color: #c05621; /* Burnt orange/red from screenshot */
+  color: #c05621;
   text-decoration: none;
-  padding-left: 52px; /* Aligned with text */
+  padding-left: 52px;
   transition: 0.2s;
 }
 
@@ -153,15 +160,12 @@ body {
 }
 
 /* --- COLLAPSED STATE LOGIC --- */
-/* When .collapsed is added to app-container via JS */
 .app-container.collapsed .sidebar {
   width: 80px;
 }
 .app-container.collapsed .main-content {
   margin-left: 80px;
 }
-
-/* Center items and hide text */
 .app-container.collapsed .brand-logo {
   padding: 0;
   justify-content: center;
@@ -179,8 +183,6 @@ body {
   flex-direction: column;
   align-items: center;
 }
-
-/* Elements to hide */
 .app-container.collapsed .brand-logo span,
 .app-container.collapsed .nav-item span,
 .app-container.collapsed .user-info,
@@ -190,7 +192,7 @@ body {
 
 /* --- MAIN CONTENT AREA --- */
 .main-content {
-  margin-left: 240px;
+  margin-left: 260px; /* Matches sidebar width */
   flex: 1;
   padding: 30px 40px;
 }
@@ -234,13 +236,9 @@ body {
   background-color: var(--primary-hover);
 }
 
-.icon-btn {
-  color: var(--text-muted);
-  cursor: pointer;
-}
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 40px; /* Updated to 40px to match display page */
+  height: 40px;
   background: var(--primary-green);
   color: white;
   border-radius: 50%;
@@ -253,7 +251,7 @@ body {
 /* --- 3-COLUMN DASHBOARD GRID --- */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr; /* Left column slightly wider */
+  grid-template-columns: 1.2fr 1fr 1fr;
   gap: 24px;
   align-items: start;
 }
@@ -310,8 +308,6 @@ body {
 }
 
 /* --- WIDGET SPECIFICS --- */
-
-/* Main Card (Live Status) */
 .live-indicator {
   background: var(--accent-red);
   color: white;
@@ -440,25 +436,4 @@ body {
 }
 .action-link:hover {
   color: var(--primary-green);
-}
-
-.news-img-placeholder {
-  width: 100%;
-  height: 120px;
-  background: #e9f2e6;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.news-card h4 {
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #333;
-}
-.news-card p {
-  color: #666;
-  font-size: 0.9rem;
-  line-height: 1.5;
 }
