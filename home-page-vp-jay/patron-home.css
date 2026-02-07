@@ -1,5 +1,5 @@
 :root {
-  --primary-green: #68a357; /* Matched Public Page Color */
+  --primary-green: #68a357;
   --primary-green-hover: #578a48;
   --bg-cream: #f9f7e8;
   --bg-light-green: #e9f2e6;
@@ -17,12 +17,13 @@
   padding: 0;
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
 body {
   background-color: var(--white);
   color: var(--text-dark);
 }
 
-/* --- Navigation Bar (Unified with Public Page) --- */
+/* --- Navigation Bar --- */
 nav {
   display: flex;
   justify-content: space-between;
@@ -45,11 +46,10 @@ nav {
 
 .nav-right {
   display: flex;
-  align-items: center; /* Ensures vertical alignment */
-  gap: 20px; /* Spacing between user name, heart, cart */
+  align-items: center;
+  gap: 20px;
 }
 
-/* User Actions (Patron Specific) */
 .user-menu-trigger {
   display: flex;
   align-items: center;
@@ -60,6 +60,7 @@ nav {
   border-radius: 6px;
   transition: background 0.2s;
 }
+
 .user-menu-trigger:hover {
   background-color: #f0f0f0;
 }
@@ -70,6 +71,7 @@ nav {
   display: flex;
   align-items: center;
 }
+
 .icon-btn {
   font-size: 24px;
 }
@@ -88,6 +90,7 @@ nav {
   text-decoration: none;
   transition: background 0.2s;
 }
+
 .cart-btn:hover {
   background-color: var(--primary-green-hover);
 }
@@ -96,7 +99,7 @@ nav {
 .dropdown-menu {
   position: absolute;
   top: 70px;
-  right: 5%; /* Aligns with nav padding */
+  right: 5%;
   background-color: var(--white);
   width: 220px;
   border-radius: var(--border-radius-lg);
@@ -107,15 +110,19 @@ nav {
   z-index: 200;
   border: 1px solid var(--border-grey);
 }
+
 .dropdown-menu.active {
   display: flex;
 }
+
 .dropdown-menu ul {
   list-style: none;
 }
+
 .dropdown-menu li {
   margin-bottom: 12px;
 }
+
 .dropdown-menu a {
   text-decoration: none;
   color: var(--text-dark);
@@ -125,13 +132,13 @@ nav {
   gap: 12px;
   font-size: 0.95rem;
 }
+
 .dropdown-menu hr {
   border: 0;
   border-top: 1px solid #eee;
   margin: 10px 0 15px 0;
 }
 
-/* Overlay for dropdown */
 .overlay {
   position: fixed;
   top: 0;
@@ -142,11 +149,12 @@ nav {
   display: none;
   z-index: 150;
 }
+
 .overlay.active {
   display: block;
 }
 
-/* --- Hero Section (Unified with Public Page) --- */
+/* --- Hero Section --- */
 .hero {
   background-color: var(--bg-cream);
   padding: 60px 5%;
@@ -156,23 +164,26 @@ nav {
   min-height: 500px;
   gap: 40px;
 }
+
 .hero-content {
   flex: 1;
   max-width: 600px;
 }
+
 h1 {
   font-size: 3.5rem;
   font-weight: 400;
   margin-bottom: 10px;
   letter-spacing: -1px;
 }
+
 .tagline {
   color: var(--text-dark);
   font-size: 0.9rem;
   margin-bottom: 30px;
 }
 
-/* Widget (Unified) */
+/* Widget */
 .order-widget {
   background-color: var(--white);
   padding: 15px;
@@ -180,6 +191,7 @@ h1 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   max-width: 500px;
 }
+
 .tabs {
   display: flex;
   gap: 20px;
@@ -187,6 +199,7 @@ h1 {
   border-bottom: 1px solid var(--border-grey);
   padding-bottom: 15px;
 }
+
 .tab-btn {
   background: none;
   border: none;
@@ -198,22 +211,26 @@ h1 {
   padding: 8px 16px;
   border-radius: 6px;
   color: var(--text-muted);
+  font-family: inherit;
 }
+
 .tab-btn.active {
   background-color: var(--primary-green);
   color: var(--white);
   font-weight: 500;
 }
 
-/* Input Group (Unified) */
+/* Input Group */
 .input-group {
   display: flex;
   gap: 10px;
 }
+
 .location-input-wrapper {
   position: relative;
   flex-grow: 1;
 }
+
 .location-icon {
   position: absolute;
   left: 12px;
@@ -222,6 +239,7 @@ h1 {
   font-size: 18px;
   color: #999;
 }
+
 .location-input {
   width: 100%;
   padding: 12px 12px 12px 40px;
@@ -229,7 +247,9 @@ h1 {
   border-radius: 6px;
   font-size: 0.95rem;
   outline: none;
+  font-family: inherit;
 }
+
 .order-btn {
   background-color: var(--primary-green);
   color: var(--white);
@@ -242,7 +262,9 @@ h1 {
   cursor: pointer;
   font-weight: 500;
   transition: background 0.2s;
+  font-family: inherit;
 }
+
 .order-btn:hover {
   background-color: var(--primary-green-hover);
 }
@@ -251,21 +273,101 @@ h1 {
 .hero-image-placeholder {
   flex: 1;
   height: 400px;
-  /* Keeping the image you had, just ensuring container matches */
   background-image: url("https://images.lifestyleasia.com/wp-content/uploads/sites/6/2020/02/03154109/hawker-food-hero-image-image-credit-visit-singapore.jpg?tr=w-1200,h-900");
   background-size: cover;
   background-position: center;
   border-radius: 12px;
   max-width: 500px;
-  background-color: var(--bg-light-green); /* Fallback */
+  background-color: var(--bg-light-green);
 }
 
-/* --- Store Cards Section (Unified) --- */
+/* --- Store Cards Section --- */
 .cards-section {
   padding: 40px 5%;
   background-color: var(--white);
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-btn {
+  background: #f5f5f5;
+  border: 1px solid var(--border-grey);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.filter-btn:hover {
+  background: #e0e0e0;
+}
+
+.filter-btn.active {
+  background: var(--primary-green);
+  color: white;
+  border-color: var(--primary-green);
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+}
+
+.loading-state p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.spinner-small {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(104, 163, 87, 0.3);
+  border-top-color: var(--primary-green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* Stores Grid */
 .stores-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -282,39 +384,88 @@ h1 {
     box-shadow 0.2s ease;
   cursor: pointer;
 }
+
 .store-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
+
 .store-img {
   width: 100%;
   height: 180px;
   background-color: #eee;
+  background-size: cover;
+  background-position: center;
 }
+
 .store-info {
   padding: 16px;
 }
+
 .store-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
+
 .store-header h3 {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-dark);
 }
+
 .rating {
-  background-color: #eee;
-  padding: 2px 6px;
+  background-color: #fff7ed;
+  color: #f59e0b;
+  padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.85rem;
   font-weight: 600;
 }
-.store-meta {
+
+.store-description {
   color: var(--text-muted);
   font-size: 0.9rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.store-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-open {
+  background: #e9f2e6;
+  color: var(--primary-green);
+}
+
+.status-closed {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.delivery-time {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive */
@@ -323,14 +474,31 @@ h1 {
     flex-direction: column;
     text-align: center;
   }
+
   .hero-content {
     width: 100%;
   }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
   .tabs {
     justify-content: center;
   }
+
   .hero-image-placeholder {
     width: 100%;
     height: 250px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-controls {
+    width: 100%;
+    justify-content: flex-start;
   }
 }

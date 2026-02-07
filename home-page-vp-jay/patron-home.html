@@ -19,7 +19,7 @@
       <div class="nav-right">
         <div class="user-menu-trigger" id="userMenuBtn">
           <i class="ph ph-user"></i>
-          <span>User's Name</span>
+          <span id="patron-name">Patron</span>
           <i class="ph ph-caret-down"></i>
         </div>
 
@@ -49,7 +49,7 @@
         <hr />
         <ul>
           <li>
-            <a href="../public-page-jay/public-page.html" class="logout">
+            <a href="#" class="logout" id="logout-link">
               <i class="ph ph-sign-out"></i> Log out
             </a>
           </li>
@@ -85,7 +85,7 @@
                 placeholder="Enter your address"
               />
             </div>
-            <button class="order-btn">
+            <button class="order-btn" id="searchBtn">
               <i class="ph ph-magnifying-glass" style="color: white"></i>
               Order
             </button>
@@ -97,57 +97,35 @@
     </main>
 
     <section class="cards-section">
-      <h2 style="margin-bottom: 24px; font-weight: 600; font-size: 1.5rem">
-        Restaurants Near You
-      </h2>
-
-      <div class="stores-grid">
-        <div class="store-card">
-          <div class="store-img" style="background-color: #ffdab9"></div>
-          <div class="store-info">
-            <div class="store-header">
-              <h3>Chicken Rice King</h3>
-              <span class="rating">4.8 ★</span>
-            </div>
-            <p class="store-meta">Chinese • 20-30 min • Free Delivery</p>
-          </div>
+      <div class="section-header">
+        <h2>Available Hawker Stalls</h2>
+        <div class="filter-controls">
+          <button class="filter-btn active" data-filter="all">
+            All Stalls
+          </button>
+          <button class="filter-btn" data-filter="open">Open Now</button>
+          <button class="filter-btn" data-filter="closed">Closed</button>
         </div>
+      </div>
 
-        <div class="store-card">
-          <div class="store-img" style="background-color: #add8e6"></div>
-          <div class="store-info">
-            <div class="store-header">
-              <h3>Burger & Co.</h3>
-              <span class="rating">4.5 ★</span>
-            </div>
-            <p class="store-meta">Western • 15-25 min</p>
-          </div>
-        </div>
+      <!-- Loading State -->
+      <div class="loading-state" id="loading-state">
+        <div class="spinner-small"></div>
+        <p>Loading stalls...</p>
+      </div>
 
-        <div class="store-card">
-          <div class="store-img" style="background-color: #98fb98"></div>
-          <div class="store-info">
-            <div class="store-header">
-              <h3>Salad Stop</h3>
-              <span class="rating">4.9 ★</span>
-            </div>
-            <p class="store-meta">Healthy • 10-20 min</p>
-          </div>
-        </div>
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state" style="display: none">
+        <i class="ph ph-storefront" style="font-size: 64px; color: #ccc"></i>
+        <p>No stalls available at the moment.</p>
+      </div>
 
-        <div class="store-card">
-          <div class="store-img" style="background-color: #e6e6fa"></div>
-          <div class="store-info">
-            <div class="store-header">
-              <h3>Pasta House</h3>
-              <span class="rating">4.2 ★</span>
-            </div>
-            <p class="store-meta">Italian • 30-45 min</p>
-          </div>
-        </div>
+      <!-- Stores Grid -->
+      <div class="stores-grid" id="stores-grid">
+        <!-- Vendor stalls will be dynamically loaded here -->
       </div>
     </section>
 
-    <script src="patron-home.js"></script>
+    <script type="module" src="patron-home.js"></script>
   </body>
 </html>

@@ -10,7 +10,6 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="vendor-home.css" />
   </head>
   <body>
@@ -58,7 +57,6 @@
                 <span>Dashboard</span>
               </a>
             </li>
-
             <li class="nav-item">
               <a href="stall-display.html">
                 <svg
@@ -79,11 +77,8 @@
                 <span>Display</span>
               </a>
             </li>
-
             <li class="nav-item">
-              <a
-                href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
-              >
+              <a href="../Lukas' Features/html/OrderHistory( v - lukas).html">
                 <svg
                   width="24"
                   height="24"
@@ -105,9 +100,8 @@
                 <span>Orders</span>
               </a>
             </li>
-
             <li class="nav-item">
-              <a href="../../Devon's features/HTML/MenuManagement - V.html">
+              <a href="../Devon's features/HTML/MenuManagement - V.html">
                 <svg
                   width="24"
                   height="24"
@@ -128,10 +122,9 @@
                 <span>Menu</span>
               </a>
             </li>
-
             <li class="nav-item">
               <a
-                href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+                href="../Devon's features/HTML/StorePerformanceDashboard - V.html"
               >
                 <svg
                   width="24"
@@ -150,9 +143,8 @@
                 <span>Analytics</span>
               </a>
             </li>
-
             <li class="nav-item">
-              <a href="../../Lukas' Features/html/CustomerReview.html">
+              <a href="../Lukas' Features/html/CustomerReview.html">
                 <svg
                   width="24"
                   height="24"
@@ -170,9 +162,8 @@
                 <span>Reviews</span>
               </a>
             </li>
-
             <li class="nav-item">
-              <a href="../../NEA Inspection Features/dashboardInspect.html">
+              <a href="../NEA Inspection Features/dashboardInspect.html">
                 <svg
                   width="24"
                   height="24"
@@ -202,7 +193,7 @@
               <p>Store Manager</p>
             </div>
           </div>
-          <a href="../index.html" class="logout-link">Log Out</a>
+          <a href="#" class="logout-link">Log Out</a>
         </div>
       </aside>
 
@@ -211,7 +202,7 @@
           <h2 class="page-title">Channel dashboard</h2>
           <div class="header-right">
             <a
-              href="../../Devon's features/HTML/MenuManagement - V.html"
+              href="../Devon's features/HTML/MenuManagement - V.html"
               class="btn-create"
             >
               <i class="ph-bold ph-plus"></i> ADD ITEM
@@ -248,13 +239,11 @@
                 </div>
               </div>
               <div class="card-footer">
-                <a
-                  href="../../Lukas' Features/html/OrderHistory( v - lukas).html"
+                <a href="../Lukas' Features/html/OrderHistory( v - lukas).html"
                   >GO TO LIVE ORDERS</a
                 >
               </div>
             </div>
-
             <div class="studio-card">
               <div class="card-header"><h3>Latest Menu Alert</h3></div>
               <div class="card-body compact">
@@ -262,7 +251,7 @@
                   <strong>Wagyu Beef Burger</strong> is marked as "Sold Out".
                 </p>
                 <a
-                  href="../../Devon's features/HTML/MenuManagement - V.html"
+                  href="../Devon's features/HTML/MenuManagement - V.html"
                   class="text-link"
                   >Manage Inventory</a
                 >
@@ -291,12 +280,11 @@
               </div>
               <div class="card-footer">
                 <a
-                  href="../../Devon's features/HTML/StorePerformanceDashboard - V.html"
+                  href="../Devon's features/HTML/StorePerformanceDashboard - V.html"
                   >GO TO ANALYTICS</a
                 >
               </div>
             </div>
-
             <div class="studio-card">
               <div class="card-header"><h3>Recent Reviews</h3></div>
               <div class="card-body compact review-list">
@@ -377,13 +365,12 @@
                 >
               </div>
             </div>
-
             <div class="studio-card">
               <div class="card-header"><h3>Quick Actions</h3></div>
               <div class="card-body compact action-list">
                 <a href="#" class="action-link">Update Opening Hours</a>
                 <a
-                  href="../../NEA Inspection Features/dashboardInspect.html"
+                  href="../NEA Inspection Features/dashboardInspect.html"
                   class="action-link"
                   >View NEA Checklist</a
                 >
@@ -400,35 +387,6 @@
         document.querySelector(".app-container").classList.toggle("collapsed");
       }
     </script>
-
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import {
-        getDatabase,
-        ref,
-        onValue,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-      import {
-        getAuth,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
-        authDomain: "hawkerbase-fedasg.firebaseapp.com",
-        projectId: "hawkerbase-fedasg",
-        storageBucket: "hawkerbase-fedasg.firebasestorage.app",
-        messagingSenderId: "216203478131",
-        appId: "1:216203478131:web:39072e8b25296b8ede9606",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      window.db = getDatabase(app);
-      window.auth = getAuth(app);
-      window.dbRef = ref;
-      window.dbOnValue = onValue;
-      window.authCheck = onAuthStateChanged;
-    </script>
-    <script src="vendor-home.js"></script>
+    <script type="module" src="vendor-home.js"></script>
   </body>
 </html>
