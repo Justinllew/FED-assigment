@@ -1,15 +1,13 @@
 // ==========================================
 // 1. IMPORTS
 // ==========================================
-import { db } from "../firebase.js";
+import { db } from "../firebase.js"; // This now works because firebase.js uses URLs
 import {
   collection,
   addDoc,
   onSnapshot,
   serverTimestamp,
-  query,
-  orderBy,
-} from "firebase/firestore";
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // ==========================================
 // 2. CONFIGURATION
@@ -31,11 +29,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==========================================
-// 3. DATA FETCHING (Firestore)
+// 3. DATA FETCHING (Real-Time!)
 // ==========================================
 function fetchReviews() {
   const reviewsRef = collection(db, "vendors", VENDOR_ID, "reviews");
 
+  // onSnapshot = REAL TIME LISTENER
+  // Whenever the database changes, this function runs automatically!
   onSnapshot(
     reviewsRef,
     (snapshot) => {
@@ -58,14 +58,13 @@ function fetchReviews() {
 // 4. SUBMIT REVIEW
 // ==========================================
 async function submitReview(e) {
-  if (e) e.preventDefault(); // Stop page reload
+  if (e) e.preventDefault();
 
   if (selectedFormRating === 0) {
     document.getElementById("ratingError").style.display = "block";
     return;
   }
 
-  // IDs must match your HTML exactly!
   const name = document.getElementById("inputName").value;
   const highlight = document.getElementById("inputLike").value;
   const reviewText = document.getElementById("inputReview").value;
@@ -83,13 +82,15 @@ async function submitReview(e) {
   };
 
   try {
+    // This writes to the database immediately
     await addDoc(collection(db, "vendors", VENDOR_ID, "reviews"), payload);
 
     alert("Review Submitted!");
-    document.querySelector("form").reset(); // Clear form
+    document.querySelector("form").reset();
     selectedFormRating = 0;
     resetStarVisuals();
     toggleReviewForm();
+    // No need to reload! onSnapshot will see the new data and update the screen.
   } catch (error) {
     console.error("Error submitting:", error);
     alert("Failed to submit review. See console for details.");
@@ -102,10 +103,9 @@ async function submitReview(e) {
 function switchFilter(filterType) {
   currentFilter = filterType;
 
-  // Visual update for buttons
+  // Update Buttons
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.classList.remove("active");
-    // Check if this button's onclick contains the filter name
     if (btn.getAttribute("onclick").includes(filterType)) {
       btn.classList.add("active");
     }
@@ -124,14 +124,14 @@ function renderReviews() {
     return;
   }
 
-  // Sorting Logic
+  // Local Sorting (Instant)
   let sorted = [...allReviews];
   if (currentFilter === "recent") {
     sorted.sort((a, b) => {
-      const timeA = a.timestamp
+      const timeA = a.timestamp?.seconds
         ? a.timestamp.seconds
         : new Date(a.date).getTime() / 1000;
-      const timeB = b.timestamp
+      const timeB = b.timestamp?.seconds
         ? b.timestamp.seconds
         : new Date(b.date).getTime() / 1000;
       return timeB - timeA;
@@ -142,9 +142,7 @@ function renderReviews() {
     sorted.sort((a, b) => a.rating - b.rating);
   }
 
-  // Render Cards
   sorted.forEach((review) => {
-    // Generate Star Icons
     let stars = "";
     for (let i = 1; i <= 5; i++) {
       stars +=
@@ -171,18 +169,16 @@ function renderReviews() {
 }
 
 // ==========================================
-// 6. UI HELPERS (Star Rating)
+// 6. UI HELPERS
 // ==========================================
 function initStarRating() {
-  const stars = document.querySelectorAll("#starRatingInput i"); // Assuming <i> tags for stars
+  const stars = document.querySelectorAll("#starRatingInput i");
   const label = document.getElementById("ratingLabel");
 
   if (!stars.length) return;
 
   stars.forEach((star, index) => {
     star.style.cursor = "pointer";
-
-    // Click
     star.onclick = () => {
       selectedFormRating = index + 1;
       updateStars(selectedFormRating);
@@ -221,9 +217,13 @@ window.toggleReviewForm = function () {
   if (overlay) overlay.classList.toggle("active");
 };
 
+window.toggleSidebar = function () {
+  const sidebar = document.querySelector(".sidebar");
+  if (sidebar) sidebar.classList.toggle("collapsed"); // Check if your CSS uses 'collapsed' or 'open'
+};
+
 // ==========================================
-// 7. EXPOSE TO HTML (CRITICAL FIX)
+// 7. EXPOSE TO HTML (Making it Clickable!)
 // ==========================================
-// This makes the functions visible to your onclick="" attributes
 window.submitReview = submitReview;
 window.switchFilter = switchFilter;
