@@ -232,16 +232,7 @@ if (userMenuBtn && dropdownMenu && overlay) {
     overlay.classList.toggle("active");
   });
 
-  // Close dropdown when clicking overlay (but NOT when clicking inside dropdown)
-  overlay.addEventListener("click", (e) => {
-    // Only close if clicking the overlay itself, not the dropdown
-    if (e.target === overlay) {
-      dropdownMenu.classList.remove("active");
-      overlay.classList.remove("active");
-    }
-  });
-
-  // Also close dropdown when clicking outside
+  // Close dropdown when clicking anywhere outside
   document.addEventListener("click", (e) => {
     if (!userMenuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.classList.remove("active");
