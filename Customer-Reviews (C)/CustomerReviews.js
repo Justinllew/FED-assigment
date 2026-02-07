@@ -3,6 +3,7 @@ import {
   getFirestore,
   collection,
   onSnapshot,
+  addDoc, // Added this to allow writing to database
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -20,12 +21,118 @@ const db = getFirestore(app);
 const VENDOR_ID = "vjzBxXgKGNgS8JzUUckSApQimXt2";
 let allReviews = [];
 let currentFilter = "recent";
+let selectedRating = 0; // Tracks the star rating selected by user
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchReviewsFromOrders();
+  setupStarRating(); // Initialize star click listeners
 });
 
-// 1. Fetching from the 'orders' collection seen in your screenshot
+// --- 1. STAR RATING LOGIC ---
+function setupStarRating() {
+  const starContainer = document.getElementById("starRatingInput");
+  if (!starContainer) return;
+
+  const stars = starContainer.querySelectorAll(".star");
+  const ratingLabel = document.getElementById("ratingLabel");
+  const errorMsg = document.getElementById("ratingError");
+
+  // Initial state: grey stars
+  stars.forEach((s) => {
+    s.style.color = "#ccc";
+    s.style.cursor = "pointer";
+  });
+
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      // Get value
+      const rating = parseInt(star.getAttribute("data-rating"));
+      selectedRating = rating;
+
+      // Update Visuals (Gold vs Grey)
+      stars.forEach((s) => {
+        const sRating = parseInt(s.getAttribute("data-rating"));
+        if (sRating <= rating) {
+          s.style.color = "#fbbf24"; // Gold
+          s.classList.remove("far");
+          s.classList.add("fas"); // Solid star
+        } else {
+          s.style.color = "#ccc"; // Grey
+          s.classList.remove("fas");
+          s.classList.add("far"); // Outline star
+        }
+      });
+
+      // Update Label
+      if (ratingLabel) {
+        ratingLabel.innerText = `You selected: ${rating} Star${rating > 1 ? "s" : ""}`;
+        ratingLabel.style.color = "#333";
+      }
+
+      // Hide error if visible
+      if (errorMsg) errorMsg.style.display = "none";
+    });
+  });
+}
+
+// --- 2. SUBMIT REVIEW LOGIC ---
+async function submitReview(event) {
+  event.preventDefault(); // Stop page refresh
+
+  // Get input values
+  const name = document.getElementById("inputName").value;
+  const stall = document.getElementById("inputStall").value;
+  const highlight = document.getElementById("inputLike").value;
+  const reviewText = document.getElementById("inputReview").value;
+
+  // Validation: Check if stars are clicked
+  if (selectedRating === 0) {
+    const errorMsg = document.getElementById("ratingError");
+    if (errorMsg) errorMsg.style.display = "block";
+    return;
+  }
+
+  // Create data object
+  const newReviewData = {
+    customerName: name,
+    stallName: stall,
+    rating: selectedRating,
+    comment: reviewText,
+    highlight: highlight, // Optional field
+    timestamp: Date.now(),
+    orderId: "Manual-" + Math.floor(Math.random() * 10000), // Generate fake ID for demo
+  };
+
+  try {
+    // Add to Firebase
+    const ordersRef = collection(db, "vendors", VENDOR_ID, "orders");
+    await addDoc(ordersRef, newReviewData);
+
+    // Success: Alert and Reset
+    alert("Review Submitted Successfully!");
+
+    // Reset Form
+    document.querySelector("form").reset();
+    selectedRating = 0;
+
+    // Reset Stars Visually
+    const stars = document.querySelectorAll("#starRatingInput .star");
+    stars.forEach((s) => {
+      s.style.color = "#ccc";
+      s.classList.remove("fas");
+      s.classList.add("far");
+    });
+    document.getElementById("ratingLabel").innerText = "Click stars to rate";
+
+    // Close Modal
+    toggleReviewForm();
+  } catch (error) {
+    console.error("Error adding review: ", error);
+    alert("Error submitting review. See console for details.");
+  }
+}
+
+// --- 3. FETCH & DISPLAY LOGIC (Original) ---
 function fetchReviewsFromOrders() {
   const ordersRef = collection(db, "vendors", VENDOR_ID, "orders");
 
@@ -33,7 +140,7 @@ function fetchReviewsFromOrders() {
     allReviews = [];
     snapshot.forEach((doc) => {
       const data = doc.data();
-      // Only include documents that actually have a review (comment + rating)
+      // Only include documents that actually have a review
       if (data.rating !== undefined && data.comment) {
         allReviews.push({
           id: doc.id,
@@ -49,12 +156,11 @@ function fetchReviewsFromOrders() {
   });
 }
 
-// 2. This is the function your HTML buttons call
+// --- 4. FILTER LOGIC (Original) ---
 function switchFilter(filterType) {
   console.log("Filtering by:", filterType);
   currentFilter = filterType;
 
-  // Update button visuals
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.classList.toggle(
       "active",
@@ -65,7 +171,7 @@ function switchFilter(filterType) {
   renderReviews();
 }
 
-// 3. Sorting and displaying the data
+// --- 5. RENDER LOGIC (Original) ---
 function renderReviews() {
   const container = document.getElementById("reviewsList");
   if (!container) return;
@@ -111,8 +217,9 @@ function renderReviews() {
     .join("");
 }
 
-// Global exposure for the HTML onclick events
+// --- 6. EXPORT TO HTML ---
 window.switchFilter = switchFilter;
+window.submitReview = submitReview; // Make submit accessible to HTML
 window.toggleReviewForm = () => {
   document.getElementById("reviewFormOverlay").classList.toggle("active");
 };
