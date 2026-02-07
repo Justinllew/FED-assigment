@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshEats - Your Favourites</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="favourites.css" />
+  </head>
+  <body>
+    <!-- Navigation - Exact Match to Screenshots -->
+    <nav>
+      <div class="nav-left">
+        <i class="ph ph-storefront"></i>
+        <span>FreshEats</span>
+      </div>
+
+      <div class="nav-right">
+        <div
+          class="user-menu-trigger"
+          id="userMenuBtn"
+          onclick="toggleDropdown()"
+        >
+          <i class="ph ph-user"></i>
+          <span id="patron-name">user</span>
+          <i class="ph ph-caret-down"></i>
+        </div>
+
+        <a href="favorites.html" class="icon-link" title="Favorites">
+          <i class="ph ph-heart icon-btn"></i>
+        </a>
+
+        <a href="cart.html" class="cart-btn" title="Cart">
+          <i class="ph ph-shopping-bag"></i>
+        </a>
+      </div>
+
+      <!-- Dropdown Menu - Exact Match to Screenshot -->
+      <div class="dropdown-menu" id="dropdownMenu">
+        <ul>
+          <li>
+            <a href="order-history.html">
+              <i class="ph ph-notepad"></i> Order history
+            </a>
+          </li>
+          <li>
+            <a href="profile.html"> <i class="ph ph-user"></i> Profile </a>
+          </li>
+          <li>
+            <a href="rewards.html"> <i class="ph ph-trophy"></i> Rewards </a>
+          </li>
+        </ul>
+        <hr />
+        <ul>
+          <li>
+            <a href="#" class="logout" onclick="handleLogout()">
+              <i class="ph ph-sign-out"></i> Log out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Overlay for dropdown -->
+    <div class="overlay" id="overlay" onclick="closeDropdown()"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Your Favourites Section -->
+      <section class="section-container">
+        <div class="section-header">
+          <h2>Your Favourites</h2>
+          <a href="#" class="view-all-link"
+            >View all <i class="ph ph-arrow-right"></i
+          ></a>
+        </div>
+
+        <div id="favorites-grid" class="stores-grid">
+          <!-- Favorites injected by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="favorites-empty" class="empty-state" style="display: none">
+          <i
+            class="ph ph-heart-break"
+            style="font-size: 48px; color: var(--primary-green); opacity: 0.4"
+          ></i>
+          <p>No favorites yet</p>
+          <button
+            onclick="scrollToRecommended()"
+            class="filter-btn active"
+            style="margin-top: 16px; border: none; cursor: pointer"
+          >
+            Browse Menu
+          </button>
+        </div>
+      </section>
+
+      <!-- Recommended for You Section -->
+      <section class="section-container" style="margin-top: 40px">
+        <div class="section-header">
+          <h2>Recommended for you</h2>
+          <a href="#" class="view-all-link"
+            >View all <i class="ph ph-arrow-right"></i
+          ></a>
+        </div>
+
+        <div id="recommended-grid" class="stores-grid">
+          <!-- Recommended items injected by JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+      <i class="ph ph-check-circle"></i>
+      <span id="toast-message">Added to favorites</span>
+    </div>
+
+    <script src="favourites.js"></script>
+  </body>
+</html>

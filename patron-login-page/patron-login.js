@@ -3,6 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import {
   getAuth,
   signInWithEmailAndPassword,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getDatabase,
@@ -30,11 +31,12 @@ const db = getDatabase(app);
 
 // 4. LOGIC
 document.addEventListener("DOMContentLoaded", () => {
-  // Use querySelector because your ID in HTML might be 'vendor-login-form'
-  // (This handles both 'patron-login-form' and 'vendor-login-form')
   const form = document.querySelector("form");
 
-  if (!form) return;
+  if (!form) {
+    console.error("Form not found!");
+    return;
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -42,8 +44,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailInput = form.querySelector('input[type="email"]');
     const passwordInput = form.querySelector('input[type="password"]');
 
+    if (!emailInput || !passwordInput) {
+      alert("Email or password field not found");
+      return;
+    }
+
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      alert("Please enter both email and password");
+      return;
+    }
 
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -63,17 +75,31 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("freshEatsRole", userData.role);
 
           alert("Welcome back, " + userData.username + "!");
-          // Check this path!
+          // FIXED PATH
           window.location.href = "../PatronHome/patron-home.html";
         } else {
-          alert("Access Denied: You are a Vendor.");
+          alert(
+            "Access Denied: You are a Vendor. Please use the vendor login.",
+          );
+          await signOut(auth);
         }
       } else {
         alert("Error: User profile not found.");
       }
     } catch (error) {
       console.error("Login Error:", error);
-      alert("Login Failed: " + error.message);
+
+      if (error.code === "auth/user-not-found") {
+        alert("No account found with this email. Please sign up first.");
+      } else if (error.code === "auth/wrong-password") {
+        alert("Incorrect password. Please try again.");
+      } else if (error.code === "auth/invalid-email") {
+        alert("Invalid email format.");
+      } else if (error.code === "auth/too-many-requests") {
+        alert("Too many failed login attempts. Please try again later.");
+      } else {
+        alert("Login Failed: " + error.message);
+      }
     }
   });
 });

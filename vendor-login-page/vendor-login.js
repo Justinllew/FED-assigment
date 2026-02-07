@@ -43,6 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
 
+    if (!email || !password) {
+      alert("Please enter both email and password");
+      return;
+    }
+
     try {
       // Authenticate
       const userCredential = await signInWithEmailAndPassword(
@@ -63,17 +68,31 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("freshEatsRole", userData.role);
 
           alert("Welcome back, " + userData.username + "!");
-          // Redirect (Ensure this file exists in the SAME folder, or adjust path)
-          window.location.href = "/Vendor-home/vendor-home.html";
+          // FIXED PATH - Relative path to Vendor-home folder
+          window.location.href = "../Vendor-home/vendor-home.html";
         } else {
-          alert("Access Denied: You are a Patron.");
+          alert(
+            "Access Denied: You are a Patron. Please use the patron login.",
+          );
         }
       } else {
         alert("Error: User profile not found.");
       }
     } catch (error) {
       console.error("Login Error:", error);
-      alert("Login Failed: " + error.message);
+
+      // Better error messages
+      if (error.code === "auth/user-not-found") {
+        alert("No account found with this email. Please sign up first.");
+      } else if (error.code === "auth/wrong-password") {
+        alert("Incorrect password. Please try again.");
+      } else if (error.code === "auth/invalid-email") {
+        alert("Invalid email format.");
+      } else if (error.code === "auth/too-many-requests") {
+        alert("Too many failed login attempts. Please try again later.");
+      } else {
+        alert("Login Failed: " + error.message);
+      }
     }
   });
 });

@@ -40,6 +40,8 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 
 let allVendors = [];
 let currentFilter = "all";
+let unsubscribePatronListener = null; // Store patron data listener
+let unsubscribeVendorsListener = null; // Store vendors data listener
 
 // Auth Listener
 onAuthStateChanged(auth, (user) => {
@@ -47,6 +49,7 @@ onAuthStateChanged(auth, (user) => {
     loadPatronData(user.uid);
     loadAllVendors();
   } else {
+    // FIXED PATH
     window.location.href = "../public-page-jay/public-page.html";
   }
 });
@@ -55,7 +58,7 @@ onAuthStateChanged(auth, (user) => {
 function loadPatronData(uid) {
   const userRef = ref(db, "users/" + uid);
 
-  onValue(
+  unsubscribePatronListener = onValue(
     userRef,
     (snapshot) => {
       const data = snapshot.val();
@@ -88,7 +91,7 @@ function loadPatronData(uid) {
 function loadAllVendors() {
   const usersRef = ref(db, "users");
 
-  onValue(
+  unsubscribeVendorsListener = onValue(
     usersRef,
     (snapshot) => {
       const users = snapshot.val();
@@ -257,6 +260,32 @@ if (deliveryBtn && pickupBtn) {
   });
 }
 
+// Logout handler function
+function handleLogout(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  console.log("Logout button clicked!");
+
+  // Unsubscribe from ALL Firebase listeners to prevent errors
+  if (unsubscribePatronListener) {
+    unsubscribePatronListener();
+  }
+  if (unsubscribeVendorsListener) {
+    unsubscribeVendorsListener();
+  }
+
+  signOut(auth)
+    .then(() => {
+      console.log("Signout successful, redirecting...");
+      // FIXED PATH
+      window.location.href = "../public-page-jay/public-page.html";
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+      alert("Error logging out: " + error.message);
+    });
+}
+
 // Logout - Multiple attachment methods for reliability
 const logoutLinkElement = document.getElementById("logout-link");
 
@@ -274,20 +303,3 @@ document.addEventListener("click", (e) => {
     handleLogout(e);
   }
 });
-
-// Logout handler function
-function handleLogout(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  console.log("Logout button clicked!");
-
-  signOut(auth)
-    .then(() => {
-      console.log("Signout successful, redirecting...");
-      window.location.href = "../public-page-jay/public-page.html";
-    })
-    .catch((error) => {
-      console.error("Logout error:", error);
-      alert("Error logging out: " + error.message);
-    });
-}

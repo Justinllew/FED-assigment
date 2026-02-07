@@ -1,6 +1,6 @@
 :root {
   --primary-green: #68a357;
-  --bg-cream: #f9f7e8; /* Background matches screenshot */
+  --bg-cream: #f9f7e8;
   --text-dark: #333;
   --sidebar-width: 250px;
   --bg-white: #ffffff;
@@ -30,6 +30,7 @@ body {
   display: flex;
   flex-direction: column;
   z-index: 1000;
+  transition: transform 0.3s ease-in-out; /* Smooth slide animation */
 }
 
 .brand-logo {
@@ -40,9 +41,9 @@ body {
   color: var(--primary-green);
   font-weight: 700;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 
-/* This pushes the footer down */
 .sidebar-nav {
   flex: 1;
   padding: 10px 0;
@@ -70,12 +71,16 @@ body {
   color: var(--primary-green);
 }
 
-/* Active State (Green background) */
 .nav-item.active a {
   background-color: #e9f2e6;
   color: var(--primary-green);
   font-weight: 600;
   border-left-color: var(--primary-green);
+}
+
+.nav-item i {
+  width: 20px;
+  text-align: center;
 }
 
 .sidebar-footer {
@@ -89,7 +94,7 @@ body {
   align-items: center;
   gap: 12px;
 }
-.avatar-circle {
+.circle {
   width: 40px;
   height: 40px;
   background: #e9f2e6;
@@ -109,11 +114,21 @@ body {
   font-size: 0.8rem;
   color: #888;
 }
+.logout-link {
+  display: block;
+  margin-top: 10px;
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
 
 /* --- 2. MAIN CONTENT WRAPPER --- */
 .main-content-wrapper {
-  margin-left: var(--sidebar-width); /* Pushes content right */
+  margin-left: var(--sidebar-width);
   width: calc(100% - var(--sidebar-width));
+  transition:
+    margin-left 0.3s ease-in-out,
+    width 0.3s ease-in-out;
 }
 
 /* Header */
@@ -250,6 +265,8 @@ main {
   display: flex;
   gap: 10px;
 }
+
+/* Buttons */
 .btn {
   flex: 1;
   padding: 8px;
@@ -259,11 +276,15 @@ main {
   font-weight: 600;
 }
 .btn-primary {
+  background: #68a357;
+  color: white;
+}
+.btn-warning {
   background: #f59e0b;
   color: white;
 }
 .btn-success {
-  background: var(--primary-green);
+  background: #10b981;
   color: white;
 }
 
@@ -276,5 +297,78 @@ main {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* ========================================= */
+/* MOBILE RESPONSIVENESS                     */
+/* ========================================= */
+/* MOBILE RESPONSIVENESS (Max-Width: 768px)  */
+/* ========================================= */
+/* Default: Hide the menu button on Desktop */
+.menu-toggle-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* 1. Show the Menu Button */
+  .menu-toggle-btn {
+    display: block; /* Make it visible */
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #333;
+    margin-right: 15px;
+    cursor: pointer;
+  }
+
+  /* 2. Header Layout Adjustment */
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .page-header-title {
+    font-size: 1.1rem; /* Slightly smaller text to fit header */
+    margin: 0;
+  }
+
+  /* 3. Sidebar Logic (Same as before) */
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* 4. Content Width Fix */
+  .main-content-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* 5. FIX FOR TABS (Making them clickable) */
+  .tabs-container {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    white-space: nowrap; /* Keeps buttons in one line */
+    padding-bottom: 10px; /* Space for scrollbar */
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  }
+
+  .tab-btn {
+    flex: 0 0 auto; /* Prevents buttons from squishing */
+  }
+
+  /* 6. General Spacing */
+  main {
+    padding: 15px !important;
+  }
+  header {
+    padding: 0 15px !important;
+  }
+
+  .orders-grid {
+    grid-template-columns: 1fr !important;
   }
 }

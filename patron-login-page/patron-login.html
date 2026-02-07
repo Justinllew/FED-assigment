@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>App Name - Patron Login</title>
+    <title>FreshEats - Patron Login</title>
     <link rel="stylesheet" href="/Login Root CSS/style.css" />
   </head>
   <body>
@@ -16,28 +16,38 @@
           Patron! <span class="emoji">👋</span>
         </h1>
         <p class="tagline">
-          tagline tagline tagline tagline tagline tagline tagline tagline
+          Find your favorite hawker stalls and enjoy authentic local flavors.
         </p>
       </div>
 
       <div class="right-panel">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem">App name</h1>
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem">FreshEats</h1>
         <h2>Welcome back!</h2>
-        <form class="login-form" id="vendor-login-form">
+        <form class="login-form" id="patron-login-form">
           <input
             type="email"
             class="input-field"
             placeholder="username@email.com"
             required
+            id="email-input"
           />
           <input
             type="password"
             class="input-field"
             placeholder="Password"
             required
+            id="password-input"
           />
           <button type="submit" class="btn-large">Login now</button>
         </form>
+        <p style="text-align: center; margin-top: 20px; font-size: 0.9rem">
+          Don't have an account?
+          <a
+            href="../signup-vp-jay/signup.html"
+            style="color: #68a357; text-decoration: none; font-weight: 600"
+            >Sign up</a
+          >
+        </p>
       </div>
     </div>
     <script type="module" src="patron-login.js"></script>

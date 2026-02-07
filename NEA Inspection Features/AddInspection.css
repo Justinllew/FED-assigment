@@ -8,7 +8,7 @@
 }
 
 body {
-  background-color: #feffc1;
+  background-color: #f9f7e8;
   min-height: 100vh;
 }
 
@@ -113,7 +113,7 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: #c7e5b5;
+  border-color: #8dbf8d;
   box-shadow: 0 0 0 4px rgba(124, 229, 58, 0.3);
   transform: scale(1.01);
 }
@@ -125,7 +125,7 @@ select:focus {
   border-radius: 24px;
   border: none;
 
-  background-color: #c7e5b5;
+  background-color: #8dbf8d;
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;

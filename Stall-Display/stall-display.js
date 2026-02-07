@@ -11,7 +11,6 @@ import {
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-// Storage import removed - using URL input instead
 
 const firebaseConfig = {
   apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
@@ -50,13 +49,13 @@ const headerAvatar = document.getElementById("header-avatar");
 const stallNameInput = document.getElementById("stall-name-input");
 const descriptionInput = document.getElementById("stall-description-input");
 const charCount = document.getElementById("char-count");
-const bannerDropzone = document.getElementById("banner-dropzone");
 const bannerFileInput = document.getElementById("banner-file-input");
 const loadingOverlay = document.getElementById("loading-overlay");
 
 let currentUserId = null;
 let currentBannerUrl =
   "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000";
+let unsubscribeListener = null; // Store unsubscribe function
 
 // Character counter for description
 if (descriptionInput && charCount) {
@@ -93,6 +92,7 @@ onAuthStateChanged(auth, (user) => {
     currentUserId = user.uid;
     loadVendorData(user.uid);
   } else {
+    // FIXED PATH
     window.location.href = "../public-page-jay/public-page.html";
   }
 });
@@ -101,7 +101,7 @@ onAuthStateChanged(auth, (user) => {
 function loadVendorData(uid) {
   const userRef = ref(db, "users/" + uid);
 
-  onValue(
+  unsubscribeListener = onValue(
     userRef,
     (snapshot) => {
       const data = snapshot.val();
@@ -128,7 +128,10 @@ function loadVendorData(uid) {
     },
     (error) => {
       console.error("Error loading vendor data:", error);
-      alert("Error loading your data. Please try again.");
+      // Only show error if user is still authenticated
+      if (auth.currentUser) {
+        alert("Error loading your data. Please try again.");
+      }
     },
   );
 }
@@ -290,8 +293,15 @@ saveBtn.addEventListener("click", async () => {
 logoutLinks.forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
+
+    // Unsubscribe from Firebase listener to prevent errors
+    if (unsubscribeListener) {
+      unsubscribeListener();
+    }
+
     signOut(auth)
       .then(() => {
+        // FIXED PATH
         window.location.href = "../public-page-jay/public-page.html";
       })
       .catch((error) => {

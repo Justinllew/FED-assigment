@@ -37,19 +37,24 @@ const sketchName = document.getElementById("sketch-name");
 const sketchPill = document.getElementById("sketch-pill");
 const logoutLinks = document.querySelectorAll(".logout-link");
 
+// Store unsubscribe function to cancel listener on logout
+let unsubscribeListener = null;
+
 // Auth Listener
 onAuthStateChanged(auth, (user) => {
   if (user) {
     initializeDashboard(user.uid);
   } else {
-    window.location.href = "../index.html";
+    // FIXED PATH - Redirect to public page
+    window.location.href = "../public-page-jay/public-page.html";
   }
 });
 
 function initializeDashboard(uid) {
   const userRef = ref(db, "users/" + uid);
 
-  onValue(
+  // Store the unsubscribe function
+  unsubscribeListener = onValue(
     userRef,
     (snapshot) => {
       const data = snapshot.val();
@@ -77,7 +82,10 @@ function initializeDashboard(uid) {
     },
     (error) => {
       console.error("Error loading dashboard data:", error);
-      alert("Error loading your data. Please try again.");
+      // Only show error if user is still authenticated
+      if (auth.currentUser) {
+        alert("Error loading your data. Please try again.");
+      }
     },
   );
 }
@@ -118,8 +126,15 @@ function updateUI(data) {
 logoutLinks.forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
+
+    // Unsubscribe from Firebase listener to prevent errors
+    if (unsubscribeListener) {
+      unsubscribeListener();
+    }
+
     signOut(auth)
       .then(() => {
+        // FIXED PATH
         window.location.href = "../public-page-jay/public-page.html";
       })
       .catch((error) => {
