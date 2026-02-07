@@ -208,3 +208,41 @@ window.manualRefresh = function () {
     setTimeout(() => icon.classList.remove("fa-spin"), 500);
   }
 };
+
+// --- MOBILE SIDEBAR TOGGLE ---
+// --- MOBILE SIDEBAR TOGGLE ---
+window.toggleSidebar = function () {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.classList.toggle("open");
+
+  // Create or select an overlay to handle clicking outside
+  let overlay = document.querySelector(".sidebar-overlay");
+
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.className = "sidebar-overlay";
+    // Basic overlay styles
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
+    overlay.style.background = "rgba(0,0,0,0.5)";
+    overlay.style.zIndex = "999"; // Just below sidebar (1000)
+    overlay.style.opacity = "0";
+    overlay.style.transition = "opacity 0.3s";
+    overlay.style.pointerEvents = "none"; // Click-through when hidden
+    document.body.appendChild(overlay);
+
+    // Click to close
+    overlay.onclick = window.toggleSidebar;
+  }
+
+  if (sidebar.classList.contains("open")) {
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto"; // Catch clicks
+  } else {
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+  }
+};

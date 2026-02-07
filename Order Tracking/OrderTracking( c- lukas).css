@@ -712,3 +712,46 @@ body {
   justify-content: center;
   backdrop-filter: blur(4px); /* Blur effect */
 }
+
+/* ========================================= */
+/* MOBILE RESPONSIVENESS (Max-Width: 768px)  */
+/* ========================================= */
+@media (max-width: 768px) {
+  /* 1. Hide Sidebar by default (Slide it left) */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    width: 250px; /* Keep original width */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 2. Class to slide it back in (Controlled by JS) */
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* 3. Make Main Content take full width */
+  .main-content-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* 4. Adjust Padding for smaller screens */
+  main {
+    padding: 15px !important;
+  }
+
+  header {
+    padding: 0 15px !important;
+  }
+
+  /* 5. Force Grid to 1 column on mobile */
+  .orders-grid {
+    grid-template-columns: 1fr !important; /* 1 card per row */
+  }
+
+  /* 6. Adjust Text Sizes if needed */
+  .page-header-title {
+    font-size: 1.2rem;
+  }
+}
