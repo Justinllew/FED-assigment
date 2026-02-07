@@ -226,14 +226,27 @@ filterButtons.forEach((btn) => {
 
 // Dropdown menu toggle
 if (userMenuBtn && dropdownMenu && overlay) {
-  userMenuBtn.addEventListener("click", () => {
+  userMenuBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
     dropdownMenu.classList.toggle("active");
     overlay.classList.toggle("active");
   });
 
-  overlay.addEventListener("click", () => {
-    dropdownMenu.classList.remove("active");
-    overlay.classList.remove("active");
+  // Close dropdown when clicking overlay (but NOT when clicking inside dropdown)
+  overlay.addEventListener("click", (e) => {
+    // Only close if clicking the overlay itself, not the dropdown
+    if (e.target === overlay) {
+      dropdownMenu.classList.remove("active");
+      overlay.classList.remove("active");
+    }
+  });
+
+  // Also close dropdown when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!userMenuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.remove("active");
+      overlay.classList.remove("active");
+    }
   });
 }
 
@@ -253,17 +266,37 @@ if (deliveryBtn && pickupBtn) {
   });
 }
 
-// Logout
-if (logoutLink) {
-  logoutLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    signOut(auth)
-      .then(() => {
-        window.location.href = "../public-page-jay/public-page.html";
-      })
-      .catch((error) => {
-        console.error("Logout error:", error);
-        alert("Error logging out. Please try again.");
-      });
-  });
+// Logout - Multiple attachment methods for reliability
+const logoutLinkElement = document.getElementById("logout-link");
+
+// Method 1: Direct attachment
+if (logoutLinkElement) {
+  console.log("✓ Logout link found and listener attached");
+  logoutLinkElement.addEventListener("click", handleLogout);
+} else {
+  console.error("✗ Logout link NOT found - check HTML id");
+}
+
+// Method 2: Event delegation (backup)
+document.addEventListener("click", (e) => {
+  if (e.target.id === "logout-link" || e.target.closest("#logout-link")) {
+    handleLogout(e);
+  }
+});
+
+// Logout handler function
+function handleLogout(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  console.log("Logout button clicked!");
+
+  signOut(auth)
+    .then(() => {
+      console.log("Signout successful, redirecting...");
+      window.location.href = "../public-page-jay/public-page.html";
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+      alert("Error logging out: " + error.message);
+    });
 }

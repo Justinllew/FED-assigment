@@ -148,10 +148,12 @@ nav {
   background: transparent;
   display: none;
   z-index: 150;
+  pointer-events: none; /* Allow clicks to pass through */
 }
 
 .overlay.active {
   display: block;
+  pointer-events: auto; /* Enable clicks only when active */
 }
 
 /* --- Hero Section --- */
