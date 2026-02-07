@@ -11,36 +11,25 @@
     />
   </head>
   <body>
-    <!-- ===== HEADER ===== -->
     <div class="top-bar">
       ☰ <span class="app-name">Regulatory Compliance Dashboard</span>
     </div>
 
     <div class="page-wrapper">
-      <!-- ===== PAGE TITLE ===== -->
       <div class="page-title">Inspection Results and Comments</div>
 
-      <!-- ===== FORM CONTAINER ===== -->
       <div class="form-container">
         <form class="inspection-form">
-          <!-- Hawker Stall Name (Read-only) -->
           <div class="form-group">
             <label for="stallName">Hawker Stall Name</label>
-            <input
-              type="text"
-              id="stallName"
-              readonly
-              value="Ah Seng Chicken Rice"
-            />
+            <input type="text" id="stallName" readonly />
           </div>
 
-          <!-- Date -->
           <div class="form-group">
             <label for="inspectionDate">Date</label>
             <input type="date" id="inspectionDate" />
           </div>
 
-          <!-- Hygiene Score -->
           <div class="form-group">
             <label>Hygiene Score</label>
             <div class="score-control">
@@ -50,17 +39,15 @@
             </div>
           </div>
 
-          <!-- Comments -->
           <div class="form-group">
             <label for="comments">Comments</label>
             <textarea id="comments" placeholder="Enter comments"></textarea>
           </div>
 
-          <!-- Submit Button -->
           <button type="submit" class="submit-btn">Submit Inspection</button>
         </form>
       </div>
     </div>
-    <script src="InspectionForm.js"></script>
+    <script type="module" src="InspectionForm.js"></script>
   </body>
 </html>
