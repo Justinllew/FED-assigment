@@ -12,6 +12,7 @@ import {
   collection,
   getDocs,
   addDoc,
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -63,31 +64,49 @@ onAuthStateChanged(auth, (user) => {
 // 3. CORE DASHBOARD LOGIC
 // ==========================================
 
-async function fetchDashboardData() {
+function fetchDashboardData() {
   if (!currentUserUid) return;
 
   const ordersRef = collection(db, "vendors", currentUserUid, "orders");
 
-  try {
-    const snapshot = await getDocs(ordersRef);
-    const orders = [];
-    snapshot.forEach((doc) => orders.push(doc.data()));
+  // 📡 REAL-TIME LISTENER
+  // This code runs immediately, AND runs again automatically whenever the DB changes.
+  onSnapshot(
+    ordersRef,
+    (snapshot) => {
+      const orders = [];
+      snapshot.forEach((doc) => orders.push(doc.data()));
 
-    if (orders.length === 0) {
-      console.log("No orders found. Use the seeder to generate data.");
-      updateList("feedback-list", ["No data available"]);
-      updateList("realtime-list", []);
-      return;
-    }
+      // 1. Handle Empty State
+      if (orders.length === 0) {
+        console.log("No orders found.");
+        allOrdersCache = [];
+        updateList("feedback-list", ["No data available"]);
+        updateList("realtime-list", []);
+        // Clear charts
+        calculateAndRender([]);
+        return;
+      }
 
-    // ✅ SAVE TO CACHE (This is what populates the variable)
-    allOrdersCache = orders;
+      // 2. Update Cache
+      allOrdersCache = orders;
+      console.log("Real-time update: ", orders.length, " orders found.");
 
-    // Default View: Current Month
-    setView("current");
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+      // 3. Refresh the View
+      // We check which button is currently active so we don't switch the user's view unexpectedly
+      const isPreviousActive = document
+        .getElementById("btn-previous")
+        .classList.contains("active");
+      if (isPreviousActive) {
+        setView("previous");
+      } else {
+        setView("current");
+      }
+    },
+    (error) => {
+      console.error("Error fetching real-time data:", error);
+    },
+  );
 }
 
 function updateCharts(viewMode) {
@@ -211,11 +230,15 @@ function calculateAndRender(orders) {
   updateList("feedback-list", feedbackItems);
 
   const realtimeItems = orders
-    .sort((a, b) => b.timestamp - a.timestamp) // Newest first
+    .sort((a, b) => b.timestamp - a.timestamp)
     .slice(0, 3)
-    .map(
-      (o) => `Order #${o.orderId.substring(0, 4)}: ${o.status.toUpperCase()}`,
-    );
+    .map((o) => {
+      // ✅ SAFETY CHECK: If status is missing, use "N/A"
+      const safeStatus = o.status ? o.status.toUpperCase() : "N/A";
+      const safeId = o.orderId ? o.orderId.substring(0, 4) : "???";
+
+      return `Order #${safeId}: ${safeStatus}`;
+    });
 
   updateList("realtime-list", realtimeItems);
 }

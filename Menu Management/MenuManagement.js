@@ -73,7 +73,7 @@ onAuthStateChanged(auth, (user) => {
             <div style="text-align:center; padding: 2rem;">
                 <h3>Please Log In</h3>
                 <p>You must be signed in to manage your menu.</p>
-                <a href="/login-page-vp-jay/role_selection.html" style="color:green; text-decoration:underline;">Go to Login</a>
+                <a href="../Vendor-home/vendor-home.html" style="color:green; text-decoration:underline;">Go to Login</a>
             </div>
         `;
   }
@@ -357,7 +357,7 @@ function previewFile() {
 }
 
 function toggleSidebar() {
-  document.querySelector(".sidebar").classList.toggle("collapsed");
+  document.querySelector(".app-container").classList.toggle("collapsed");
 }
 
 /**

@@ -33,6 +33,8 @@
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
   text-decoration: none;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
 body {
