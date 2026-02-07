@@ -1,140 +1,298 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // VARIABLES
-  const statusSelect = document.getElementById("status-message-select");
-  const statusToggle = document.getElementById("status-toggle");
-  const textDisplay = document.getElementById("status-text-display");
-  const mobilePill = document.getElementById("mobile-status-pill");
-  const previewBanner = document.getElementById("preview-banner");
-  const mobileBanner = document.getElementById("mobile-banner-preview");
-  const bannerDropzone = document.getElementById("banner-dropzone");
-  const saveBtn = document.getElementById("save-changes-btn");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  set,
+  onValue,
+  update,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+// Storage import removed - using URL input instead
 
-  let currentBannerUrl =
-    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000";
-  let currentUser = null;
+const firebaseConfig = {
+  apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
+  authDomain: "hawkerbase-fedasg.firebaseapp.com",
+  databaseURL:
+    "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hawkerbase-fedasg",
+  storageBucket: "hawkerbase-fedasg.firebasestorage.app",
+  messagingSenderId: "216203478131",
+  appId: "1:216203478131:web:cb0ff58ba3f51911de9606",
+  measurementId: "G-E4S08BB1PG",
+};
 
-  // 1. FIREBASE CONNECTION CHECK
-  const checkFirebase = setInterval(() => {
-    if (window.auth) {
-      clearInterval(checkFirebase);
-      initAuth();
-    }
-  }, 100);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
 
-  function initAuth() {
-    window.authCheck(window.auth, (user) => {
-      if (user) {
-        // --- SUCCESS: USER IS LOGGED IN ---
-        currentUser = user;
-        console.log("Logged in as:", user.uid);
+// DOM Elements
+const storeNameEl = document.getElementById("mobile-store-name");
+const laptopStoreNameEl = document.getElementById("laptop-store-name");
+const mobileDescriptionEl = document.getElementById("mobile-description");
+const laptopDescriptionEl = document.getElementById("laptop-description");
+const statusPill = document.getElementById("mobile-status-pill");
+const laptopStatusPill = document.getElementById("laptop-status-pill");
+const statusText = document.getElementById("status-text-display");
+const bannerPreview = document.getElementById("preview-banner");
+const mobileBanner = document.getElementById("mobile-banner-preview");
+const laptopBanner = document.getElementById("laptop-banner-preview");
+const statusSelect = document.getElementById("status-message-select");
+const statusToggle = document.getElementById("status-toggle");
+const saveBtn = document.getElementById("save-changes-btn");
+const logoutLinks = document.querySelectorAll(".logout-link");
+const sidebarName = document.getElementById("sidebar-name");
+const sidebarAvatar = document.getElementById("sidebar-avatar");
+const headerAvatar = document.getElementById("header-avatar");
+const stallNameInput = document.getElementById("stall-name-input");
+const descriptionInput = document.getElementById("stall-description-input");
+const charCount = document.getElementById("char-count");
+const bannerDropzone = document.getElementById("banner-dropzone");
+const bannerFileInput = document.getElementById("banner-file-input");
+const loadingOverlay = document.getElementById("loading-overlay");
 
-        loadData(user.uid);
+let currentUserId = null;
+let currentBannerUrl =
+  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000";
 
-        // Set User Name UI
-        const name = localStorage.getItem("freshEatsUserName") || "Vendor";
-        if (document.getElementById("sidebar-name"))
-          document.getElementById("sidebar-name").textContent = name;
-        if (document.getElementById("mobile-store-name"))
-          document.getElementById("mobile-store-name").textContent = name;
-        if (document.getElementById("sidebar-avatar"))
-          document.getElementById("sidebar-avatar").textContent = name
-            .charAt(0)
-            .toUpperCase();
-      } else {
-        // --- FAILURE: NO USER FOUND ---
-        alert("Access Denied: You must be logged in to view this page.");
-        // Redirect back to the main landing page (adjust path as needed)
-        window.location.href = "../index.html";
-      }
-    });
-  }
-
-  // 2. UI UPDATE FUNCTION
-  function updateLocalUI() {
-    if (!statusToggle.checked) {
-      textDisplay.textContent = "Store is Closed";
-      textDisplay.style.color = "#dc2626";
-      mobilePill.textContent = "Closed";
-      mobilePill.style.background = "#fee2e2";
-      mobilePill.style.color = "#dc2626";
-    } else {
-      textDisplay.textContent =
-        statusSelect.options[statusSelect.selectedIndex].text;
-      textDisplay.style.color = "#166534";
-      mobilePill.textContent = statusSelect.value;
-      mobilePill.style.background = "#e9f2e6";
-      mobilePill.style.color = "#68a357";
-    }
-    previewBanner.src = currentBannerUrl;
-    mobileBanner.style.backgroundImage = `url('${currentBannerUrl}')`;
-  }
-
-  // 3. EVENT LISTENERS
-  statusSelect.addEventListener("change", updateLocalUI);
-  statusToggle.addEventListener("change", updateLocalUI);
-
-  const images = [
-    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000",
-    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1000",
-    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000",
-  ];
-  let imgIndex = 0;
-
-  bannerDropzone.addEventListener("click", () => {
-    imgIndex = (imgIndex + 1) % images.length;
-    currentBannerUrl = images[imgIndex];
-    updateLocalUI();
+// Character counter for description
+if (descriptionInput && charCount) {
+  descriptionInput.addEventListener("input", () => {
+    const length = descriptionInput.value.length;
+    charCount.textContent = `${length}/150`;
   });
+}
 
-  // 4. LOAD DATA FROM FIREBASE
-  function loadData(uid) {
-    const displayRef = window.dbRef(
-      window.db,
-      "vendors/" + uid + "/displaySettings",
-    );
-    window.dbOnValue(displayRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        if (data.banner) currentBannerUrl = data.banner;
-        if (data.status) {
-          statusToggle.checked = data.status.isOpen;
-          statusSelect.value = data.status.pillText;
-        }
-        updateLocalUI();
+// Banner URL input handler
+if (bannerFileInput) {
+  bannerFileInput.addEventListener("input", (e) => {
+    const url = e.target.value.trim();
+    if (url) {
+      // Validate URL format
+      try {
+        new URL(url);
+        currentBannerUrl = url;
+
+        // Update previews
+        bannerPreview.src = url;
+        mobileBanner.style.backgroundImage = `url("${url}")`;
+        laptopBanner.style.backgroundImage = `url("${url}")`;
+      } catch (error) {
+        console.log("Invalid URL");
       }
-    });
+    }
+  });
+}
+
+// Auth Listener
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUserId = user.uid;
+    loadVendorData(user.uid);
+  } else {
+    window.location.href = "../index.html";
+  }
+});
+
+// Load vendor data from Firebase
+function loadVendorData(uid) {
+  const userRef = ref(db, "users/" + uid);
+
+  onValue(
+    userRef,
+    (snapshot) => {
+      const data = snapshot.val();
+
+      // Validate user is a vendor
+      if (!data) {
+        console.error("User data not found");
+        alert("Error: User data not found. Please sign up again.");
+        signOut(auth).then(() => (window.location.href = "../index.html"));
+        return;
+      }
+
+      if (data.role !== "vendor") {
+        alert("Access denied. This page is only for vendors.");
+        signOut(auth).then(() => (window.location.href = "../index.html"));
+        return;
+      }
+
+      updateUIWithData(data);
+    },
+    (error) => {
+      console.error("Error loading vendor data:", error);
+      alert("Error loading your data. Please try again.");
+    },
+  );
+}
+
+// Update UI with vendor data
+function updateUIWithData(data) {
+  // Sidebar & Header Update
+  const displayName = data.stallName || data.username || "Vendor";
+  if (sidebarName) sidebarName.textContent = displayName;
+  if (sidebarAvatar)
+    sidebarAvatar.textContent = displayName.charAt(0).toUpperCase();
+  if (headerAvatar)
+    headerAvatar.textContent = displayName.charAt(0).toUpperCase();
+
+  // Stall Name Input
+  if (stallNameInput) {
+    stallNameInput.value = data.stallName || "";
   }
 
-  // 5. SAVE TO FIREBASE
-  saveBtn.addEventListener("click", () => {
-    if (!currentUser) return;
+  // Description Input
+  if (descriptionInput) {
+    descriptionInput.value = data.description || "";
+    const length = data.description ? data.description.length : 0;
+    if (charCount) charCount.textContent = `${length}/150`;
+  }
 
-    const dataToSave = {
-      banner: currentBannerUrl,
-      status: {
-        isOpen: statusToggle.checked,
-        pillText: statusToggle.checked ? statusSelect.value : "Closed",
-        fullText: statusToggle.checked
-          ? statusSelect.options[statusSelect.selectedIndex].text
-          : "Store is Closed",
-      },
+  // Display Page Updates
+  if (storeNameEl) storeNameEl.textContent = data.stallName || "Vendor Name";
+  if (laptopStoreNameEl)
+    laptopStoreNameEl.textContent = data.stallName || "Vendor Name";
+
+  if (mobileDescriptionEl)
+    mobileDescriptionEl.textContent = data.description || "No description yet.";
+  if (laptopDescriptionEl)
+    laptopDescriptionEl.textContent = data.description || "No description yet.";
+
+  // Banner
+  if (data.bannerUrl) {
+    currentBannerUrl = data.bannerUrl;
+    bannerPreview.src = data.bannerUrl;
+    mobileBanner.style.backgroundImage = `url("${data.bannerUrl}")`;
+    laptopBanner.style.backgroundImage = `url("${data.bannerUrl}")`;
+  }
+
+  // Status Message
+  if (data.statusMessage) {
+    statusSelect.value = data.statusMessage;
+    updateStatusDisplay(data.statusMessage, data.status === "Open");
+  }
+
+  // Status Toggle
+  if (data.status === "Open") {
+    statusToggle.checked = true;
+  } else {
+    statusToggle.checked = false;
+  }
+}
+
+// Update status display across all previews
+function updateStatusDisplay(message, isOpen) {
+  if (statusText) statusText.textContent = message;
+  if (statusPill) statusPill.textContent = message;
+  if (laptopStatusPill) laptopStatusPill.textContent = message;
+
+  // Update colors
+  const statusBox = statusText?.parentElement;
+  if (statusBox) {
+    if (isOpen) {
+      statusBox.style.color = "#166534";
+      statusBox.style.borderColor = "#bbf7d0";
+      statusBox.style.background = "#f0fdf4";
+    } else {
+      statusBox.style.color = "#991b1b";
+      statusBox.style.borderColor = "#fecaca";
+      statusBox.style.background = "#fef2f2";
+    }
+  }
+}
+
+// UI Event Listeners
+statusSelect.addEventListener("change", (e) => {
+  const isOpen = statusToggle.checked;
+  if (isOpen) {
+    updateStatusDisplay(e.target.value, true);
+  }
+});
+
+statusToggle.addEventListener("change", (e) => {
+  if (e.target.checked) {
+    updateStatusDisplay(statusSelect.value, true);
+  } else {
+    updateStatusDisplay("Store is Closed", false);
+  }
+});
+
+// Stall name input updates preview in real-time
+if (stallNameInput) {
+  stallNameInput.addEventListener("input", (e) => {
+    const newName = e.target.value || "Vendor Name";
+    if (storeNameEl) storeNameEl.textContent = newName;
+    if (laptopStoreNameEl) laptopStoreNameEl.textContent = newName;
+  });
+}
+
+// Description input updates preview in real-time
+if (descriptionInput) {
+  descriptionInput.addEventListener("input", (e) => {
+    const newDesc = e.target.value || "No description yet.";
+    if (mobileDescriptionEl) mobileDescriptionEl.textContent = newDesc;
+    if (laptopDescriptionEl) laptopDescriptionEl.textContent = newDesc;
+  });
+}
+
+// Save Changes
+saveBtn.addEventListener("click", async () => {
+  if (!currentUserId) {
+    alert("Error: User not authenticated");
+    return;
+  }
+
+  try {
+    // Show loading overlay
+    if (loadingOverlay) loadingOverlay.style.display = "flex";
+
+    const newStatus = statusToggle.checked ? "Open" : "Closed";
+    const newMessage = statusSelect.value;
+    const newStallName = stallNameInput.value.trim();
+    const newDescription = descriptionInput.value.trim();
+
+    // Validate stall name
+    if (!newStallName) {
+      alert("Please enter a stall name");
+      if (loadingOverlay) loadingOverlay.style.display = "none";
+      return;
+    }
+
+    // Update Firebase
+    const updates = {
+      stallName: newStallName,
+      description: newDescription,
+      status: newStatus,
+      statusMessage: newMessage,
+      bannerUrl: currentBannerUrl,
       lastUpdated: Date.now(),
     };
 
-    const displayRef = window.dbRef(
-      window.db,
-      "vendors/" + currentUser.uid + "/displaySettings",
-    );
+    await update(ref(db, "users/" + currentUserId), updates);
 
-    saveBtn.innerHTML = `<i class="ph-bold ph-spinner"></i> SAVING...`;
+    if (loadingOverlay) loadingOverlay.style.display = "none";
+    alert("Display settings saved successfully! ✓");
+  } catch (error) {
+    console.error("Error saving changes:", error);
+    if (loadingOverlay) loadingOverlay.style.display = "none";
+    alert("Error saving changes: " + error.message);
+  }
+});
 
-    window.dbSet(displayRef, dataToSave).then(() => {
-      saveBtn.innerHTML = `<i class="ph-bold ph-check"></i> SAVED!`;
-      saveBtn.style.backgroundColor = "#4ade80";
-      setTimeout(() => {
-        saveBtn.innerHTML = `<i class="ph-bold ph-check"></i> SAVE CHANGES`;
-        saveBtn.style.backgroundColor = "";
-      }, 2000);
-    });
+// Logout
+logoutLinks.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    signOut(auth)
+      .then(() => {
+        window.location.href = "../index.html";
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+        alert("Error logging out. Please try again.");
+      });
   });
 });
