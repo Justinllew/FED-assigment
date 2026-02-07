@@ -4,570 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Store Performance Dashboard</title>
-    <style>
-      /* --- 1. CSS VARIABLES (Matching your design system) --- */
-      :root {
-        /* Brand Colors */
-        --primary-green: #68a357;
-        --primary-hover: #578a48;
-
-        /* Backgrounds */
-        --bg-cream: #f9f7e8;
-        --bg-light-green: #e9f2e6;
-        --white: #ffffff;
-
-        /* Text */
-        --text-dark: #1a1a1a;
-        --text-muted: #666666;
-        --border-light: #e0e0e0;
-
-        /* Status Badge Colors */
-        --badge-avail-bg: #dbead5;
-        --badge-avail-text: #2e5c21;
-        --badge-out-bg: #f2e6e6;
-        --badge-out-text: #a35757;
-        --badge-promo-bg: #fff3cd;
-        --badge-promo-text: #856404;
-
-        /* Dimensions */
-        --sidebar-width: 260px;
-        --sidebar-collapsed-width: 80px;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", sans-serif;
-        text-decoration: none;
-      }
-
-      body {
-        background-color: var(--bg-color);
-        min-height: 100vh;
-        overflow-x: hidden;
-      }
-
-      /* The wrapper your JS targets */
-      .app-container {
-        display: flex;
-        width: 100%;
-        min-height: 100vh;
-        transition: all var(--transition-speed);
-      }
-
-      /* --- 2. YOUR SIDEBAR CSS (Pasted & Adapted for Layout) --- */
-      .sidebar {
-        width: var(--sidebar-width);
-        background-color: var(--white);
-        border-right: 1px solid var(--border-light);
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        height: 100vh;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        transition: width 0.3s ease;
-        overflow: hidden;
-        flex-shrink: 0; /* Prevents shrinking */
-      }
-
-      /* Collapsed State Styles */
-      .app-container.collapsed .sidebar {
-        width: var(--sidebar-collapsed-width);
-      }
-
-      /* Hide text when collapsed */
-      .app-container.collapsed .brand-logo span,
-      .app-container.collapsed .nav-item span,
-      .app-container.collapsed .user-info,
-      .app-container.collapsed .logout-link {
-        display: none;
-        opacity: 0;
-      }
-
-      /* Center icons when collapsed */
-      .app-container.collapsed .nav-item a {
-        justify-content: center;
-        padding: 12px 0;
-      }
-      .app-container.collapsed .brand-logo {
-        justify-content: center;
-        padding: 24px 0;
-      }
-      .app-container.collapsed .sidebar-footer {
-        padding: 20px 10px;
-        display: flex;
-        justify-content: center;
-      }
-      .app-container.collapsed .user-profile-mini {
-        justify-content: center;
-      }
-
-      /* Logo */
-      .brand-logo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 800;
-        font-size: 1.2rem;
-        color: var(--primary-green);
-        padding: 24px;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-
-      /* Nav Links */
-      .sidebar-nav {
-        flex: 1;
-        padding: 10px 0;
-        overflow-y: auto;
-        scrollbar-width: none;
-      }
-      .sidebar-nav::-webkit-scrollbar {
-        display: none;
-      }
-
-      .nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        padding: 0 10px;
-        list-style: none;
-      }
-
-      .nav-item a {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 12px 16px;
-        color: var(--text-muted);
-        font-weight: 500;
-        border-radius: 12px;
-        transition: 0.2s;
-        white-space: nowrap;
-      }
-
-      .nav-item a:hover {
-        background-color: #f5f5f5;
-        color: var(--text-dark);
-      }
-
-      .nav-item.active a {
-        background-color: var(--bg-light-green);
-        color: var(--primary-green);
-        font-weight: 600;
-      }
-
-      .nav-item svg {
-        min-width: 24px;
-        height: 24px;
-      }
-
-      /* Footer (Profile) */
-      .sidebar-footer {
-        border-top: 1px solid var(--border-light);
-        padding: 20px 24px;
-        background-color: var(--white);
-        white-space: nowrap;
-      }
-
-      .user-profile-mini {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .circle {
-        min-width: 40px;
-        height: 40px;
-        background: var(--bg-light-green);
-        color: var(--primary-green);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-      }
-
-      .logout-link {
-        display: block;
-        margin-top: 10px;
-        font-size: 0.85rem;
-        color: var(--badge-out-text);
-        padding-left: 52px;
-        transition: 0.2s;
-      }
-      .logout-link:hover {
-        text-decoration: underline;
-      }
-
-      /* --- 3. DASHBOARD MAIN CONTENT --- */
-      .main-content {
-        margin-left: var(--sidebar-width);
-        width: calc(100% - var(--sidebar-width));
-        padding: 40px;
-        transition:
-          margin-left 0.3s ease,
-          width 0.3s ease;
-      }
-
-      /* Adjust content when sidebar collapses */
-      .app-container.collapsed .main-content {
-        margin-left: var(--sidebar-collapsed-width);
-        width: calc(100% - var(--sidebar-collapsed-width));
-      }
-
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-      }
-      h1 {
-        font-size: 1.8rem;
-        color: var(--text-dark);
-      }
-      h2 {
-        font-size: 1.2rem;
-        margin-bottom: 15px;
-        color: var(--text-dark);
-      }
-
-      /* Dashboard Grid */
-      .dashboard-grid {
-        display: grid;
-        grid-template-columns: 350px 1fr;
-        grid-template-rows: auto auto;
-        gap: 25px;
-      }
-
-      .card {
-        background: var(--white);
-        padding: 25px;
-        border-radius: 16px;
-        box-shadow: var(--card-shadow);
-      }
-
-      /* Controls */
-      .controls {
-        margin-bottom: 20px;
-        display: flex;
-        gap: 15px;
-        align-items: center;
-      }
-
-      button.toggle-btn {
-        padding: 8px 20px;
-        border: 1px solid var(--primary-green);
-        background: transparent;
-        color: var(--primary-green);
-        border-radius: 20px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: 0.2s;
-      }
-
-      button.toggle-btn.active,
-      button.toggle-btn:hover {
-        background: var(--primary-green);
-        color: white;
-      }
-
-      /* Charts */
-      .diagrams-card {
-        grid-row: span 2;
-        display: flex;
-        flex-direction: column;
-        gap: 25px;
-      }
-
-      .chart-container {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #f0f0f0;
-      }
-      .chart-container:last-child {
-        border-bottom: none;
-      }
-
-      /* Conic Gradient Pie Chart */
-      .pie-chart {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        background: conic-gradient(var(--primary-green) 0% 0%, #eee 0% 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        flex-shrink: 0;
-      }
-
-      .pie-chart::after {
-        content: attr(data-percent);
-        position: absolute;
-        background: white;
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 0.85rem;
-        color: var(--text-dark);
-      }
-
-      .chart-info {
-        flex-grow: 1;
-      }
-      .chart-info h4 {
-        margin-bottom: 8px;
-        font-size: 0.95rem;
-        color: var(--text-dark);
-      }
-      .chart-bar-bg {
-        width: 100%;
-        height: 8px;
-        background: #eee;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .chart-bar-fill {
-        height: 100%;
-        background: var(--primary-green);
-        width: 0%;
-        transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      /* Lists */
-      .feedback-list p,
-      .realtime-list p {
-        padding: 12px;
-        background: #f9f9f9;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        border-left: 3px solid transparent;
-      }
-      .feedback-list p:hover {
-        border-left-color: var(--primary-green);
-        background: #f0f7f1;
-      }
-    </style>
+    <link rel="stylesheet" href="StorePerformanceDashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div class="app-container">
       <aside class="sidebar">
-        <div
-          class="brand-logo"
-          onclick="toggleSidebar()"
-          title="Toggle Menu"
-          role="button"
-          tabindex="0"
-        >
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-            <line x1="6" y1="1" x2="6" y2="4"></line>
-            <line x1="10" y1="1" x2="10" y2="4"></line>
-            <line x1="14" y1="1" x2="14" y2="4"></line>
-          </svg>
+        <div class="brand-logo" onclick="toggleSidebar()">
           <span>FreshEats Studio</span>
         </div>
-
         <nav class="sidebar-nav">
-          <ul class="nav-links">
-            <li class="nav-item">
-              <a href="/home-page-vp-jay/vendor-home.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="3" y="3" width="7" height="7"></rect>
-                  <rect x="14" y="3" width="7" height="7"></rect>
-                  <rect x="14" y="14" width="7" height="7"></rect>
-                  <rect x="3" y="14" width="7" height="7"></rect>
-                </svg>
-                <span>Dashboard</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/home-page-vp-jay/stall-display.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-                  <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-                  <path d="M2 2l7.586 7.586"></path>
-                  <circle cx="11" cy="11" r="2"></circle>
-                </svg>
-                <span>Display</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/Order-History/OrderHistory( v - lukas).html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                  ></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                <span>Orders</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/Menu Management/MenuManagement - V.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <line x1="8" y1="6" x2="21" y2="6"></line>
-                  <line x1="8" y1="12" x2="21" y2="12"></line>
-                  <line x1="8" y1="18" x2="21" y2="18"></line>
-                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                </svg>
-                <span>Menu</span>
-              </a>
-            </li>
-
-            <li class="nav-item active">
-              <a href="#">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <line x1="18" y1="20" x2="18" y2="10"></line>
-                  <line x1="12" y1="20" x2="12" y2="4"></line>
-                  <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-                <span>Analytics</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/Customer-Reviews (C)/CustomerReview.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polygon
-                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-                  ></polygon>
-                </svg>
-                <span>Reviews</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/NEA Inspection Features/dashboardInspect.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-                  ></path>
-                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                </svg>
-                <span>Inspections</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        <div class="sidebar-footer">
-          <div class="user-profile-mini">
-            <div class="circle" id="sidebar-avatar">L</div>
-            <div class="user-info">
-              <h4 id="sidebar-name">Lukas</h4>
-              <p>Store Manager</p>
+          <div class="sidebar-footer">
+            <div class="user-profile-mini">
+              <div class="circle" id="sidebar-avatar">V</div>
+              <div class="user-info">
+                <h4 id="sidebar-name">Vendor</h4>
+                <p>Store Manager</p>
+              </div>
             </div>
+            <a href="#" class="logout-link">Log Out</a>
           </div>
-          <a href="../index.html" class="logout-link">Log Out</a>
-        </div>
+        </nav>
       </aside>
 
       <main class="main-content">
         <header>
-          <h1>Store Performance Dashboard</h1>
-          <div style="font-weight: 500; color: var(--text-dark)">
-            Devon Lane ▼
-          </div>
+          <h1>Store Performance</h1>
         </header>
 
         <div class="controls">
-          <span style="font-weight: 500; color: var(--text-muted)"
-            >View Data:</span
-          >
+          <span style="font-weight: 500; color: #666">Time Period:</span>
           <button
             class="toggle-btn active"
             id="btn-current"
@@ -584,9 +50,33 @@
           </button>
         </div>
 
+        <section class="sales-section">
+          <h2>Sales Analytics</h2>
+          <!-- Displays the Total Revenue -->
+          <div class="stat-row">
+            <div class="stat-card">
+              <h3>Total Revenue</h3>
+              <div class="value" id="stat-revenue">$0.00</div>
+            </div>
+            <div class="stat-card">
+              <h3>Total Orders</h3>
+              <div class="value" id="stat-orders">-</div>
+            </div>
+            <div class="stat-card">
+              <h3>Avg. Order Value</h3>
+              <div class="value" id="stat-avg">$-</div>
+            </div>
+          </div>
+
+          <div class="graph-card">
+            <canvas id="SalesChart"></canvas>
+          </div>
+        </section>
+
+        <h2 style="margin-top: 40px">Operational Metrics</h2>
         <div class="dashboard-grid">
           <div class="card diagrams-card">
-            <h2>Diagrams (Performance)</h2>
+            <h3>Performance Scores</h3>
 
             <div class="chart-container">
               <div class="pie-chart" id="chart1-pie" data-percent="0%"></div>
@@ -620,103 +110,18 @@
           </div>
 
           <div class="card">
-            <h2>Feedback</h2>
+            <h3>Recent Feedback</h3>
             <div id="feedback-list" class="feedback-list"></div>
           </div>
 
           <div class="card">
-            <h2>Real Time Updates</h2>
+            <h3>Live Activity</h3>
             <div id="realtime-list" class="realtime-list"></div>
           </div>
         </div>
       </main>
     </div>
 
-    <script>
-      // --- 1. YOUR TOGGLE FUNCTION (Expanded for integration) ---
-      function toggleSidebar() {
-        // Toggles the 'collapsed' class on the wrapper
-        document.querySelector(".app-container").classList.toggle("collapsed");
-      }
-
-      // --- 2. HARD-CODED DATA (MOCKED API) ---
-      const storeData = {
-        current: {
-          metrics: [
-            { label: "Satisfaction", value: 85 },
-            { label: "Completion", value: 92 },
-            { label: "On-Time", value: 78 },
-          ],
-          feedback: [
-            "Great service, food was hot!",
-            "Delivery was faster than expected.",
-            "Loved the new menu layout.",
-          ],
-          realtime: [
-            "Order #1024 delivered",
-            "New review received: 5 Stars",
-            "Inventory alert: Tomatoes low",
-          ],
-        },
-        previous: {
-          metrics: [
-            { label: "Satisfaction", value: 65 },
-            { label: "Completion", value: 88 },
-            { label: "On-Time", value: 70 },
-          ],
-          feedback: [
-            "Food was cold upon arrival.",
-            "Missing items in order #992.",
-            "App crashed twice.",
-          ],
-          realtime: [
-            "System maintenance completed",
-            "Shift change: Morning crew",
-            "Order #990 cancelled",
-          ],
-        },
-      };
-
-      // --- 3. CHART CALCULATOR & RENDERER ---
-      function updateCharts(dataKey) {
-        const data = storeData[dataKey];
-
-        data.metrics.forEach((metric, index) => {
-          const i = index + 1;
-          // Calculate Degrees for Pie Chart
-          const degrees = (metric.value / 100) * 360;
-
-          const pie = document.getElementById(`chart1-pie`.replace("1", i));
-          pie.style.background = `conic-gradient(var(--primary-green) ${degrees}deg, #eee 0deg)`;
-          pie.setAttribute("data-percent", metric.value + "%");
-
-          const bar = document.getElementById(`chart1-bar`.replace("1", i));
-          bar.style.width = metric.value + "%";
-        });
-
-        updateList("feedback-list", data.feedback);
-        updateList("realtime-list", data.realtime);
-      }
-
-      function updateList(elementId, items) {
-        const container = document.getElementById(elementId);
-        container.innerHTML = "";
-        items.forEach((item) => {
-          const p = document.createElement("p");
-          p.textContent = item;
-          container.appendChild(p);
-        });
-      }
-
-      function setView(view) {
-        document.getElementById("btn-current").classList.remove("active");
-        document.getElementById("btn-previous").classList.remove("active");
-        document.getElementById(`btn-${view}`).classList.add("active");
-        updateCharts(view);
-      }
-
-      // Initialize
-      window.onload = () => setView("current");
-    </script>
+    <script type="module" src="StorePerformanceDashboard.js"></script>
   </body>
 </html>

@@ -50,6 +50,15 @@ onAuthStateChanged(auth, (user) => {
     currentUserUid = user.uid;
     console.log("Vendor Logged In:", currentUserUid);
 
+    const storedName = localStorage.getItem("freshEatsUserName") || "Vendor";
+
+    const sidebarName = document.getElementById("sidebar-name");
+    const sidebarAvatar = document.getElementById("sidebar-avatar");
+
+    if (sidebarName) sidebarName.textContent = storedName;
+    if (sidebarAvatar)
+      sidebarAvatar.textContent = storedName.charAt(0).toUpperCase();
+
     // Optional: Update UI to show we are online
     if (banner) banner.innerText = "FreshEats (Online)";
 
@@ -370,38 +379,7 @@ async function updateItemStatus(docId, newStatus) {
     alert("Failed to update status");
   }
 }
-const checkFirebase = setInterval(() => {
-  if (window.auth) {
-    clearInterval(checkFirebase);
-    initAuth();
-  }
-}, 100);
 
-function initAuth() {
-  window.authCheck(window.auth, (user) => {
-    if (user) {
-      // --- SUCCESS: USER IS LOGGED IN ---
-      currentUser = user;
-      console.log("Logged in as:", user.uid);
-
-      loadData(user.uid);
-
-      // Set User Name UI
-      const name = localStorage.getItem("freshEatsUserName") || "Vendor";
-      if (document.getElementById("sidebar-name"))
-        document.getElementById("sidebar-name").textContent = name;
-      if (document.getElementById("sidebar-avatar"))
-        document.getElementById("sidebar-avatar").textContent = name
-          .charAt(0)
-          .toUpperCase();
-    } else {
-      // --- FAILURE: NO USER FOUND ---
-      alert("Access Denied: You must be logged in to view this page.");
-      // Redirect back to the main landing page (adjust path as needed)
-      window.location.href = "../index.html";
-    }
-  });
-}
 // ==========================================
 // 6. EXPOSE FUNCTIONS TO WINDOW
 // ==========================================
