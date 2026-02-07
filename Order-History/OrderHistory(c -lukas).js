@@ -197,3 +197,23 @@ function renderOrderCard(order, activeContainer, historyContainer) {
       activeContainer.insertAdjacentHTML("beforeend", cardHTML);
   }
 }
+
+// --- MOBILE SIDEBAR TOGGLE ---
+window.toggleSidebar = function () {
+  const sidebar = document.querySelector(".sidebar");
+  // This adds/removes the 'open' class defined in the CSS media query
+  sidebar.classList.toggle("open");
+
+  // Optional: Click outside to close (Simple version)
+  const content = document.querySelector(".main-content-wrapper");
+  if (sidebar.classList.contains("open")) {
+    content.addEventListener("click", closeSidebarOnClick);
+  }
+};
+
+function closeSidebarOnClick() {
+  const sidebar = document.querySelector(".sidebar");
+  const content = document.querySelector(".main-content-wrapper");
+  sidebar.classList.remove("open");
+  content.removeEventListener("click", closeSidebarOnClick);
+}
