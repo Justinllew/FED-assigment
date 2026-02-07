@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* Page Transition Animation */
+.page-transition {
+  animation: pageLoad 0.4s ease-out;
+}
+
+@keyframes pageLoad {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth slide up animation for modals */
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Quantity Button Styles */
+.quantity-btn {
+  transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+  background-color: #7ce53a;
+  color: #1a1a1a;
+  transform: scale(1.1);
+}
+
+.quantity-btn:active {
+  transform: scale(0.95);
+}
+
+/* Item Card Hover Effect */
+.cart-item {
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+  background-color: rgba(254, 255, 193, 0.3);
+  border-radius: 12px;
+  margin: 0 -8px;
+  padding: 12px;
+}
+
+/* Custom Checkbox for Select All */
+.custom-checkbox {
+  accent-color: #7ce53a;
+}
+
+/* Loading State for Checkout Button */
+.checkout-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.checkout-loading::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 2px solid #1a1a1a;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #feffc1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7ce53a;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5cb82a;
+}
+
+/* Input Focus States */
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 3px rgba(124, 229, 58, 0.2);
+}
+
+/* Prevent text selection on quantity buttons */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Fade out animation for removing items */
+.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+}

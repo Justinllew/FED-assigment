@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="cart.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#7CE53A",
+              "primary-dark": "#5cb82a",
+              "primary-light": "#ecfccb",
+              cream: "#FEFFC1",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="text-gray-800 min-h-screen pb-32 bg-cream page-transition">
+    <!-- Header -->
+    <header
+      class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200"
+    >
+      <div
+        class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between"
+      >
+        <button
+          onclick="history.back()"
+          class="w-10 h-10 rounded-full hover:bg-cream flex items-center justify-center transition"
+        >
+          <i class="fa-solid fa-arrow-left text-gray-600"></i>
+        </button>
+        <h1 class="text-lg font-bold text-gray-900">Shopping Cart</h1>
+        <div class="w-10 flex items-center justify-center">
+          <span
+            id="cart-count"
+            class="bg-primary text-gray-900 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full"
+            >3</span
+          >
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 py-6 space-y-6">
+      <!-- Cart Items -->
+      <section
+        class="bg-white rounded-2xl p-6 shadow-sm border border-primary/10"
+      >
+        <div id="cart-items" class="space-y-6">
+          <!-- Items injected by JS -->
+        </div>
+
+        <!-- Empty State (Hidden by default) -->
+        <div id="empty-state" class="hidden text-center py-12">
+          <div
+            class="w-24 h-24 bg-cream rounded-full flex items-center justify-center mx-auto mb-4 text-primary/30"
+          >
+            <i class="fa-solid fa-basket-shopping text-4xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">
+            Your cart is empty
+          </h3>
+          <p class="text-gray-500 mb-6">
+            Looks like you haven't added anything yet
+          </p>
+          <button
+            onclick="continueShopping()"
+            class="bg-primary hover:bg-primary-dark text-gray-900 px-6 py-3 rounded-xl font-bold transition"
+          >
+            Start Shopping
+          </button>
+        </div>
+      </section>
+
+      <!-- Order Notes -->
+      <section
+        class="bg-white rounded-2xl p-6 shadow-sm border border-primary/10"
+      >
+        <h2
+          class="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide"
+        >
+          Order Notes
+        </h2>
+        <textarea
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-cream/30 resize-none text-sm"
+          rows="3"
+          placeholder="Add any special instructions (e.g., allergies, extra sauce...)"
+        ></textarea>
+      </section>
+
+      <!-- Price Breakdown -->
+      <section
+        class="bg-white rounded-2xl p-6 shadow-sm border border-primary/10"
+      >
+        <h2 class="text-lg font-bold mb-4 text-gray-900">Order Summary</h2>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between text-gray-600">
+            <span>Subtotal</span>
+            <span id="summary-subtotal" class="font-medium text-gray-900"
+              >$0.00</span
+            >
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span>Taxes (8%)</span>
+            <span id="summary-tax" class="font-medium text-gray-900"
+              >$0.00</span
+            >
+          </div>
+          <div class="border-t border-gray-100 pt-3 mt-3">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-gray-900 text-lg">Total</span>
+              <span id="summary-total" class="font-bold text-primary text-xl"
+                >$0.00</span
+              >
+            </div>
+            <p class="text-xs text-gray-500 mt-1 text-right">
+              Delivery fees calculated at checkout
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Saved for Later (Optional) -->
+      <section id="saved-section" class="hidden">
+        <h2 class="text-lg font-bold mb-4 text-gray-900 px-2">
+          Saved for Later
+        </h2>
+        <div
+          class="bg-white rounded-2xl p-6 shadow-sm border border-primary/10 opacity-75"
+        >
+          <!-- Saved items would go here -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Sticky Footer -->
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-30 bg-cream/95 backdrop-blur-sm"
+    >
+      <div class="max-w-3xl mx-auto space-y-3">
+        <!-- Promo Code Input -->
+        <div class="flex space-x-2">
+          <input
+            type="text"
+            id="promo-input"
+            placeholder="Promo code"
+            class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm bg-white"
+          />
+          <button
+            onclick="applyPromo()"
+            class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition"
+          >
+            Apply
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-xs text-gray-500">Estimated Total</div>
+            <div class="text-2xl font-bold text-gray-900" id="footer-total">
+              $0.00
+            </div>
+          </div>
+          <button
+            onclick="proceedToCheckout()"
+            id="checkout-btn"
+            class="bg-primary hover:bg-primary-dark text-gray-900 px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/30 transition transform active:scale-95 flex items-center space-x-2 group"
+          >
+            <span>Checkout</span>
+            <i
+              class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"
+            ></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remove Confirmation Modal -->
+    <div
+      id="remove-modal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-white rounded-3xl p-6 max-w-sm w-full text-center slide-up border-2 border-primary/20"
+      >
+        <div
+          class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500 text-2xl"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </div>
+        <h3 class="text-lg font-bold text-gray-900 mb-2">Remove Item?</h3>
+        <p class="text-gray-600 mb-6">
+          Are you sure you want to remove
+          <span id="remove-item-name" class="font-bold"></span> from your cart?
+        </p>
+        <div class="flex space-x-3">
+          <button
+            onclick="closeRemoveModal()"
+            class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-200 transition"
+          >
+            Cancel
+          </button>
+          <button
+            onclick="confirmRemove()"
+            class="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="cart.js"></script>
+  </body>
+</html>
