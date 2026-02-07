@@ -145,9 +145,10 @@ nav {
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.1); /* Slight darkening */
   display: none;
   z-index: 150;
+  pointer-events: none; /* NEVER block clicks */
 }
 
 .overlay.active {
