@@ -11,12 +11,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import {
-  getStorage,
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+// Storage import removed - using URL input instead
 
 const firebaseConfig = {
   apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
@@ -33,7 +28,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
-const storage = getStorage(app);
 
 // DOM Elements
 const storeNameEl = document.getElementById("mobile-store-name");
@@ -61,7 +55,8 @@ const bannerFileInput = document.getElementById("banner-file-input");
 const loadingOverlay = document.getElementById("loading-overlay");
 
 let currentUserId = null;
-let currentBannerFile = null;
+let currentBannerUrl =
+  "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000";
 
 // Character counter for description
 if (descriptionInput && charCount) {
@@ -71,45 +66,25 @@ if (descriptionInput && charCount) {
   });
 }
 
-// Banner upload click handler
-if (bannerDropzone && bannerFileInput) {
-  bannerDropzone.addEventListener("click", () => {
-    bannerFileInput.click();
-  });
+// Banner URL input handler
+if (bannerFileInput) {
+  bannerFileInput.addEventListener("input", (e) => {
+    const url = e.target.value.trim();
+    if (url) {
+      // Validate URL format
+      try {
+        new URL(url);
+        currentBannerUrl = url;
 
-  bannerFileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      handleImageUpload(file);
+        // Update previews
+        bannerPreview.src = url;
+        mobileBanner.style.backgroundImage = `url("${url}")`;
+        laptopBanner.style.backgroundImage = `url("${url}")`;
+      } catch (error) {
+        console.log("Invalid URL");
+      }
     }
   });
-}
-
-// Handle image upload and preview
-function handleImageUpload(file) {
-  // Validate file type
-  if (!file.type.startsWith("image/")) {
-    alert("Please upload an image file (JPG, PNG, etc.)");
-    return;
-  }
-
-  // Validate file size (5MB max)
-  if (file.size > 5 * 1024 * 1024) {
-    alert("Image size must be less than 5MB");
-    return;
-  }
-
-  currentBannerFile = file;
-
-  // Preview image locally
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const imageUrl = e.target.result;
-    bannerPreview.src = imageUrl;
-    mobileBanner.style.backgroundImage = `url("${imageUrl}")`;
-    laptopBanner.style.backgroundImage = `url("${imageUrl}")`;
-  };
-  reader.readAsDataURL(file);
 }
 
 // Auth Listener
@@ -188,6 +163,7 @@ function updateUIWithData(data) {
 
   // Banner
   if (data.bannerUrl) {
+    currentBannerUrl = data.bannerUrl;
     bannerPreview.src = data.bannerUrl;
     mobileBanner.style.backgroundImage = `url("${data.bannerUrl}")`;
     laptopBanner.style.backgroundImage = `url("${data.bannerUrl}")`;
@@ -285,31 +261,13 @@ saveBtn.addEventListener("click", async () => {
       return;
     }
 
-    let bannerUrl = bannerPreview.src;
-
-    // Upload new banner if file was selected
-    if (currentBannerFile) {
-      try {
-        const filename = `banners/${currentUserId}_${Date.now()}.jpg`;
-        const imageRef = storageRef(storage, filename);
-
-        await uploadBytes(imageRef, currentBannerFile);
-        bannerUrl = await getDownloadURL(imageRef);
-
-        currentBannerFile = null; // Clear after upload
-      } catch (uploadError) {
-        console.error("Error uploading image:", uploadError);
-        alert("Error uploading image. Using existing banner.");
-      }
-    }
-
     // Update Firebase
     const updates = {
       stallName: newStallName,
       description: newDescription,
       status: newStatus,
       statusMessage: newMessage,
-      bannerUrl: bannerUrl,
+      bannerUrl: currentBannerUrl,
       lastUpdated: Date.now(),
     };
 

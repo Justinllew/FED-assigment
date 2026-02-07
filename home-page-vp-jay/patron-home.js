@@ -257,7 +257,7 @@ if (logoutLink) {
     e.preventDefault();
     signOut(auth)
       .then(() => {
-        window.location.href = "../public-page-jay/public-page.html";
+        window.location.href = "../index.html";
       })
       .catch((error) => {
         console.error("Logout error:", error);

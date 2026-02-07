@@ -260,38 +260,26 @@
                 <h3>Store Banner</h3>
               </div>
               <div class="card-body">
-                <div class="banner-upload-area" id="banner-dropzone">
+                <div class="banner-preview-area">
                   <img
                     src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000"
                     alt="Current Banner"
                     class="current-banner"
                     id="preview-banner"
                   />
-                  <div class="upload-overlay">
-                    <svg
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path
-                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
-                      ></path>
-                      <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                    <span>Upload Cover Image</span>
-                  </div>
+                </div>
+                <div class="input-group" style="margin-top: 16px">
+                  <label>Banner Image URL</label>
                   <input
-                    type="file"
+                    type="text"
                     id="banner-file-input"
-                    accept="image/*"
-                    style="display: none"
+                    class="text-input"
+                    placeholder="https://images.unsplash.com/photo-..."
                   />
                 </div>
                 <p class="helper-text">
-                  Click to upload your own image (JPG, PNG, max 5MB)
+                  Paste an image URL (e.g., from Unsplash, Imgur, or your own
+                  hosting)
                 </p>
               </div>
             </div>
