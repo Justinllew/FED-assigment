@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* Dropdown Animation */
+.dropdown-menu {
+  animation: slideDown 0.2s ease-out;
+  transform-origin: top right;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Food Card Styles */
+.food-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 25px -5px rgba(124, 229, 58, 0.1),
+    0 10px 10px -5px rgba(124, 229, 58, 0.04);
+}
+
+/* Heart Button Animation */
+.heart-btn {
+  transition: all 0.2s ease;
+}
+
+.heart-btn:hover {
+  transform: scale(1.1);
+}
+
+.heart-btn.liked {
+  background-color: #7ce53a;
+  color: #1a1a1a;
+  border-color: #7ce53a;
+}
+
+.heart-btn.liked i {
+  font-weight: fill;
+}
+
+/* Smooth image loading */
+.food-image {
+  transition: transform 0.3s ease;
+}
+
+.food-card:hover .food-image {
+  transform: scale(1.05);
+}
+
+/* Toast Animation */
+#toast.show {
+  opacity: 1;
+  transform: translate(-50%, -10px);
+}
+
+/* Hide scrollbar for horizontal overflow on mobile */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: rgba(124, 229, 58, 0.3);
+  color: #1a1a1a;
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #f6f7f8 4%, #edeef1 25%, #f6f7f8 36%);
+  background-size: 1000px 100%;
+}
+
+/* Fade in animation for items */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.food-card {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Stagger animation delays */
+.food-card:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.food-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.food-card:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.food-card:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.food-card:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .food-card:hover {
+    transform: translateY(-2px);
+  }
+}

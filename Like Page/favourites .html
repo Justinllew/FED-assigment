@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshEats - Your Favorites</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="favourites.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#7CE53A",
+              "primary-dark": "#5cb82a",
+              "primary-light": "#ecfccb",
+              cream: "#FEFFC1",
+              "cream-dark": "#F5F5DC",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-cream min-h-screen text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <!-- Logo -->
+          <div
+            class="flex items-center space-x-2 cursor-pointer"
+            onclick="window.location.href = 'index.html'"
+          >
+            <i class="ph ph-storefront text-2xl text-primary"></i>
+            <span class="text-xl font-bold tracking-tight">FreshEats</span>
+          </div>
+
+          <!-- Right Side -->
+          <div class="flex items-center space-x-4">
+            <!-- User Menu -->
+            <div class="relative">
+              <button
+                onclick="toggleDropdown()"
+                class="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-cream/50 transition"
+              >
+                <i class="ph ph-user text-xl text-gray-700"></i>
+                <span
+                  id="patron-name"
+                  class="hidden md:block font-medium text-gray-700"
+                  >Patron</span
+                >
+                <i class="ph ph-caret-down text-gray-500"></i>
+              </button>
+
+              <!-- Dropdown -->
+              <div
+                id="dropdownMenu"
+                class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
+              >
+                <ul class="space-y-1">
+                  <li>
+                    <a
+                      href="order-history.html"
+                      class="flex items-center space-x-3 px-4 py-2 hover:bg-cream/30 transition text-sm text-gray-700"
+                    >
+                      <i class="ph ph-notepad text-primary text-lg"></i>
+                      <span>Order history</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="profile.html"
+                      class="flex items-center space-x-3 px-4 py-2 hover:bg-cream/30 transition text-sm text-gray-700"
+                    >
+                      <i class="ph ph-user text-primary text-lg"></i>
+                      <span>Profile</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="rewards.html"
+                      class="flex items-center space-x-3 px-4 py-2 hover:bg-cream/30 transition text-sm text-gray-700"
+                    >
+                      <i class="ph ph-trophy text-primary text-lg"></i>
+                      <span>Rewards</span>
+                    </a>
+                  </li>
+                </ul>
+                <hr class="my-2 border-gray-100" />
+                <ul>
+                  <li>
+                    <a
+                      href="#"
+                      onclick="handleLogout()"
+                      class="flex items-center space-x-3 px-4 py-2 hover:bg-red-50 transition text-sm text-red-600"
+                    >
+                      <i class="ph ph-sign-out text-lg"></i>
+                      <span>Log out</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Favorites -->
+            <a
+              href="favorites.html"
+              class="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition relative"
+              title="Favorites"
+            >
+              <i class="ph ph-heart text-xl"></i>
+              <span
+                id="fav-count"
+                class="absolute -top-1 -right-1 bg-primary text-gray-900 text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                >3</span
+              >
+            </a>
+
+            <!-- Cart -->
+            <a
+              href="cart.html"
+              class="p-2 rounded-lg hover:bg-cream/50 transition relative"
+              title="Cart"
+            >
+              <i class="ph ph-shopping-bag text-xl text-gray-700"></i>
+              <span
+                class="absolute -top-1 -right-1 bg-primary text-gray-900 text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                >2</span
+              >
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Your Favourites Section -->
+      <section class="mb-12">
+        <div class="flex items-center space-x-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Your Favourites</h2>
+          <i class="ph ph-arrow-right text-xl text-gray-400"></i>
+        </div>
+
+        <div
+          id="favorites-grid"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <!-- Favorites injected by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div
+          id="favorites-empty"
+          class="hidden text-center py-16 bg-white rounded-3xl border border-primary/10 shadow-sm"
+        >
+          <div
+            class="w-20 h-20 bg-cream rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <i class="ph ph-heart-break text-3xl text-primary/40"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">No favorites yet</h3>
+          <p class="text-gray-500 mb-6">
+            Start exploring and save items you love!
+          </p>
+          <button
+            onclick="scrollToRecommended()"
+            class="bg-primary hover:bg-primary-dark text-gray-900 px-6 py-3 rounded-xl font-bold transition shadow-lg shadow-primary/20"
+          >
+            Explore Menu
+          </button>
+        </div>
+      </section>
+
+      <!-- Recommended for You Section -->
+      <section>
+        <div class="flex items-center space-x-3 mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">Recommended for you</h2>
+          <i class="ph ph-arrow-right text-xl text-gray-400"></i>
+        </div>
+
+        <div
+          id="recommended-grid"
+          class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
+        >
+          <!-- Recommended items injected by JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast"
+      class="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 flex items-center space-x-2"
+    >
+      <i class="ph ph-check-circle text-primary text-xl"></i>
+      <span id="toast-message">Added to favorites</span>
+    </div>
+
+    <script src="favourites.js"></script>
+  </body>
+</html>
