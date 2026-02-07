@@ -93,7 +93,7 @@ onAuthStateChanged(auth, (user) => {
     currentUserId = user.uid;
     loadVendorData(user.uid);
   } else {
-    window.location.href = "../index.html";
+    window.location.href = "../public-page-jay/public-page.html";
   }
 });
 
@@ -110,13 +110,17 @@ function loadVendorData(uid) {
       if (!data) {
         console.error("User data not found");
         alert("Error: User data not found. Please sign up again.");
-        signOut(auth).then(() => (window.location.href = "../index.html"));
+        signOut(auth).then(
+          () => (window.location.href = "../public-page-jay/public-page.html"),
+        );
         return;
       }
 
       if (data.role !== "vendor") {
         alert("Access denied. This page is only for vendors.");
-        signOut(auth).then(() => (window.location.href = "../index.html"));
+        signOut(auth).then(
+          () => (window.location.href = "../public-page-jay/public-page.html"),
+        );
         return;
       }
 
@@ -288,7 +292,7 @@ logoutLinks.forEach((link) => {
     e.preventDefault();
     signOut(auth)
       .then(() => {
-        window.location.href = "../index.html";
+        window.location.href = "../public-page-jay/public-page.html";
       })
       .catch((error) => {
         console.error("Logout error:", error);

@@ -47,7 +47,7 @@ onAuthStateChanged(auth, (user) => {
     loadPatronData(user.uid);
     loadAllVendors();
   } else {
-    window.location.href = "../index.html";
+    window.location.href = "../public-page-jay/public-page.html";
   }
 });
 
@@ -68,7 +68,9 @@ function loadPatronData(uid) {
       // Validate user is a patron
       if (data.role !== "patron") {
         alert("Access denied. This page is only for patrons.");
-        signOut(auth).then(() => (window.location.href = "../index.html"));
+        signOut(auth).then(
+          () => (window.location.href = "../public-page-jay/public-page.html"),
+        );
         return;
       }
 
@@ -257,7 +259,7 @@ if (logoutLink) {
     e.preventDefault();
     signOut(auth)
       .then(() => {
-        window.location.href = "../index.html";
+        window.location.href = "../public-page-jay/public-page.html";
       })
       .catch((error) => {
         console.error("Logout error:", error);

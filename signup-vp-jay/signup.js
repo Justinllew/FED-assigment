@@ -154,9 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 6. Redirect
       if (role === "vendor") {
-        window.location.href = "../home-page-vp-jay/vendor-home.html";
+        window.location.href = "../Vendor-home/vendor-home.html";
       } else {
-        window.location.href = "../home-page-vp-jay/patron-home.html";
+        window.location.href = "../PatronHome/patron-home.html";
       }
     } catch (error) {
       console.error("Signup Error:", error);
