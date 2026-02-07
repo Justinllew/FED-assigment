@@ -49,7 +49,9 @@ body {
   transition: all var(--transition-speed);
 }
 
-/* --- 2. YOUR SIDEBAR CSS (Pasted & Adapted for Layout) --- */
+/* ========================================= */
+/* 3. SIDEBAR & NAVIGATION                   */
+/* ========================================= */
 .sidebar {
   width: var(--sidebar-width);
   background-color: var(--white);
@@ -62,40 +64,7 @@ body {
   left: 0;
   z-index: 100;
   transition: width 0.3s ease;
-  overflow: hidden;
-  flex-shrink: 0; /* Prevents shrinking */
-}
-
-/* Collapsed State Styles */
-.app-container.collapsed .sidebar {
-  width: var(--sidebar-collapsed-width);
-}
-
-/* Hide text when collapsed */
-.app-container.collapsed .brand-logo span,
-.app-container.collapsed .nav-item span,
-.app-container.collapsed .user-info,
-.app-container.collapsed .logout-link {
-  display: none;
-  opacity: 0;
-}
-
-/* Center icons when collapsed */
-.app-container.collapsed .nav-item a {
-  justify-content: center;
-  padding: 12px 0;
-}
-.app-container.collapsed .brand-logo {
-  justify-content: center;
-  padding: 24px 0;
-}
-.app-container.collapsed .sidebar-footer {
-  padding: 20px 10px;
-  display: flex;
-  justify-content: center;
-}
-.app-container.collapsed .user-profile-mini {
-  justify-content: center;
+  overflow: hidden; /* Hides text when collapsed */
 }
 
 /* Logo */
@@ -116,10 +85,10 @@ body {
   flex: 1;
   padding: 10px 0;
   overflow-y: auto;
-  scrollbar-width: none;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
 }
 .sidebar-nav::-webkit-scrollbar {
-  display: none;
+  display: none; /* Hide scrollbar Chrome */
 }
 
 .nav-links {
@@ -127,7 +96,6 @@ body {
   flex-direction: column;
   gap: 4px;
   padding: 0 10px;
-  list-style: none;
 }
 
 .nav-item a {
@@ -154,7 +122,7 @@ body {
 }
 
 .nav-item svg {
-  min-width: 24px;
+  min-width: 24px; /* Ensures icon doesn't shrink */
   height: 24px;
 }
 
@@ -189,11 +157,46 @@ body {
   margin-top: 10px;
   font-size: 0.85rem;
   color: var(--badge-out-text);
-  padding-left: 52px;
+  padding-left: 52px; /* Align with text */
   transition: 0.2s;
 }
 .logout-link:hover {
   text-decoration: underline;
+}
+
+/* ========================================= */
+/* 4. COLLAPSED STATE LOGIC                  */
+/* ========================================= */
+
+/* Container Shrink */
+.app-container.collapsed .sidebar {
+  width: var(--sidebar-collapsed-width);
+}
+.app-container.collapsed .main-content {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Center Elements */
+.app-container.collapsed .brand-logo,
+.app-container.collapsed .nav-item a,
+.app-container.collapsed .sidebar-footer {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Hide Text */
+.app-container.collapsed .brand-logo span,
+.app-container.collapsed .nav-item span,
+.app-container.collapsed .user-info,
+.app-container.collapsed .logout-link {
+  display: none;
+  opacity: 0;
+}
+
+/* Adjust Spacing */
+.app-container.collapsed .nav-item a {
+  gap: 0;
 }
 
 /* --- 3. DASHBOARD MAIN CONTENT --- */
