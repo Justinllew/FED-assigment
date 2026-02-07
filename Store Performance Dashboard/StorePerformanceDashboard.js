@@ -32,6 +32,7 @@ const db = getFirestore(app);
 // ==========================================
 let currentUserUid = null;
 let allOrdersCache = []; // <--- THIS IS THE MISSING LINE! IT MUST BE HERE.
+let salesChartInstance = null;
 
 // ==========================================
 // 2. AUTHENTICATION & INITIALIZATION
@@ -50,7 +51,6 @@ onAuthStateChanged(auth, (user) => {
     if (sidebarName) sidebarName.textContent = userName;
     if (sidebarAvatar)
       sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
-    if (headerName) headerName.textContent = userName + " ▼";
 
     // LOAD REAL DATA
     fetchDashboardData();
@@ -132,6 +132,53 @@ function calculateAndRender(orders) {
     updateList("realtime-list", []);
     return;
   }
+
+  //1. Determine Month & Year from the first order
+  const sampleDate =
+    orders.length > 0 ? new Date(orders[0].timestamp) : new Date();
+  const year = sampleDate.getFullYear();
+  const month = sampleDate.getMonth(); // 0 = Jan, 1 = Feb...
+
+  // 2. ✅ FIXED: Correct formula for days in month
+  // (year, month + 1, 0) gets the last day of the CURRENT month
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // 3. Create Buckets
+  const labels = Array.from({ length: daysInMonth }, (_, i) => `Day ${i + 1}`);
+  const dailyTotals = new Array(daysInMonth).fill(0);
+
+  // 4. Fill Buckets (With Safety Checks)
+  orders.forEach((order) => {
+    const date = new Date(order.timestamp);
+    const day = date.getDate(); // 1 to 31
+
+    // ✅ SAFETY CHECK 1: Ensure 'total' is a valid number
+    const orderTotal = parseFloat(order.total) || 0;
+
+    // ✅ SAFETY CHECK 2: Ensure day fits in our array
+    // (Arrays are 0-indexed, so Day 1 is Index 0)
+    if (day > 0 && day <= daysInMonth) {
+      dailyTotals[day - 1] += orderTotal;
+    }
+  });
+
+  // 5. Draw Chart
+  renderSalesChart(labels, dailyTotals);
+
+  // 6. Calculate Big Numbers
+  const totalRevenue = dailyTotals.reduce((a, b) => a + b, 0);
+  const totalOrderCount = orders.length;
+  const avgOrderValue =
+    totalOrderCount > 0 ? totalRevenue / totalOrderCount : 0;
+
+  // Update HTML
+  const revEl = document.getElementById("stat-revenue");
+  const ordEl = document.getElementById("stat-orders");
+  const avgEl = document.getElementById("stat-avg");
+
+  if (revEl) revEl.textContent = `$${totalRevenue.toFixed(2)}`;
+  if (ordEl) ordEl.textContent = totalOrderCount;
+  if (avgEl) avgEl.textContent = `$${avgOrderValue.toFixed(2)}`;
 
   // --- A. CALCULATE METRICS ---
   const totalOrders = orders.length;
@@ -259,3 +306,40 @@ window.setView = function (view) {
 
   updateCharts(view);
 };
+
+function renderSalesChart(labels, dataPoints) {
+  const context = document.getElementById("SalesChart").getContext("2d");
+
+  const existingChart = Chart.getChart("SalesChart");
+  if (existingChart) {
+    existingChart.destroy();
+  }
+
+  new Chart(context, {
+    type: "line",
+
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Sales ($)",
+          data: dataPoints,
+          borderColor: "#68a357",
+          backgroundColor: "rgba(104,163,87,0.1)",
+          fill: true,
+          tension: 0.4,
+        },
+      ],
+    },
+
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}

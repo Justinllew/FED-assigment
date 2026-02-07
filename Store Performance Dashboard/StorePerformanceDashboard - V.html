@@ -5,214 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Store Performance Dashboard</title>
     <link rel="stylesheet" href="StorePerformanceDashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div class="app-container">
       <aside class="sidebar">
-        <div
-          class="brand-logo"
-          onclick="toggleSidebar()"
-          title="Toggle Menu"
-          role="button"
-          tabindex="0"
-        >
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-            <line x1="6" y1="1" x2="6" y2="4"></line>
-            <line x1="10" y1="1" x2="10" y2="4"></line>
-            <line x1="14" y1="1" x2="14" y2="4"></line>
-          </svg>
+        <div class="brand-logo" onclick="toggleSidebar()">
           <span>FreshEats Studio</span>
         </div>
-
         <nav class="sidebar-nav">
-          <ul class="nav-links">
-            <li class="nav-item">
-              <a href="/home-page-vp-jay/vendor-home.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="3" y="3" width="7" height="7"></rect>
-                  <rect x="14" y="3" width="7" height="7"></rect>
-                  <rect x="14" y="14" width="7" height="7"></rect>
-                  <rect x="3" y="14" width="7" height="7"></rect>
-                </svg>
-                <span>Dashboard</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/home-page-vp-jay/stall-display.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-                  <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-                  <path d="M2 2l7.586 7.586"></path>
-                  <circle cx="11" cy="11" r="2"></circle>
-                </svg>
-                <span>Display</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/Order-History/OrderHistory( v - lukas).html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                  ></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                <span>Orders</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/Menu Management/MenuManagement - V.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <line x1="8" y1="6" x2="21" y2="6"></line>
-                  <line x1="8" y1="12" x2="21" y2="12"></line>
-                  <line x1="8" y1="18" x2="21" y2="18"></line>
-                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                </svg>
-                <span>Menu</span>
-              </a>
-            </li>
-
-            <li class="nav-item active">
-              <a href="#">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <line x1="18" y1="20" x2="18" y2="10"></line>
-                  <line x1="12" y1="20" x2="12" y2="4"></line>
-                  <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-                <span>Analytics</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/Customer-Reviews (C)/CustomerReview.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polygon
-                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-                  ></polygon>
-                </svg>
-                <span>Reviews</span>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="/NEA Inspection Features/dashboardInspect.html">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-                  ></path>
-                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                </svg>
-                <span>Inspections</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        <div class="sidebar-footer">
-          <div class="user-profile-mini">
-            <div class="circle" id="sidebar-avatar">L</div>
-            <div class="user-info">
-              <h4 id="sidebar-name">Lukas</h4>
-              <p>Store Manager</p>
+          <div class="sidebar-footer">
+            <div class="user-profile-mini">
+              <div class="circle" id="sidebar-avatar">V</div>
+              <div class="user-info">
+                <h4 id="sidebar-name">Vendor</h4>
+                <p>Store Manager</p>
+              </div>
             </div>
+            <a href="#" class="logout-link">Log Out</a>
           </div>
-          <a href="../index.html" class="logout-link">Log Out</a>
-        </div>
+        </nav>
       </aside>
 
       <main class="main-content">
         <header>
-          <h1>Store Performance Dashboard</h1>
-          <div style="font-weight: 500; color: var(--text-dark)">
-            Devon Lane ▼
-          </div>
+          <h1>Store Performance</h1>
         </header>
 
         <div class="controls">
-          <span style="font-weight: 500; color: var(--text-muted)"
-            >View Data:</span
-          >
+          <span style="font-weight: 500; color: #666">Time Period:</span>
           <button
             class="toggle-btn active"
             id="btn-current"
@@ -229,9 +50,33 @@
           </button>
         </div>
 
+        <section class="sales-section">
+          <h2>Sales Analytics</h2>
+          <!-- Displays the Total Revenue -->
+          <div class="stat-row">
+            <div class="stat-card">
+              <h3>Total Revenue</h3>
+              <div class="value" id="stat-revenue">$0.00</div>
+            </div>
+            <div class="stat-card">
+              <h3>Total Orders</h3>
+              <div class="value" id="stat-orders">-</div>
+            </div>
+            <div class="stat-card">
+              <h3>Avg. Order Value</h3>
+              <div class="value" id="stat-avg">$-</div>
+            </div>
+          </div>
+
+          <div class="graph-card">
+            <canvas id="SalesChart"></canvas>
+          </div>
+        </section>
+
+        <h2 style="margin-top: 40px">Operational Metrics</h2>
         <div class="dashboard-grid">
           <div class="card diagrams-card">
-            <h2>Diagrams (Performance)</h2>
+            <h3>Performance Scores</h3>
 
             <div class="chart-container">
               <div class="pie-chart" id="chart1-pie" data-percent="0%"></div>
@@ -265,12 +110,12 @@
           </div>
 
           <div class="card">
-            <h2>Feedback</h2>
+            <h3>Recent Feedback</h3>
             <div id="feedback-list" class="feedback-list"></div>
           </div>
 
           <div class="card">
-            <h2>Real Time Updates</h2>
+            <h3>Live Activity</h3>
             <div id="realtime-list" class="realtime-list"></div>
           </div>
         </div>
