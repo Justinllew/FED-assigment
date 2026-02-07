@@ -1,396 +1,251 @@
 :root {
   --primary-green: #68a357;
   --bg-cream: #f9f7e8;
-  --bg-light-green: #e9f2e6;
-  --text-dark: #1a1a1a;
-  --white: #ffffff;
-  --gray-line: #ddd;
+  --bg-light: #f8f9fa;
+  --text-dark: #333;
+  --sidebar-width: 250px;
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
 body {
   background-color: var(--bg-cream);
-  color: var(--text-dark);
   min-height: 100vh;
+}
+
+/* --- SIDEBAR (Fixed) --- */
+.sidebar {
+  width: var(--sidebar-width);
+  background: white;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-right: 1px solid #eee;
   display: flex;
   flex-direction: column;
+  z-index: 1000;
 }
 
-/* Header */
-header {
-  background-color: var(--white);
-  padding: 15px 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-  font-size: 1.2rem;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-
-.user-menu {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-/* Layout */
-main {
-  padding: 40px 5%;
-  max-width: 1000px;
-  margin: 0 auto;
-  flex: 1;
-  width: 100%;
-}
-
-h2.page-title {
-  font-size: 2rem;
+.brand-logo {
+  padding: 30px 20px;
   font-weight: 700;
-  margin-bottom: 30px;
-}
-
-/* Toggle Switch */
-.view-toggle {
+  font-size: 1.2rem;
+  color: var(--primary-green);
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 10px;
+}
+.nav-links {
+  list-style: none;
+  flex: 1;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 25px;
+  color: #666;
+  text-decoration: none;
+  transition: 0.2s;
+  font-weight: 500;
+}
+.nav-item a:hover {
+  background: #f5f5f5;
+  color: var(--primary-green);
+}
+.nav-item.active a {
+  background: #e9f2e6;
+  color: var(--primary-green);
+  border-left: 4px solid var(--primary-green);
+}
+.nav-item i {
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+.user-profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.circle {
+  width: 35px;
+  height: 35px;
+  background: #e9f2e6;
+  color: var(--primary-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+.user-info h4 {
+  font-size: 0.9rem;
+  color: #333;
+}
+.user-info p {
+  font-size: 0.75rem;
+  color: #888;
+}
+.logout-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-left: 45px;
+}
+
+/* --- MAIN CONTENT (Offset) --- */
+.main-content {
+  margin-left: var(--sidebar-width);
+  padding: 40px 60px;
+  width: calc(100% - var(--sidebar-width));
+}
+
+.page-title {
+  font-size: 2rem;
+  color: var(--text-dark);
   margin-bottom: 30px;
 }
 
-.toggle-btn {
-  padding: 10px 24px;
+/* --- TOGGLES --- */
+.view-toggle {
+  display: inline-flex;
+  background: #e0e0e0;
+  padding: 5px;
   border-radius: 30px;
-  border: 2px solid transparent;
-  font-weight: 600;
-  cursor: pointer;
+  margin-bottom: 30px;
+}
+.toggle-btn {
+  padding: 10px 25px;
+  border: none;
   background: transparent;
-  color: var(--text-dark);
-  transition: all 0.2s;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #666;
+  transition: 0.3s;
 }
-
 .toggle-btn.active {
-  background-color: var(--primary-green);
-  color: white;
-  box-shadow: 0 4px 10px rgba(104, 163, 87, 0.3);
+  background: white;
+  color: var(--primary-green);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.dashboard-container {
-  background-color: var(--bg-light-green);
-  padding: 40px;
-  border-radius: 20px;
-  min-height: 600px;
-}
-
-/* Track Card */
+/* --- ORDER CARDS --- */
 .track-card {
   background: white;
-  border-radius: 16px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
 }
 
 .track-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #f5f5f5;
+  align-items: flex-start;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f9f9f9;
 }
-
 .store-name {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 5px;
 }
-
-.store-name.muted {
-  color: #666;
-}
-
 .order-meta {
-  color: #888;
   font-size: 0.9rem;
-  margin-top: 4px;
-}
-
-/* Status Badge */
-.status-badge-container {
-  text-align: right;
+  color: #888;
+  margin-bottom: 3px;
 }
 
 .status-badge {
-  background: #e3f2fd;
-  color: #1565c0;
   padding: 6px 12px;
   border-radius: 20px;
   font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: uppercase;
   font-size: 0.8rem;
+  text-transform: uppercase;
 }
 
-/* Stepper (Progress Bar) */
+/* Stepper for Cards */
 .stepper {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin: 40px 0;
   position: relative;
+  max-width: 300px;
 }
-
 .stepper::before {
   content: "";
   position: absolute;
   top: 15px;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--gray-line);
+  height: 2px;
+  background: #eee;
   z-index: 0;
 }
-
 .step {
   position: relative;
   z-index: 1;
-  text-align: center;
   background: white;
-  padding: 0 10px;
+  padding: 0 5px;
 }
-
 .step-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 30px;
+  height: 30px;
   background: #eee;
-  color: #aaa;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 10px auto;
-  font-weight: bold;
-  border: 3px solid white;
-  transition: all 0.3s;
-}
-
-.step-label {
-  font-size: 0.85rem;
-  font-weight: 600;
   color: #aaa;
+  font-size: 0.8rem;
 }
-
 .step.active .step-circle {
   background: var(--primary-green);
   color: white;
-  box-shadow: 0 0 0 4px rgba(104, 163, 87, 0.2);
-}
-
-.step.active .step-label {
-  color: var(--primary-green);
-}
-
-.step.completed .step-circle {
-  background: var(--primary-green);
-  color: white;
-}
-
-/* Receipt Area */
-.receipt-box {
-  background: #fafafa;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #eee;
-}
-
-.receipt-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
-  color: #555;
-}
-
-.receipt-total {
-  border-top: 1px dashed #ccc;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  font-weight: 700;
-  font-size: 1.1rem;
-  padding-top: 15px;
-  color: var(--text-dark);
-}
-
-/* History Specific */
-.history-header {
-  border: none;
-  margin: 0;
-  padding: 0;
 }
 
 .btn-action {
+  background: transparent;
+  border: 1px solid #ddd;
   padding: 8px 16px;
-  border: 1px solid #ccc;
-  background: white;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
   font-weight: 600;
+  color: #555;
+  transition: 0.2s;
 }
-
 .btn-action:hover {
-  background: #f5f5f5;
-  border-color: #999;
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+  background: #f9fdf9;
 }
 
 .hidden {
   display: none !important;
 }
-
-/* --- VARIABLES --- */
-/* --- SIDEBAR VARIABLES --- */
-:root {
-  --primary-green: #68a357;
-  --bg-light-green: #e9f2e6;
-  --text-muted: #666666;
-  --text-dark: #333333;
-  --border-light: #e0e0e0;
-  --sidebar-width: 250px;
+.empty-msg {
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
 }
-
-/* --- MAIN LAYOUT --- */
-.app-container {
-  display: flex; /* Ensures sidebar and main content sit side-by-side */
-  min-height: 100vh;
-}
-
-.sidebar {
-  width: var(--sidebar-width);
-  background: white;
-  border-right: 1px solid var(--border-light);
-
-  /* THIS FIXES THE SPACING: */
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  position: fixed; /* Keeps it stuck to the left */
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-/* Logo Spacing */
-.brand-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--primary-green);
-  /* Matches friend's spacing */
-  padding: 30px 24px;
-}
-
-/* Navigation List */
-.sidebar-nav {
-  padding: 10px 0;
-  flex: 1; /* Takes up all available space to push footer down */
-  overflow-y: auto;
-}
-
-.nav-links {
-  list-style: none;
-  padding: 0;
-}
-
-.nav-item a {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 24px;
-  color: var(--text-muted);
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.2s;
-  border-left: 4px solid transparent;
-}
-
-.nav-item a:hover {
-  background-color: #f9f9f9;
-  color: var(--primary-green);
-}
-
-/* --- ACTIVE STATE --- */
-.nav-item.active a {
-  background-color: var(--bg-light-green);
-  color: var(--primary-green);
-  font-weight: 600;
-  border-left-color: var(--primary-green);
-}
-
-/* --- FOOTER (The "Lukas" Part) --- */
-.sidebar-footer {
-  /* This pushes the footer to the very bottom */
-  margin-top: auto;
-  border-top: 1px solid var(--border-light);
-  padding: 20px 24px;
-  background: white;
-}
-
-.user-profile-mini {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.avatar-circle {
-  width: 40px;
-  height: 40px;
-  background: var(--bg-light-green);
-  color: var(--primary-green);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+.loading-state {
+  text-align: center;
+  color: #666;
+  margin-top: 40px;
   font-size: 1.1rem;
-}
-
-.user-info h4 {
-  margin: 0;
-  font-size: 0.95rem;
-  color: var(--text-dark);
-}
-
-.user-info p {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* Adjust Main Content to not hide behind fixed sidebar */
-.main-content {
-  margin-left: var(--sidebar-width);
-  flex: 1;
-  padding: 40px;
 }
