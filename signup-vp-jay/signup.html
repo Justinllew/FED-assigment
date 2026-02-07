@@ -31,9 +31,9 @@
                 class="input-field select-field"
                 required
               >
-                <option value="" disabled selected>Vendor/Patron</option>
-                <option value="vendor">Vendor</option>
-                <option value="patron">Patron</option>
+                <option value="" disabled selected>I am a...</option>
+                <option value="vendor">Vendor (Hawker Stall Owner)</option>
+                <option value="patron">Patron (Customer)</option>
               </select>
               <svg class="chevron-icon" viewBox="0 0 24 24">
                 <path d="M7 10l5 5 5-5z" />
@@ -49,7 +49,7 @@
                 type="text"
                 id="stall-name"
                 class="input-field"
-                placeholder="Stall Name (e.g. Uncle Lim's)"
+                placeholder="Stall Name (e.g. Uncle Lim's Chicken Rice)"
               />
             </div>
 
@@ -71,15 +71,28 @@
               type="password"
               id="signup-password"
               class="input-field"
-              placeholder="Password"
+              placeholder="Password (min 6 characters)"
               required
             />
 
-            <button type="submit" class="btn-black">Sign up</button>
+            <button type="submit" class="btn-black" id="signup-btn">
+              Sign up
+            </button>
+
+            <p class="form-footer">
+              Already have an account? <a href="../index.html">Log in</a>
+            </p>
           </form>
         </div>
       </div>
     </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+      <div class="spinner"></div>
+      <p>Creating your account...</p>
+    </div>
+
     <script type="module" src="signup.js"></script>
   </body>
 </html>
