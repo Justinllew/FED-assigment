@@ -1,47 +1,42 @@
-// ==========================================
-// 0. IMPORTS (CONNECT TO FIRESTORE)
-// ==========================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Import the shared connection
-import { db, auth } from "../firebase.js";
-// Import other tools you need for that specific page
-import { collection, getDocs } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-
-// NOW... start your normal code.
-// You don't need "initializeApp" or "firebaseConfig" here anymore!
-
-// ==========================================
-// 1. CONFIGURATION & MOCK DATA
-// ==========================================
-
-// Fallback data in case DB is empty or fails
-const MOCK_ORDER = {
-  id: "ORD-8829",
-  status: "ON_WAY",
-  timestamp: new Date().toISOString(),
-  total: 18.5,
-  items: [
-    { name: "Roasted Chicken Rice", qty: 2, price: 5.5 },
-    { name: "Braised Egg", qty: 2, price: 1.0 },
-    { name: "Ice Lemon Tea", qty: 2, price: 2.75 },
-  ],
+// --- 1. FIREBASE CONFIGURATION ---
+const firebaseConfig = {
+  apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
+  authDomain: "hawkerbase-fedasg.firebaseapp.com",
+  projectId: "hawkerbase-fedasg",
+  storageBucket: "hawkerbase-fedasg.firebasestorage.app",
+  messagingSenderId: "216203478131",
+  appId: "1:216203478131:web:cb0ff58ba3f51911de9606",
 };
 
-// ==========================================
-// 2. STEP DEFINITIONS (Your Custom UI)
-// ==========================================
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// The Vendor ID whose orders we are tracking
+const VENDOR_ID = "vjzBxXgKGNgS8JzUUckSApQimXt2";
+
+// --- 2. UI CONFIGURATION (Steps & Statuses) ---
 const stepsDefinition = [
   {
     id: "created",
     title: "Order Placed",
-    subtitle: "Order Received",
+    subtitle: "Waiting for Vendor",
+    // These strings must match what you save in the database
     statusMatch: ["PENDING"],
     icon: '<i class="fas fa-file-invoice"></i>',
     getDetails: (order) => ({
       title: "Order Received",
-      subtitle: `Order #${order.id}`,
-      visual: `<div style="text-align:center; color:#68a357;"><i class="fas fa-check-circle" style="font-size:5rem; margin-bottom:20px;"></i><h3>We have your order!</h3></div>`,
+      subtitle: `Order #${order.orderId || order.id}`,
+      visual: `<div style="text-align:center; color:#68a357;"><i class="fas fa-check-circle" style="font-size:5rem; margin-bottom:20px;"></i><h3>Order Sent!</h3></div>`,
       content: `
         <div style="background:#f9f9f9; padding:20px; border-radius:8px;">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
@@ -50,19 +45,19 @@ const stepsDefinition = [
             </div>
             <div style="display:flex; justify-content:space-between;">
                 <span style="color:#666;">Total Cost</span>
-                <span style="font-weight:600;">$${order.total ? order.total.toFixed(2) : "0.00"}</span>
+                <span style="font-weight:600;">$${order.total ? Number(order.total).toFixed(2) : "0.00"}</span>
             </div>
         </div>
         <div style="margin-top:20px; font-size:0.9rem; color:#666;">
-            Your order has been sent to the vendor. Waiting for acceptance.
+            Waiting for the vendor to accept your order.
         </div>`,
     }),
   },
   {
     id: "cooking",
-    title: "Cooking",
-    subtitle: "Preparing Food",
-    statusMatch: ["COOKING", "ACCEPTED"],
+    title: "Preparing",
+    subtitle: "Kitchen is working",
+    statusMatch: ["ACCEPTED", "COOKING"],
     icon: '<i class="fas fa-utensils"></i>',
     getDetails: (order) => ({
       title: "Kitchen is Cooking",
@@ -79,7 +74,7 @@ const stepsDefinition = [
         <div style="border:1px solid #eee; padding:15px; border-radius:8px;">
             <strong>Items being prepared:</strong>
             <ul style="margin-top:5px; padding-left:20px; font-size:0.9rem; color:#555;">
-               ${order.items ? order.items.map((i) => `<li>${i.qty}x ${i.name || "Item"}</li>`).join("") : "<li>Loading items...</li>"}
+               ${order.items ? order.items.map((i) => `<li>${i.qty || 1}x ${i.name || i}</li>`).join("") : "<li>Loading items...</li>"}
             </ul>
         </div>`,
     }),
@@ -87,8 +82,8 @@ const stepsDefinition = [
   {
     id: "shipped",
     title: "On the Way",
-    subtitle: "Courier Picked Up",
-    statusMatch: ["ON_WAY", "SHIPPED"],
+    subtitle: "Rider picked up",
+    statusMatch: ["READY", "ON_WAY", "SHIPPED"],
     icon: '<i class="fas fa-motorcycle"></i>',
     getDetails: (order) => ({
       title: "Rider En Route",
@@ -122,64 +117,64 @@ const stepsDefinition = [
   },
 ];
 
-// ==========================================
-// 3. MAIN LOGIC (UPDATED FOR FIRESTORE)
-// ==========================================
+let currentOrderData = null;
 
-let currentOrderData = null; // Store for interactivity
-
+// --- 3. INIT ---
 document.addEventListener("DOMContentLoaded", () => {
-  fetchTrackingInfo();
+  listenToLatestOrder();
 });
 
-async function fetchTrackingInfo() {
-  try {
-    // 1. Reference the specific path in Firestore
-    // Path: vendors -> [ID] -> orders
-    const vendorId = "vjzBxXgKNgS8JzUUckSApQimXt2";
-    const ordersRef = collection(db, "vendors", vendorId, "orders");
+// --- 4. REAL-TIME LISTENER ---
+function listenToLatestOrder() {
+  const ordersRef = collection(db, "vendors", VENDOR_ID, "orders");
 
-    // 2. Fetch the documents
-    const snapshot = await getDocs(ordersRef);
+  // Get the most recent order (Sort by timestamp Descending, Limit to 1)
+  const q = query(ordersRef, orderBy("timestamp", "desc"), limit(1));
 
-    if (!snapshot.empty) {
-      // 3. Convert docs to array
-      const allOrders = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      // 4. Sort by timestamp (Newest first)
-      allOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-      // 5. Pick the newest order
-      currentOrderData = allOrders[0];
-      console.log("Tracking Order ID:", currentOrderData.id);
-    } else {
-      console.warn("No orders found in DB, using Mock Data");
-      currentOrderData = MOCK_ORDER;
-    }
-
-    updateUI(currentOrderData);
-  } catch (error) {
-    console.error("Error fetching data from Firestore:", error);
-    // Fallback so the UI doesn't break
-    currentOrderData = MOCK_ORDER;
-    updateUI(currentOrderData);
-  }
+  // 'onSnapshot' runs every time the database changes
+  onSnapshot(
+    q,
+    (snapshot) => {
+      if (!snapshot.empty) {
+        const doc = snapshot.docs[0];
+        currentOrderData = { id: doc.id, ...doc.data() };
+        console.log("Live Update Received:", currentOrderData);
+        updateUI(currentOrderData);
+      } else {
+        console.log("No orders found.");
+        document.querySelector(".content-area").innerHTML =
+          "<h2 style='text-align:center'>No Active Orders</h2>";
+      }
+    },
+    (error) => {
+      console.error("Error listening to tracking:", error);
+    },
+  );
 }
 
+// --- 5. UI UPDATES ---
 function updateUI(order) {
   // Update Header
   const orderIdEl = document.getElementById("order-id-display");
   const statusPillEl = document.getElementById("status-pill");
   const lastUpdatedEl = document.getElementById("last-updated");
 
-  if (orderIdEl) orderIdEl.innerText = `Order #${order.id}`;
-  if (statusPillEl)
+  // Handle ID display (use orderId field if exists, else doc ID)
+  if (orderIdEl) orderIdEl.innerText = `Order #${order.orderId || order.id}`;
+
+  if (statusPillEl) {
     statusPillEl.innerText = order.status
       ? order.status.replace("_", " ")
       : "UNKNOWN";
+    // Change pill color based on status
+    if (order.status === "COMPLETED") {
+      statusPillEl.style.backgroundColor = "#d1fae5";
+      statusPillEl.style.color = "#065f46";
+    } else if (order.status === "PENDING") {
+      statusPillEl.style.backgroundColor = "#fff7ed";
+      statusPillEl.style.color = "#9a3412";
+    }
+  }
 
   if (lastUpdatedEl) {
     const time = order.timestamp
@@ -191,17 +186,19 @@ function updateUI(order) {
     lastUpdatedEl.innerText = `Updated at ${time}`;
   }
 
-  // Find Active Step Index
+  // Calculate active step
   let activeIndex = 0;
+  // Loop through steps to find which one matches current status
   stepsDefinition.forEach((step, index) => {
     if (order.status && step.statusMatch.includes(order.status)) {
       activeIndex = index;
     }
   });
 
-  renderSteps(activeIndex, order);
+  // Special Case: If completed, ensure all steps look done
+  if (order.status === "COMPLETED") activeIndex = 3;
 
-  // Show details for the active step immediately
+  renderSteps(activeIndex, order);
   updateDetailView(stepsDefinition[activeIndex], order);
 }
 
@@ -213,10 +210,11 @@ function renderSteps(activeIndex, order) {
 
   stepsDefinition.forEach((step, index) => {
     const isActive = index === activeIndex;
+    // A step is "completed" if it's before the active one
     const isCompleted = index < activeIndex;
 
     const div = document.createElement("div");
-    div.className = `step-card ${isActive ? "active" : ""}`;
+    div.className = `step-card ${isActive ? "active" : ""} ${isCompleted ? "completed" : ""}`;
 
     const iconColor = isActive
       ? "text-white"
@@ -230,78 +228,86 @@ function renderSteps(activeIndex, order) {
         <div class="step-subtitle">${step.subtitle}</div>
     `;
 
-    // CLICK INTERACTIVITY
+    // Allow clicking past steps to see details
     div.onclick = () => {
-      // 1. Update Visuals
       document
         .querySelectorAll(".step-card")
         .forEach((c) => c.classList.remove("active"));
       div.classList.add("active");
-
-      // 2. Update Details Box
       updateDetailView(step, order);
     };
 
     container.appendChild(div);
   });
+
+  // Animate Progress Line
+  const fillLine = document.querySelector(".progress-line-fill");
+  if (fillLine) {
+    // 0 = 12%, 1 = 38%, 2 = 63%, 3 = 88% (Approximate percentages for visual alignment)
+    const percentages = ["12%", "38%", "63%", "88%"];
+    fillLine.style.width = percentages[activeIndex] || "0%";
+  }
 }
 
 function updateDetailView(stepData, order) {
   const container = document.getElementById("detail-view");
   if (!container) return;
 
-  // Quick fade animation
   container.style.opacity = "0.6";
-
   setTimeout(() => {
     const details = stepData.getDetails(order);
-
-    const titleEl = document.getElementById("detail-title");
-    const subtitleEl = document.getElementById("detail-subtitle");
-    const timestampEl = document.getElementById("detail-timestamp");
-    const contentLeftEl = document.getElementById("detail-content-left");
-    const visualEl = document.getElementById("detail-visual-container");
-
-    if (titleEl) titleEl.innerText = details.title;
-    if (subtitleEl) subtitleEl.innerText = details.subtitle;
-
-    if (timestampEl) {
-      const dateObj = new Date(order.timestamp);
-      timestampEl.innerText = isNaN(dateObj)
-        ? "--:--"
-        : dateObj.toLocaleTimeString();
-    }
-
-    if (contentLeftEl) contentLeftEl.innerHTML = details.content;
-    if (visualEl) visualEl.innerHTML = details.visual;
-
+    container.innerHTML = `
+        <div class="detail-body-grid">
+            <div class="detail-content">
+                <h2 style="margin-top:0">${details.title}</h2>
+                <p style="color:#666; margin-bottom:20px;">${details.subtitle}</p>
+                ${details.content}
+            </div>
+            <div class="detail-visual">
+                ${details.visual}
+            </div>
+        </div>
+    `;
     container.style.opacity = "1";
   }, 150);
 }
 
-// ==========================================
-// 4. BUTTON INTERACTIVITY
-// ==========================================
-
-// Attached to window so HTML onclick="..." works with Modules
-window.viewReceipt = function () {
-  if (!currentOrderData) return;
-
-  const itemsList = currentOrderData.items
-    ? currentOrderData.items
-        .map((i) => `• ${i.qty}x ${i.name || "Item"} - $${i.price}`)
-        .join("\n")
-    : "No items";
-
-  alert(
-    `🧾 RECEIPT for ${currentOrderData.id}\n\n${itemsList}\n\nTotal: $${currentOrderData.total ? currentOrderData.total.toFixed(2) : "0.00"}`,
-  );
+// --- 6. GLOBAL FUNCTIONS (For HTML Buttons) ---
+window.toggleSidebar = () => {
+  // Simple sidebar toggle if you haven't implemented it in CSS yet
+  const sidebar = document.querySelector(".sidebar");
+  if (sidebar)
+    sidebar.style.display = sidebar.style.display === "none" ? "flex" : "none";
 };
 
-window.contactDriver = function () {
-  const drivers = ["James Tan", "Ahmad Ali", "Peter Lim"];
-  const randomDriver = drivers[Math.floor(Math.random() * drivers.length)];
-  alert(
-    `📞 Calling Driver: ${randomDriver}...\n\n(Connecting to virtual phone system)`,
-  );
+window.viewReceipt = function () {
+  if (!currentOrderData) return;
+  const modal = document.getElementById("receipt-modal");
+
+  // Populate Modal Data
+  const itemsContainer = modal.querySelector(".receipt-items");
+  const totalEl = modal.querySelector(".receipt-total span:last-child");
+  const orderIdEl = modal.querySelector(".receipt-footer p:first-child");
+
+  if (itemsContainer) {
+    itemsContainer.innerHTML = currentOrderData.items
+      ? currentOrderData.items
+          .map(
+            (i) => `
+            <div class="item-row">
+              <span>${i.qty || 1}x ${i.name || i}</span>
+              <span>$${i.price || "-"}</span>
+            </div>`,
+          )
+          .join("")
+      : "No items found";
+  }
+
+  if (totalEl)
+    totalEl.innerText = `$${currentOrderData.total ? Number(currentOrderData.total).toFixed(2) : "0.00"}`;
+  if (orderIdEl)
+    orderIdEl.innerText = `Order #${currentOrderData.orderId || currentOrderData.id}`;
+
+  // Show Modal
+  modal.classList.remove("hidden");
 };
