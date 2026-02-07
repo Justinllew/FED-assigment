@@ -42,7 +42,8 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     initializeDashboard(user.uid);
   } else {
-    window.location.href = "../index.html";
+    // FIXED PATH - Redirect to public page
+    window.location.href = "../public-page-jay/public-page.html";
   }
 });
 
@@ -120,6 +121,7 @@ logoutLinks.forEach((link) => {
     e.preventDefault();
     signOut(auth)
       .then(() => {
+        // FIXED PATH
         window.location.href = "../public-page-jay/public-page.html";
       })
       .catch((error) => {

@@ -11,7 +11,6 @@ import {
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-// Storage import removed - using URL input instead
 
 const firebaseConfig = {
   apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
@@ -50,7 +49,6 @@ const headerAvatar = document.getElementById("header-avatar");
 const stallNameInput = document.getElementById("stall-name-input");
 const descriptionInput = document.getElementById("stall-description-input");
 const charCount = document.getElementById("char-count");
-const bannerDropzone = document.getElementById("banner-dropzone");
 const bannerFileInput = document.getElementById("banner-file-input");
 const loadingOverlay = document.getElementById("loading-overlay");
 
@@ -93,6 +91,7 @@ onAuthStateChanged(auth, (user) => {
     currentUserId = user.uid;
     loadVendorData(user.uid);
   } else {
+    // FIXED PATH
     window.location.href = "../public-page-jay/public-page.html";
   }
 });
@@ -292,6 +291,7 @@ logoutLinks.forEach((link) => {
     e.preventDefault();
     signOut(auth)
       .then(() => {
+        // FIXED PATH
         window.location.href = "../public-page-jay/public-page.html";
       })
       .catch((error) => {

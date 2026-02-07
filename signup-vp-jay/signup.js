@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       alert("Account created successfully! Welcome to FreshEats! 🎉");
 
-      // 6. Redirect
+      // 6. Redirect - FIXED PATHS
       if (role === "vendor") {
         window.location.href = "../Vendor-home/vendor-home.html";
       } else {

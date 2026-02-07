@@ -3,6 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import {
   getAuth,
   signInWithEmailAndPassword,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getDatabase,
@@ -74,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("freshEatsRole", userData.role);
 
           alert("Welcome back, " + userData.username + "!");
+          // FIXED PATH
           window.location.href = "../PatronHome/patron-home.html";
         } else {
           alert(
