@@ -1,8 +1,19 @@
 // ==========================================
+// 0. IMPORTS (CONNECT TO FIRESTORE)
+// ==========================================
+
+// Import the shared connection
+import { db, auth } from "../firebase.js";
+// Import other tools you need for that specific page
+import { collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+
+// NOW... start your normal code.
+// You don't need "initializeApp" or "firebaseConfig" here anymore!
+
+// ==========================================
 // 1. CONFIGURATION & MOCK DATA
 // ==========================================
-const API_URL =
-  "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app";
 
 // Fallback data in case DB is empty or fails
 const MOCK_ORDER = {
@@ -18,7 +29,7 @@ const MOCK_ORDER = {
 };
 
 // ==========================================
-// 2. STEP DEFINITIONS
+// 2. STEP DEFINITIONS (Your Custom UI)
 // ==========================================
 const stepsDefinition = [
   {
@@ -112,7 +123,7 @@ const stepsDefinition = [
 ];
 
 // ==========================================
-// 3. MAIN LOGIC
+// 3. MAIN LOGIC (UPDATED FOR FIRESTORE)
 // ==========================================
 
 let currentOrderData = null; // Store for interactivity
@@ -123,26 +134,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function fetchTrackingInfo() {
   try {
-    const res = await fetch(`${API_URL}/orders.json`);
-    const data = await res.json();
+    // 1. Reference the specific path in Firestore
+    // Path: vendors -> [ID] -> orders
+    const vendorId = "vjzBxXgKNgS8JzUUckSApQimXt2";
+    const ordersRef = collection(db, "vendors", vendorId, "orders");
 
-    // If API works, use it. If not, use MOCK.
-    if (data) {
-      const allOrders = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
+    // 2. Fetch the documents
+    const snapshot = await getDocs(ordersRef);
+
+    if (!snapshot.empty) {
+      // 3. Convert docs to array
+      const allOrders = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
       }));
-      // Sort newest first
+
+      // 4. Sort by timestamp (Newest first)
       allOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      // 5. Pick the newest order
       currentOrderData = allOrders[0];
+      console.log("Tracking Order ID:", currentOrderData.id);
     } else {
-      console.warn("No data in DB, using Mock Data");
+      console.warn("No orders found in DB, using Mock Data");
       currentOrderData = MOCK_ORDER;
     }
 
     updateUI(currentOrderData);
   } catch (error) {
-    console.error("Error fetching data, using Mock:", error);
+    console.error("Error fetching data from Firestore:", error);
+    // Fallback so the UI doesn't break
     currentOrderData = MOCK_ORDER;
     updateUI(currentOrderData);
   }
@@ -150,22 +171,30 @@ async function fetchTrackingInfo() {
 
 function updateUI(order) {
   // Update Header
-  document.getElementById("order-id-display").innerText = `Order #${order.id}`;
-  document.getElementById("status-pill").innerText = order.status.replace(
-    "_",
-    " ",
-  );
+  const orderIdEl = document.getElementById("order-id-display");
+  const statusPillEl = document.getElementById("status-pill");
+  const lastUpdatedEl = document.getElementById("last-updated");
 
-  const time = new Date(order.timestamp).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  document.getElementById("last-updated").innerText = `Updated at ${time}`;
+  if (orderIdEl) orderIdEl.innerText = `Order #${order.id}`;
+  if (statusPillEl)
+    statusPillEl.innerText = order.status
+      ? order.status.replace("_", " ")
+      : "UNKNOWN";
+
+  if (lastUpdatedEl) {
+    const time = order.timestamp
+      ? new Date(order.timestamp).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "--:--";
+    lastUpdatedEl.innerText = `Updated at ${time}`;
+  }
 
   // Find Active Step Index
   let activeIndex = 0;
   stepsDefinition.forEach((step, index) => {
-    if (step.statusMatch.includes(order.status)) {
+    if (order.status && step.statusMatch.includes(order.status)) {
       activeIndex = index;
     }
   });
@@ -178,6 +207,8 @@ function updateUI(order) {
 
 function renderSteps(activeIndex, order) {
   const container = document.getElementById("steps-container");
+  if (!container) return;
+
   container.innerHTML = "";
 
   stepsDefinition.forEach((step, index) => {
@@ -217,23 +248,32 @@ function renderSteps(activeIndex, order) {
 
 function updateDetailView(stepData, order) {
   const container = document.getElementById("detail-view");
+  if (!container) return;
+
   // Quick fade animation
   container.style.opacity = "0.6";
 
   setTimeout(() => {
     const details = stepData.getDetails(order);
 
-    document.getElementById("detail-title").innerText = details.title;
-    document.getElementById("detail-subtitle").innerText = details.subtitle;
+    const titleEl = document.getElementById("detail-title");
+    const subtitleEl = document.getElementById("detail-subtitle");
+    const timestampEl = document.getElementById("detail-timestamp");
+    const contentLeftEl = document.getElementById("detail-content-left");
+    const visualEl = document.getElementById("detail-visual-container");
 
-    const dateObj = new Date(order.timestamp);
-    document.getElementById("detail-timestamp").innerText = isNaN(dateObj)
-      ? "--:--"
-      : dateObj.toLocaleTimeString();
+    if (titleEl) titleEl.innerText = details.title;
+    if (subtitleEl) subtitleEl.innerText = details.subtitle;
 
-    document.getElementById("detail-content-left").innerHTML = details.content;
-    document.getElementById("detail-visual-container").innerHTML =
-      details.visual;
+    if (timestampEl) {
+      const dateObj = new Date(order.timestamp);
+      timestampEl.innerText = isNaN(dateObj)
+        ? "--:--"
+        : dateObj.toLocaleTimeString();
+    }
+
+    if (contentLeftEl) contentLeftEl.innerHTML = details.content;
+    if (visualEl) visualEl.innerHTML = details.visual;
 
     container.style.opacity = "1";
   }, 150);
@@ -243,15 +283,18 @@ function updateDetailView(stepData, order) {
 // 4. BUTTON INTERACTIVITY
 // ==========================================
 
+// Attached to window so HTML onclick="..." works with Modules
 window.viewReceipt = function () {
   if (!currentOrderData) return;
 
   const itemsList = currentOrderData.items
-    .map((i) => `• ${i.qty}x ${i.name || "Item"} - $${i.price}`)
-    .join("\n");
+    ? currentOrderData.items
+        .map((i) => `• ${i.qty}x ${i.name || "Item"} - $${i.price}`)
+        .join("\n")
+    : "No items";
 
   alert(
-    `🧾 RECEIPT for ${currentOrderData.id}\n\n${itemsList}\n\nTotal: $${currentOrderData.total.toFixed(2)}`,
+    `🧾 RECEIPT for ${currentOrderData.id}\n\n${itemsList}\n\nTotal: $${currentOrderData.total ? currentOrderData.total.toFixed(2) : "0.00"}`,
   );
 };
 

@@ -1,46 +1,76 @@
-// CONFIGURATION
-const API_URL =
-  "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app";
-const VENDOR_ID = 101;
+// ==========================================
+// 1. IMPORTS
+// ==========================================
+import { db, auth } from "../firebase.js";
+import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-// STATE
+// ==========================================
+// 2. STATE & INIT
+// ==========================================
 let allOrders = [];
 let currentTab = "PENDING";
+let currentVendorId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadOrders();
-  // Auto-refresh every 5 seconds
-  setInterval(() => loadOrders(false), 5000);
+  // 1. Authenticate
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("👨‍🍳 Vendor Logged In:", user.uid);
+      currentVendorId = user.uid;
+      initVendorListener(user.uid);
+    } else {
+      window.location.href = "../Vendor Login Page/vendor-login.html";
+    }
+  });
 });
 
-// 1. LOAD DATA
-async function loadOrders(showLoading = true) {
-  if (showLoading) {
-    const icon = document.getElementById("refresh-icon");
-    if (icon) icon.classList.add("fa-spin");
-  }
+// ==========================================
+// 3. FIRESTORE LISTENER
+// ==========================================
+function initVendorListener(vendorId) {
+  const icon = document.getElementById("refresh-icon");
+  if (icon) icon.classList.add("fa-spin"); // Show loading
 
-  try {
-    // NOTE: Ensure your backend supports this endpoint
-    const res = await fetch(`${API_URL}/vendors/${VENDOR_ID}/orders`);
-    allOrders = await res.json();
+  // Path: vendors -> {uid} -> orders
+  const ordersRef = collection(db, "vendors", vendorId, "orders");
 
-    updateCounts();
-    renderOrders();
-  } catch (e) {
-    console.error("Error loading orders:", e);
-  } finally {
-    const icon = document.getElementById("refresh-icon");
-    if (icon) setTimeout(() => icon.classList.remove("fa-spin"), 500);
-  }
+  onSnapshot(
+    ordersRef,
+    (snapshot) => {
+      // Convert Snapshot to Array
+      allOrders = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Sort by Time (Newest First)
+      allOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      // Update UI
+      updateCounts();
+      renderOrders();
+
+      if (icon) icon.classList.remove("fa-spin");
+    },
+    (error) => {
+      console.error("Error listening to orders:", error);
+    },
+  );
 }
 
-// 2. RENDER
+// ==========================================
+// 4. RENDER UI
+// ==========================================
 function renderOrders() {
   const container = document.getElementById("orders-container");
   if (!container) return;
 
-  const filteredOrders = allOrders.filter((o) => o.status === currentTab);
+  // Filter by current Tab
+  const filteredOrders = allOrders.filter((o) => {
+    const status = o.status || "PENDING";
+    return status === currentTab;
+  });
 
   if (filteredOrders.length === 0) {
     container.innerHTML = `
@@ -53,34 +83,40 @@ function renderOrders() {
 
   container.innerHTML = filteredOrders
     .map((order) => {
-      const timeAgo = Math.floor(
-        (new Date() - new Date(order.timestamp)) / 60000,
-      );
+      // Calculate Time Ago
+      const orderTime = order.timestamp
+        ? new Date(order.timestamp)
+        : new Date();
+      const diffMs = new Date() - orderTime;
+      const timeAgo = Math.floor(diffMs / 60000);
 
       // Generate Items HTML
-      const itemsHtml = order.items
+      const itemsHtml = (order.items || [])
         .map(
           (item) => `
             <div class="item-row">
-                <span><span class="item-qty">${item.qty}x</span> Item #${item.itemId}</span>
-                <span>$${(item.price * item.qty).toFixed(2)}</span>
+                <span><span class="item-qty">${item.qty}x</span> ${item.name || "Item"}</span>
+                <span>$${((item.price || 0) * item.qty).toFixed(2)}</span>
             </div>
         `,
         )
         .join("");
 
-      // Generate Button based on status
+      // Generate Action Button
       let actionBtn = "";
       if (order.status === "PENDING") {
-        actionBtn = `<button class="btn btn-primary" onclick="updateOrderStatus('${order.id}', 'COOKING')">Start Cooking</button>`;
+        // Pass ID to the global function
+        actionBtn = `<button class="btn btn-primary" onclick="window.updateOrderStatus('${order.id}', 'COOKING')">Start Cooking</button>`;
       } else if (order.status === "COOKING") {
-        actionBtn = `<button class="btn btn-success" onclick="updateOrderStatus('${order.id}', 'COMPLETED')">Mark Ready</button>`;
+        actionBtn = `<button class="btn btn-success" onclick="window.updateOrderStatus('${order.id}', 'ON_WAY')">Mark Ready</button>`;
+      } else if (order.status === "ON_WAY") {
+        actionBtn = `<button class="btn btn-success" onclick="window.updateOrderStatus('${order.id}', 'COMPLETED')">Complete Order</button>`;
       }
 
       return `
             <div class="order-card" data-status="${order.status}">
                 <div class="card-header">
-                    <span class="order-id">#${order.id}</span>
+                    <span class="order-id">#${order.id.slice(-5)}</span>
                     <span class="timer-badge">${timeAgo}m ago</span>
                 </div>
                 <div class="card-body">
@@ -94,35 +130,42 @@ function renderOrders() {
     .join("");
 }
 
-// 3. ACTIONS
-async function updateOrderStatus(orderId, newStatus) {
-  try {
-    await fetch(`${API_URL}/orders/${orderId}/status`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    });
-    loadOrders(false);
-  } catch (e) {
-    console.error("Error updating:", e);
-  }
-}
+// ==========================================
+// 5. ACTIONS
+// ==========================================
 
 function updateCounts() {
-  const pending = allOrders.filter((o) => o.status === "PENDING").length;
+  const pending = allOrders.filter(
+    (o) => (o.status || "PENDING") === "PENDING",
+  ).length;
   const cooking = allOrders.filter((o) => o.status === "COOKING").length;
   const completed = allOrders.filter((o) => o.status === "COMPLETED").length;
 
-  document.getElementById("count-PENDING").innerText = pending;
-  document.getElementById("count-COOKING").innerText = cooking;
-  document.getElementById("count-COMPLETED").innerText = completed;
+  if (document.getElementById("count-PENDING"))
+    document.getElementById("count-PENDING").innerText = pending;
+  if (document.getElementById("count-COOKING"))
+    document.getElementById("count-COOKING").innerText = cooking;
+  if (document.getElementById("count-COMPLETED"))
+    document.getElementById("count-COMPLETED").innerText = completed;
 }
 
-// 4. TAB SWITCHER
+// Attach to Window for HTML onclick
+window.updateOrderStatus = async function (orderId, newStatus) {
+  if (!currentVendorId) return;
+
+  try {
+    const orderRef = doc(db, "vendors", currentVendorId, "orders", orderId);
+    await updateDoc(orderRef, {
+      status: newStatus,
+    });
+  } catch (e) {
+    console.error("Error updating status:", e);
+    alert("Failed to update status. Check console.");
+  }
+};
+
 window.switchTab = function (event, tabName) {
   currentTab = tabName;
-
-  // Update visual buttons
   document
     .querySelectorAll(".tab-btn")
     .forEach((btn) => btn.classList.remove("active"));
@@ -132,5 +175,10 @@ window.switchTab = function (event, tabName) {
 };
 
 window.manualRefresh = function () {
-  loadOrders(true);
+  // No-op because onSnapshot is real-time, but we can animate the icon for feedback
+  const icon = document.getElementById("refresh-icon");
+  if (icon) {
+    icon.classList.add("fa-spin");
+    setTimeout(() => icon.classList.remove("fa-spin"), 500);
+  }
 };

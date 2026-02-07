@@ -1,102 +1,156 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+// ==========================================
+// 1. IMPORTS
+// ==========================================
+import { db, auth } from "../firebase.js";
 import {
-  getDatabase,
-  ref,
-  onValue,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  collectionGroup,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-// --- FIREBASE CONFIG ---
-const firebaseConfig = {
-  apiKey: "AIzaSyA8zDkXrfnzEE6OpvEAATqNliz9FBYxOPo",
-  authDomain: "hawkerbase-fedasg.firebaseapp.com",
-  databaseURL:
-    "https://hawkerbase-fedasg-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "hawkerbase-fedasg",
-  storageBucket: "hawkerbase-fedasg.firebasestorage.app",
-  messagingSenderId: "216203478131",
-  appId: "1:216203478131:web:cb0ff58ba3f51911de9606",
-  measurementId: "G-T2CVBCSMV4",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-// --- STATUS CONFIGURATION ---
+// ==========================================
+// 2. CONFIGURATION & STATE
+// ==========================================
 const statusConfig = {
-  confirmed: { label: "Order Placed", color: "#f0ad4e", bg: "#fcf8e3" },
-  cooking: { label: "Cooking", color: "#0275d8", bg: "#d9edf7" },
-  onway: { label: "On the Way", color: "#5bc0de", bg: "#d9edf7" },
-  delivered: { label: "Delivered", color: "#5cb85c", bg: "#dff0d8" },
-  cancelled: { label: "Cancelled", color: "#d9534f", bg: "#f2dede" },
+  PENDING: { label: "Order Placed", color: "#f0ad4e", bg: "#fcf8e3" }, // Mapped 'confirmed' to PENDING
+  ACCEPTED: { label: "Accepted", color: "#0275d8", bg: "#d9edf7" },
+  COOKING: { label: "Cooking", color: "#0275d8", bg: "#d9edf7" },
+  ON_WAY: { label: "On the Way", color: "#5bc0de", bg: "#d9edf7" }, // Mapped 'onway' to ON_WAY
+  COMPLETED: { label: "Delivered", color: "#5cb85c", bg: "#dff0d8" }, // Mapped 'delivered' to COMPLETED
+  CANCELLED: { label: "Cancelled", color: "#d9534f", bg: "#f2dede" },
 };
 
-// --- FETCH & RENDER ORDERS ---
-const ordersRef = ref(db, "orders/");
+document.addEventListener("DOMContentLoaded", () => {
+  // Wait for Login
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("👤 Customer Logged In:", user.uid);
+      initOrderListener(user.uid);
+    } else {
+      document.getElementById("active-list").innerHTML =
+        "<p class='empty-msg'>Please log in to view orders.</p>";
+    }
+  });
+});
 
-onValue(ordersRef, (snapshot) => {
-  const data = snapshot.val();
+// ==========================================
+// 3. FIRESTORE LISTENER
+// ==========================================
+function initOrderListener(userId) {
   const activeContainer = document.getElementById("active-list");
   const historyContainer = document.getElementById("history-list");
 
-  // Clear current content
-  activeContainer.innerHTML = "";
-  historyContainer.innerHTML = "";
+  if (activeContainer) activeContainer.innerHTML = "<p>Loading...</p>";
 
-  if (!data) {
-    activeContainer.innerHTML = "<p class='empty-msg'>No active orders.</p>";
-    historyContainer.innerHTML = "<p class='empty-msg'>No order history.</p>";
-    return;
-  }
+  // Query: Find documents in ANY collection named 'orders' where customerId matches
+  const q = query(
+    collectionGroup(db, "orders"),
+    where("customerId", "==", userId),
+    // Note: orderBy requires an index. If you get an error, check console for the link to create it.
+  );
 
-  // Loop through all orders
-  Object.keys(data).forEach((orderId) => {
-    const order = data[orderId];
+  // Real-time listener
+  onSnapshot(q, (snapshot) => {
+    activeContainer.innerHTML = "";
+    historyContainer.innerHTML = "";
 
-    // Fallback values if data is missing in DB
-    const status = order.status || "confirmed";
-    const storeName = order.storeName || order.vendor || "Store Name";
-    const totalPrice = order.total
-      ? `$${parseFloat(order.total).toFixed(2)}`
-      : "-";
-    const itemCount = order.items ? order.items.length : 0;
-    const timestamp = order.updatedAt || Date.now();
+    if (snapshot.empty) {
+      activeContainer.innerHTML = "<p class='empty-msg'>No active orders.</p>";
+      historyContainer.innerHTML = "<p class='empty-msg'>No order history.</p>";
+      return;
+    }
 
-    // Format Date
-    const dateObj = new Date(timestamp);
-    const dateString =
-      dateObj.toLocaleDateString() +
-      " " +
-      dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const orders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    // HTML for the Card
-    const cardHTML = `
+    // Sort in JS to avoid index issues for now (Newest first)
+    orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    orders.forEach((order) => {
+      renderOrderCard(order, activeContainer, historyContainer);
+    });
+
+    // Handle empty states after filtering
+    if (activeContainer.innerHTML === "")
+      activeContainer.innerHTML = "<p class='empty-msg'>No active orders.</p>";
+    if (historyContainer.innerHTML === "")
+      historyContainer.innerHTML = "<p class='empty-msg'>No past orders.</p>";
+  });
+}
+
+// ==========================================
+// 4. RENDER UI (Your Original Logic)
+// ==========================================
+function renderOrderCard(order, activeContainer, historyContainer) {
+  // Fallback values
+  const status = order.status || "PENDING";
+  const storeName = order.stallName || "Unknown Stall"; // Changed from order.vendor to match your other files
+  const totalPrice = order.total
+    ? `$${parseFloat(order.total).toFixed(2)}`
+    : "-";
+  const itemCount = order.items ? order.items.length : 0;
+
+  // Date Formatting
+  const timestamp = order.timestamp || Date.now();
+  const dateObj = new Date(timestamp);
+  const dateString =
+    dateObj.toLocaleDateString() +
+    " " +
+    dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  // Config Lookup
+  const config = statusConfig[status] || {
+    label: status,
+    color: "#333",
+    bg: "#eee",
+  };
+
+  // Stepper Logic
+  const isHistory = status === "COMPLETED" || status === "CANCELLED";
+
+  // Mapping your statuses to the stepper steps
+  const step1Active = [
+    "PENDING",
+    "ACCEPTED",
+    "COOKING",
+    "ON_WAY",
+    "COMPLETED",
+  ].includes(status)
+    ? "active"
+    : "";
+  const step2Active = ["COOKING", "ON_WAY", "COMPLETED"].includes(status)
+    ? "active"
+    : "";
+  const step3Active = ["ON_WAY", "COMPLETED"].includes(status) ? "active" : "";
+
+  const cardHTML = `
       <div class="track-card">
         <div class="track-header">
           <div>
             <div class="store-name">${storeName}</div>
-            <div class="order-meta">Order #${orderId} • ${dateString}</div>
+            <div class="order-meta">Order #${order.id.slice(-6)} • ${dateString}</div>
             <div class="order-meta">${itemCount} Items • Total: ${totalPrice}</div>
           </div>
           <div class="status-badge-container">
-            <span class="status-badge" style="
-              background-color: ${statusConfig[status]?.bg || "#eee"}; 
-              color: ${statusConfig[status]?.color || "#333"};">
-              ${statusConfig[status]?.label || status}
+            <span class="status-badge" style="background-color: ${config.bg}; color: ${config.color};">
+              ${config.label}
             </span>
           </div>
         </div>
         
         ${
-          status !== "delivered" && status !== "cancelled"
+          !isHistory
             ? `
         <div class="stepper" style="margin-top: 20px; zoom: 0.8;">
-           <div class="step ${["confirmed", "cooking", "onway", "delivered"].indexOf(status) >= 0 ? "active" : ""}">
+           <div class="step ${step1Active}">
              <div class="step-circle"><i class="fas fa-file-invoice"></i></div>
            </div>
-           <div class="step ${["cooking", "onway", "delivered"].indexOf(status) >= 0 ? "active" : ""}">
+           <div class="step ${step2Active}">
              <div class="step-circle"><i class="fas fa-utensils"></i></div>
            </div>
-           <div class="step ${["onway", "delivered"].indexOf(status) >= 0 ? "active" : ""}">
+           <div class="step ${step3Active}">
              <div class="step-circle"><i class="fas fa-motorcycle"></i></div>
            </div>
         </div>
@@ -105,24 +159,16 @@ onValue(ordersRef, (snapshot) => {
         }
         
         <div style="text-align: right; margin-top: 15px;">
-           <button class="btn-action" onclick="alert('View details for ${orderId}')">
+           <button class="btn-action" onclick="alert('Viewing Order: ${order.id}')">
              View Details <i class="fas fa-chevron-right"></i>
            </button>
         </div>
       </div>
     `;
 
-    // Sort into Active or History
-    if (status === "delivered" || status === "cancelled") {
-      historyContainer.innerHTML += cardHTML;
-    } else {
-      activeContainer.innerHTML += cardHTML;
-    }
-  });
-
-  // Handle empty states if no orders match category
-  if (activeContainer.innerHTML === "")
-    activeContainer.innerHTML = "<p class='empty-msg'>No active orders.</p>";
-  if (historyContainer.innerHTML === "")
-    historyContainer.innerHTML = "<p class='empty-msg'>No past orders.</p>";
-});
+  if (isHistory) {
+    historyContainer.insertAdjacentHTML("beforeend", cardHTML);
+  } else {
+    activeContainer.insertAdjacentHTML("beforeend", cardHTML);
+  }
+}
