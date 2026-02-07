@@ -1,6 +1,7 @@
 :root {
-  --bg: #f6f4ef;
-  --panel: #f2efdf;
+  --brand: #7ce53a;
+  --cream: #feffc1;
+  --panel: rgba(255, 255, 255, 0.55);
   --card: #ffffff;
   --text: #1c1c1c;
   --muted: #6b6b6b;
@@ -22,7 +23,7 @@ body {
     Arial,
     sans-serif;
   color: var(--text);
-  background: #ffffff;
+  background: var(--cream);
 }
 
 /* Topbar */
@@ -277,4 +278,15 @@ body {
 }
 .hidden {
   display: none !important;
+}
+
+.brand {
+  color: var(--brand);
+}
+
+.heart.liked {
+  background: var(--brand);
+}
+.heart.liked .h {
+  color: #fff;
 }
