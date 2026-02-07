@@ -139,24 +139,27 @@
 
       <main class="main-content">
         <header class="studio-header">
-          <h2 class="page-title">Vendor Hygiene Grade Profile</h2>
+          <h2 class="page-title">Vendor Grading Profile</h2>
+          <select id="selectStall">
+            <option value="">Select Stall</option>
+          </select>
         </header>
 
         <section class="status-hero-card">
           <div class="grade-circle">
             <span class="grade-label">Grade:</span>
-            <span class="grade-letter">A</span>
+            <span class="grade-letter" id="grade-letter">-</span>
           </div>
           <div class="award-text">
             <p>Awarded on:</p>
-            <h3>12/10/2025</h3>
+            <h3 id="dateAwarded">-</h3>
           </div>
         </section>
 
         <div class="dashboard-grid">
           <div class="studio-card">
             <div class="card-header">
-              <h3>Hygiene History</h3>
+              <h3>Past Hygiene Grades</h3>
             </div>
             <div class="card-body">
               <div class="history-list">
@@ -181,23 +184,22 @@
               <div class="card-header"><h3>Grading Legend</h3></div>
               <div class="card-body legend-body">
                 <div class="legend-row">
-                  <span class="dot dot-red"></span> Excellent (> 85%)
+                  <span class="dot dot-red"></span> A (> 85%)
                 </div>
                 <div class="legend-row">
-                  <span class="dot dot-green"></span> Good (70-84%)
+                  <span class="dot dot-green"></span> B (70-84%)
                 </div>
                 <div class="legend-row">
-                  <span class="dot dot-orange"></span> Average (50-69%)
+                  <span class="dot dot-orange"></span> C (50-69%)
                 </div>
               </div>
             </div>
 
             <div class="studio-card">
-              <div class="card-header"><h3>Comments</h3></div>
+              <div class="card-header"><h3>Inspector Comments</h3></div>
               <div class="card-body">
-                <p class="comment-quote">
-                  "The stall maintains high standards of hygiene. Food handling
-                  procedures are compliant."
+                <p class="comment-quote" id="inspectionComment">
+                  No comments made
                 </p>
               </div>
             </div>
@@ -205,5 +207,6 @@
         </div>
       </main>
     </div>
+    <script type="module" src="VendorGradeViewpage.js"></script>
   </body>
 </html>
